@@ -1,10 +1,22 @@
-<div>
+<div class="flex items-center justify-center bg-gray-500 h-screen w-screen">
 
-    <div class="bg-gray-900 p-20 h-96 flex-col justify-center items-center" wire:poll.1000ms>
-           
-        <p class="text-white">{{ now()->minute }}</p>
-        <p class="text-white">{{ now() }}</p>
+    <div class="w-1/3">
         
+        <x-card class="">
+            
+            
+            
+            
+            <form wire:submit.prevent="save">
+                <input type="file" wire:model="file">
+                
+                <x-button type="submit" spinner="save" dark label="Import" />
+                
+                
+            </form>
+
+            @error('file') <span class="error text-red-600">{{ $message }}</span> @enderror
+        </x-card>
     </div>
-  
+
 </div>

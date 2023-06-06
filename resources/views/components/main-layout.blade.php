@@ -15,6 +15,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!-- Styles -->
+        @wireUiScripts
+        <script src="//unpkg.com/alpinejs" defer></script>
         @livewireStyles
     </head>
     <body class="font-sans antialiased">

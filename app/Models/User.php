@@ -29,6 +29,11 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
      * 
      */
 
+    // public function users()
+    // {
+    //     return $this->hasMany(User::class, 'course_id');
+    // }
+
      public function canAccessFilament(): bool
      {
          return str_ends_with('admin@gmail.com', '@gmail.com');

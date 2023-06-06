@@ -38,6 +38,13 @@ class UserResource extends Resource
 
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    
+    protected static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+
   
     public static function form(Form $form): Form
     {
@@ -83,7 +90,7 @@ class UserResource extends Resource
                 Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
     
