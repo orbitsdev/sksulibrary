@@ -5,13 +5,21 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Campus;
+use App\Models\Course;
 use Filament\Pages\Page;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Grid;
 use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,52 +32,60 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Accounts';
 
-   
 
     public $name;
     public $first_name;
     public $last_name;
     public $email;
     public $password;
-    
 
-    protected static ?string $navigationGroup = 'Account';
+
+    // protected static ?string $navigationGroup = 'Account';
 
 
     protected static ?string $recordTitleAttribute = 'name';
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 
-    
     protected static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
+    {
+        return static::getModel()::count();
+    }
 
-  
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->hidden()->reactive()->afterStateUpdated(function( $state, $set){
-               }),
-                TextInput::make('first_name')->reactive()->afterStateUpdated(function( $state, $set){
-                
-                    $set('first_name' , $state);
 
-               }),
-                TextInput::make('last_name')->reactive()->afterStateUpdated(function( $state, $set){
-                    $set('last_name' , $state);
-               }),
-                TextInput::make('email')->email()->required(),
-                TextInput::make('password')->dehydrateStateUsing(static function (null|String $state) : null|String {
-                  return  filled($state) ? Hash::make($state) : null;        
-                })->required(function($livewire){
-                    return  $livewire instanceOf CreateUser;
-                })->dehyDrated(function($state){
-                    return filled($state);
-                })->label(function($livewire){
-                    return ($livewire instanceOf EditUser) ? 'New Password' : 'Password';
-                }),
+
+                FieldSet::make('User Account')
+                    ->schema([
+
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('email')->email()->columnSpan(1)->required(),
+                                TextInput::make('password')->dehydrateStateUsing(static function (null|String $state): null|String {
+                                    return  filled($state) ? Hash::make($state) : null;
+                                })->required(function ($livewire) {
+                                    return  $livewire instanceof CreateUser;
+                                })->dehyDrated(function ($state) {
+                                    return filled($state);
+                                })->label(function ($livewire) {
+                                    return ($livewire instanceof EditUser) ? 'New Password' : 'Password';
+                                })->columnSpan(1),
+                            ]),
+
+
+
+                    ]),
+
+
+
             ]);
     }
 
@@ -77,10 +93,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('first_name')->searchable(),
-                TextColumn::make('last_name')->searchable(),
+                ImageColumn::make('user_information.profile')->circular()->label('Profile'),
                 TextColumn::make('email')->searchable(),
-                TextColumn::make('password')->searchable(),
+             
             ])
             ->filters([
                 //
@@ -93,14 +108,14 @@ class UserResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -108,5 +123,5 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
-    }    
+    }
 }

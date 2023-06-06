@@ -35,8 +35,10 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
     // }
 
      public function canAccessFilament(): bool
-     {
-         return str_ends_with('admin@gmail.com', '@gmail.com');
+     {  
+
+        return self::whereIn('email', ['admin@gmail.com'])->count() > 0;
+        //  return str_ends_with('admin@gmail.com', '@gmail.com');
      }
 
      public function getFilamentName(): string
@@ -45,9 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
      }
 
     protected $fillable = [
-        'name',
-        'first_name',
-        'last_name',
+       
         'email',
         'password',
     ];
