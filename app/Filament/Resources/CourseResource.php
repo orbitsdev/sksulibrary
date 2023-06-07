@@ -20,8 +20,12 @@ class CourseResource extends Resource
     protected static ?string $model = Course::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
+
+     protected static ?string $navigationGroup = 'University';
+
+     protected static bool $shouldRegisterNavigation = false;
 
 //     protected static function getNavigationBadge(): ?string
 // {

@@ -30,11 +30,11 @@ class UserInformationResource extends Resource
     protected static ?string $model = UserInformation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationLabel = 'User Information';
 
-
+    protected static bool $shouldRegisterNavigation = false;
     // protected static ?string $navigationGroup = 'Account';
 
     // protected static bool $shouldRegisterNavigation = false;
@@ -59,6 +59,8 @@ class UserInformationResource extends Resource
 
 
                     ]),
+
+
                 Fieldset::make('Personal Information')
                     ->schema([
 

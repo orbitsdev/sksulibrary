@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_information', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->text('id_number')->nullable();
             $table->string('first_name')->nullable();
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->text('state')->nullable();
             $table->text('postal_code')->nullable();
-            $table->foreignId('campus_id')->nullable();
-            $table->foreignId('course_id')->nullable();
+            $table->text('campus')->nullable();
+            $table->text('course')->nullable();
             $table->text('barcode')->nullable();
             $table->text('status')->nullable();
             $table->string('year')->nullable();
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_information');
+        Schema::dropIfExists('students');
     }
 };
