@@ -93,7 +93,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('user_information.profile')->circular()->label('Profile'),
+              
                 TextColumn::make('email')->searchable(),
              
             ])

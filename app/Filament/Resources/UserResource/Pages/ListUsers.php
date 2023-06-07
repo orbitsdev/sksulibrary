@@ -20,10 +20,10 @@ class ListUsers extends ListRecords
 
     public $file;
 
-    protected function getTableActionsPosition(): ?string
-    {
-        return Position::BeforeCells;
-    }
+    // protected function getTableActionsPosition(): ?string
+    // {
+    //     return Position::BeforeCells;
+    // }
     protected function getActions(): array
     {
         return [

@@ -58,7 +58,7 @@ class StudentResource extends Resource
                             ]),
                     ]),
 
-                    Fieldset::make('Contact & Adress')
+                    Fieldset::make('Contact & Address')
                     ->schema([
                         Grid::make(12)
                         ->schema([
@@ -103,6 +103,7 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id'),
                 TextColumn::make('id_number')->label('ID Number')->searchable(),
               
                 TextColumn::make('first_name')->searchable(),
@@ -134,6 +135,7 @@ class StudentResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make()->button(),
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button()->before(function( $action, $record){
             

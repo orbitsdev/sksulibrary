@@ -1,5 +1,7 @@
 
 
 <x-main-layout>
-        @livewire('test-live-wire')
+
+        @livewire('attendance-form')
+        {{-- @livewire('test-live-wire') --}}
 </x-main-layout>

@@ -2,23 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Campus;
-use App\Models\Course;
 use App\Models\DayLogin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Student extends Model
+class DayRecord extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
+    public function daylogins(){
 
-
-    public function logins(){
-        return $this->hasMany(DayLogin::class, 'student_id');
+        return $this->hasMany(DayLogin::class, 'day_record_id');
     }
 
-    
+
 }
