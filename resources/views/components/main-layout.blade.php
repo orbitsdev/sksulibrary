@@ -18,6 +18,12 @@
         @livewireStyles
         @wireUiScripts
         <script src="//unpkg.com/alpinejs" defer></script>
+        <style>
+
+            .sksubg{
+                background: #005513;
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <x-banner />

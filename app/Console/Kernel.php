@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\DayLogout;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,6 +14,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+
+            // $schedule->call(function () {
+            //     DayLogout::where('status', 'not-yet-logout')->uppdate(['status' => 'did-not-logout']);
+            // })->everyMinute();
+            $schedule->call(function () {
+                DayLogout::where('status', 'not-yet-logout')->update(['status' => 'did-not-logout']);
+            })->everyMinute();
     }
 
     /**
