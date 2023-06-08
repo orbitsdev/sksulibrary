@@ -18,24 +18,26 @@ class AttendanceForm extends Component
     public $barcode;
 
 
-    public $showModal = true;
-
+    public $isSuccess = false;
+    public $hasError = false;
     public $user;
     public $student;
-    public $dateNow;
-    public $dateRecording;
+    public $todayRecord;
+    public $isManualInputBarCode = false;
+
     public function render()
     {
         return view('livewire.attendance-form');
     }
 
-public function showModalForm(){
-    $this->showModal = true;
-}
 
     public function updatedbarcode()
     {
-        $this->readBarCode();
+
+        if($this->isManualInputBarCode == false){
+
+            $this->readBarCode();
+        }
     }
 
     public function readBarCode()
@@ -44,92 +46,93 @@ public function showModalForm(){
 
         
 
-        // if (!empty($this->barcode)) {
+        if (!empty($this->barcode)) {
 
-        //     $this->student = Student::find($this->barcode);
+            $this->student = Student::find($this->barcode);
+            $this->todayRecord = $this->getLatestDayRecord();
 
-        //     if ($this->isStudentExist($this->student) ) {
+            if ($this->isStudentExist($this->student) ) {
 
-        //         $latestDayRecord = $this->getLatestDayRecord();
+              
 
-        //         if ($this->isRecordExist($latestDayRecord)) {
+                if ($this->isRecordExist($this->todayRecord)) {
 
-        //             $nowDate = now()->startOfDay();
-        //             $activeRecord = $latestDayRecord->created_at->startOfDay();
+                    $nowDate = now()->startOfDay();
+                    $activeRecord = $this->todayRecord->created_at->startOfDay();
 
-        //             if ($nowDate->equalTo($activeRecord)) {
+                    if ($nowDate->equalTo($activeRecord)) {
 
-        //                 /// check if it has login record 
-        //                 if ($this->studentHasLoginRecord($this->student->id)) {
+                        /// check if it has login record 
+                        if ($this->studentHasLoginRecord($this->student->id)) {
 
-        //                     //check latest record if it has logout record where active not yet loggout
+                            //check latest record if it has logout record where active not yet loggout
 
-        //                     $latestStudentLoginRecord = $this->getStudentLatestLoginRecord($this->student->id);
+                            $latestStudentLoginRecord = $this->getStudentLatestLoginRecord($this->student->id);
 
-        //                     if ($latestStudentLoginRecord->whereHas('logout', function ($query) {$query->where('status', 'not-yet-logout');})->exists()) {
+                            if ($latestStudentLoginRecord->whereHas('logout', function ($query) {$query->where('status', 'not-yet-logout');})->exists()) {
                                
-        //                         $this->updateLogoutRecord($latestStudentLoginRecord, 'loggedout');
-        //                         $this->showSuccess();
+                                $this->updateLogoutRecord($latestStudentLoginRecord, 'loggedout');
+                                $this->showSuccess();
 
-        //                     } else if ($latestStudentLoginRecord->whereHas('logout', function ($query) {$query->where('status', 'loggedout');})->exists()) {
+                            } else if ($latestStudentLoginRecord->whereHas('logout', function ($query) {$query->where('status', 'loggedout');})->exists()) {
 
-        //                         $newRecord = $this->createNewDayRecord();
-        //                         $newLoginRecord = $this->createNewLoginRecord($newRecord, $this->student);
-        //                         $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
-        //                         $this->showSuccess();
+                                $this->todayRecord = $this->createNewDayRecord();
+                                $newLoginRecord = $this->createNewLoginRecord($this->todayRecord, $this->student);
+                                $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
+                                $this->showSuccess();
 
 
-        //                     } else if ($latestStudentLoginRecord->has('logout')->exists()) {
+                            } else if ($latestStudentLoginRecord->has('logout')->exists()) {
 
-        //                         // meaning if the data has been set as student did not login on, we must create new  record
-        //                         $newRecord = $this->createNewDayRecord();
-        //                         $newLoginRecord = $this->createNewLoginRecord($newRecord, $this->student);
-        //                         $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
-        //                         $this->showSuccess();
+                                // meaning if the data has been set as student did not logout on, we must create new  record
+                                $this->todayRecord = $this->createNewDayRecord();
+                                $newLoginRecord = $this->createNewLoginRecord($this->todayRecord, $this->student);
+                                $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
+                                $this->showSuccess();
 
-        //                     } else {
+                            } else {
 
-        //                         $this->createNewLogoutRecord($latestStudentLoginRecord);
-        //                         $this->showSuccess();
+                                $this->createNewLogoutRecord($latestStudentLoginRecord);
+                                $this->showSuccess();
 
-        //                     }
+                            }
 
                             
 
-        //                 } else {
+                        } else {
 
                            
-        //                     $newLoginRecord = $this->createNewLoginRecord($latestDayRecord , $this->student);
-        //                     $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
-        //                     $this->showSuccess();
+                            $newLoginRecord = $this->createNewLoginRecord($this->todayRecord , $this->student);
+                            $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
+                            $this->showSuccess();
 
-        //                 }
+                        }
                       
-        //             } else if ($nowDate->greaterThan($activeRecord)) {
+                    } else if ($nowDate->greaterThan($activeRecord)) {
 
-        //                 $newRecord = $this->createNewDayRecord();
-        //                 $newLoginRecord = $this->createNewLoginRecord($newRecord, $this->student);
-        //                 $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
-        //                 $this->showSuccess();
+                        $this->todayRecord = $this->createNewDayRecord();
+                        $newLoginRecord = $this->createNewLoginRecord($this->todayRecord, $this->student);
+                        $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
+                        $this->showSuccess();
 
-        //             } else {
+                    } else {
                             
-        //                     $this->showError();
-        //             }
+                            $this->showError();
+                    }
 
 
-        //         } else {
+                } else {
 
-        //             $newRecord = $this->createNewDayRecord();
-        //             $newLoginRecord = $this->createNewLoginRecord($newRecord, $this->student);
-        //             $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
-        //             $this->showSuccess();
+                    $this->todayRecord = $this->createNewDayRecord();
+                    $newLoginRecord = $this->createNewLoginRecord($this->todayRecord, $this->student);
+                    $newLogoutRecord = $this->createNewLogoutRecord($newLoginRecord);
+                    $this->showSuccess();
 
-        //         }
-        //     } else {
-        //         $this->showError();
-        //     }
-        // }
+                }
+            } else {
+                $this->showError();
+            }
+        }
     }
 
     public function createNewDayRecord(): DayRecord
@@ -214,37 +217,32 @@ public function showModalForm(){
     }
 
 
-    public function processLogic()
-    {
-    }
-
 
 
 
     public function showError($header = 'Error', $body = "No student found"){
-        $this->dialog()->error(
-            $title = $header,
-            $description = $body
-        );
+        $this->hasError = true;
     }
 
     public function showSuccess($header = 'Saved', $body = "Data was successfully saved", ){
-        $this->dialog([
-            'title'       => $header,
-            'description' => $body,
-            'icon'        => 'success'
-        ]);
+       
+        $this->isSuccess = true;
+
+        $this->student = Student::find($this->barcode);
+
+
     }
 
 
-    public function save(): void
-    {
+    public function closeError(){
 
-        // use a simple syntax: success | error | warning | info
-        $this->dialog()->success(
-            $title = 'Profile saved',
-            $description = 'Your profile was successfully saved'
-        );
+        $this->hasError = false;
+
+    }
+
+    public function readBarCodeManually(): void
+    {
+        $this->readBarCode();
     }
 
     

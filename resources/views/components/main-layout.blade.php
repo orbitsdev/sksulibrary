@@ -21,8 +21,19 @@
         <style>
 
             .sksubg{
-                background: #005513;
+                background: #0F322D;
             }
+            .bgseconday{
+                background: #214B44;
+            }
+
+            .fade-in {
+    opacity: 1;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
         </style>
     </head>
     <body class="font-sans antialiased">
