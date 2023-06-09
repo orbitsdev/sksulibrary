@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
             //     DayLogout::where('status', 'not-yet-logout')->uppdate(['status' => 'did-not-logout']);
             // })->everyMinute();
             $schedule->call(function () {
-                DayLogout::where('status', 'not-yet-logout')->update(['status' => 'did-not-logout']);
+                DayLogout::where('status', 'Not Logout')->update(['status' => 'Did Not Logout']);
             })->everyMinute();
     }
 

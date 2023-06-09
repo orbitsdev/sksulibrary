@@ -27,19 +27,23 @@
                 <input type="text" wire:model.debounce.700ms="barcode" autofocus   class="w-6/12 rounded">
             </div>
             <div class="flex items-center justify-center mt-4">
-                <input  type="checkbox"  wire:model.defer="isManualInputBarCode" class="mr-2 ">
-                <label for="vehicle1" class="text-gray-100  text-lg "> Disable Barcode Auto-Save</label>
-            </div>
+                <input type="checkbox" wire:model="isManualInputBarCode" class="mr-2 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-accent-green hover:bg-accent-green hover:border-green checked:bg-green-400 checked:hover:bg-green-500 checked:active:bg-green-500">
 
-            {{$isManualInputBarCode}}
-           
-            <div class="flex items-center justify-center mt-10">
-                <x-button class="w-6/12"  positive label="Read Bar Code" wire:click="readBarCodeManually" spinner="readBarCodeManually"  /> 
+
+
+
+                <label for="vehicle1" class="text-gray-100  text-lg "> Manually Input Barcode</label>
+            </div>
+            
+            <div class="flex items-center justify-center mt-10 h-5">
+               @if($isManualInputBarCode)
+               <x-button class="w-6/12"  positive label="Read Bar Code" wire:click="readBarCodeManually" spinner="readBarCodeManually"  /> 
+               @endif
             </div>
            
 
         </div>
-    </div>
+          </div>
     </div>
 
 
@@ -78,54 +82,39 @@
                     
 
 
-              @if ($login = $student->logins()->where('day_record_id', $todayRecord->id)->first())
+                    @if($studentLoginRecord =  $this->student->logins()->latest()->first())
                  <div class="shadow rounded py-3 px-6 mt-1 bg-green-100">
                      <div class="text-center">
                          <div class="text-md leading-6 text-green-900">Time in</div>
                          <div class="order-first text-2xl text-green-900 font-semibold tracking-tight">
-                               {{$student->logins()->where('day_record_id', $todayRecord->id)->first()->created_at->timezone('Asia/Manila')->format('g:i A - l ')}}       
-                               {{-- {{$student->logins()->where('day_record_id', $todayRecord->id)->first()->created_at->timezone('Asia/Manila')->format('g:i A | l, F j,')}}        --}}
+                          {{ $studentLoginRecord->created_at->timezone('Asia/Manila')->format('h:i:s A - l')}}</div>
+                             
                          </div>
                      </div>
                  </div>
 
-                    @if($student->logins()->where('day_record_id', $todayRecord->id)->first()->logout && $student->logins()->where('day_record_id', $todayRecord->id)->first()->logout->status =='not-yet-logout')
-                    <div class="shadow rounded py-3 px-6 mt-1 bg-red-100">
-                        <div class="text-center">
+             @php
+                 $logoutrecord = $studentLoginRecord->logout;
+             @endphp
+             
+             @if ($logoutrecord && $logoutrecord->status == 'Logged out')
+                  <div class="shadow rounded py-3 px-6 mt-1 bg-red-100">
+                     <div class="text-center">
 
                             <div class="text-md leading-6  text-red-900">Time out</div>
                             <div class="order-first text-2xl text-red-900 font-semibold tracking-tight ">
-                            {{$student->logins()->where('day_record_id', $todayRecord->id)->first()->logout->updated_at->timezone('Asia/Manila')->format('h:i A - l') }}
-                            
-                                 {{-- @if($student->logins()->where('day_record_id', $todayRecord->id)->first()->logout->status =='not-yet-logout')
-                        
-                          
-                                <div class="text-md leading-6  text-red-900">Not Yet Logout</div> 
-                             
-                                @else
                                 <div class="text-md leading-6  text-red-900">Time out</div>
                                 <div class="order-first text-2xl text-red-900 font-semibold tracking-tight ">
-                                {{$student->logins()->where('day_record_id', $todayRecord->id)->first()->logout->updated_at->timezone('Asia/Manila')->format('h:i A - l') }}
-                                @endif --}}
+                                    {{$logoutrecord->updated_at->timezone('Asia/Manila')->format('h:i:s A - l') }}</div>
                             </div>
                         </div>
+                    </div>
                         @endif
-
-            @endif
+                    @endif
                 
-                    {{-- @if ($student->logins()->where('created_at', $todayRecord->created_at)->first()->has('logout'))
-                        
-                    <div class="shadow rounded py-3 px-6 mt-1 bg-red-50">
-                        <div class="text-center">
-                            
-                            <div class="text-md leading-6  text-red-900">Time out</div>
-                            <div class="order-first text-2xl text-red-900 font-semibold tracking-tight ">
-                                {{ now()->timezone('Asia/Manila')->format('h:i A') }}</div>
-                            </div>
-                        </div>
-                        @endif  --}}
+                  
 
-                </div>
+              
                 <div class="px-6 py-2 flex items-center justify-center mt-4 ">
                     <svg width="40" height="40" viewBox="0 0 168 133" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
