@@ -26,6 +26,7 @@
             <div class="flex items-center justify-center ">
                 <input type="text" wire:model.debounce.700ms="barcode" autofocus   class="w-6/12 rounded">
             </div>
+          
             <div class="flex items-center justify-center mt-4">
                 <input type="checkbox" wire:model="isManualInputBarCode" class="mr-2 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-accent-green hover:bg-accent-green hover:border-green checked:bg-green-400 checked:hover:bg-green-500 checked:active:bg-green-500">
 
@@ -33,8 +34,9 @@
 
 
                 <label for="vehicle1" class="text-gray-100  text-lg "> Manually Input Barcode</label>
+                
             </div>
-            
+         
             <div class="flex items-center justify-center mt-10 h-5">
                @if($isManualInputBarCode)
                <x-button class="w-6/12"  positive label="Read Bar Code" wire:click="readBarCodeManually" spinner="readBarCodeManually"  /> 
@@ -141,16 +143,26 @@
 
 
     <x-modal.card align="center" blur wire:model.defer="hasError">
-        
-        <div class="flex items-center justify-center flex-col ">
 
+
+
+
+        @if($errorType == 'not-found')
+        <x-error-content :image="'not-found.png'" :message="$errorMessage"/>
+        @endif
+        @if($errorType == 'exception')
+        <x-error-content :image="'error.png'" :message="$errorMessage"/>
+        @endif
+        {{-- <div class="flex items-center justify-center flex-col ">
             <img src="{{asset('images/not-found.png')}}" alt="" height="300" width="300">
+            @endif
         </div>
 
         <div class="text-center mt-8 tex-lg">
             Please register first your barcode to the admin. 
-        </div>
+        </div> --}}
      
+
         <x-slot name="footer">
             <div class="flex justify-end gap-x-4">
                 
@@ -161,6 +173,7 @@
                 </div>
             </div>
         </x-slot>
+
     </x-modal.card>
 </div>
 
