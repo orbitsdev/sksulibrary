@@ -63,7 +63,7 @@
                 <div class="text-center">
                     <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl capitalize">
                         {{ $student->first_name }} {{ $student->last_name }} </p>
-                    <p class="mt-0.5 mr-2 text-lg leading-8 text-gray-900 capitalize"> {{$student->course}} 
+                    <p class="mt-0.5 mr-2 text-lg leading-8 text-gray-900 capitalize"> {{$student->course->name}} 
                     </p>
                 </div>
 

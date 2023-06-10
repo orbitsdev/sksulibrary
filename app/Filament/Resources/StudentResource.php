@@ -102,7 +102,7 @@ class StudentResource extends Resource
                                     '3rd Year' => '3rd Year',
                                     '4th Year' => '4th Year',
                                     // '5th Year' => '5th Year',
-                                ])->required()->columnSpan(4)->default('first-year'),
+                                ])->required()->columnSpan(4)->default('1st Year'),
 
                                 FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->required(),
                                 FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id')->required(),

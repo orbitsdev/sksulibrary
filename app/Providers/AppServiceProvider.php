@@ -39,6 +39,14 @@ Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
            
             NavigationGroup::make()
                 ->items([
+                    NavigationItem::make('Reports')
+                    ->icon('heroicon-o-document')
+                    ->activeIcon('heroicon-s-home')
+                    ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
+                    ->url(route('filament.pages.reports')),
+                ]),
+            NavigationGroup::make()
+                ->items([
                     NavigationItem::make('Dashboard')
                     ->icon('heroicon-o-home')
                     ->activeIcon('heroicon-s-home')
