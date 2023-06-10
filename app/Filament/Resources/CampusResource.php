@@ -4,32 +4,27 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Course;
+use App\Models\Campus;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CourseResource\Pages;
+use App\Filament\Resources\CampusResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CourseResource\RelationManagers;
+use App\Filament\Resources\CampusResource\RelationManagers;
 
-class CourseResource extends Resource
+class CampusResource extends Resource
 {
-    protected static ?string $model = Course::class;
+    protected static ?string $model = Campus::class;
 
-    protected static ?int $navigationSort = 2;
-    
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-o-library';
 
-
-     
-    //  protected static function getNavigationBadge(): ?string
-    //  {
-    //      return static::getModel()::count();
-    //  }
- 
+    // protected static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count();
+    // }
 
 
     public static function form(Form $form): Form
@@ -44,14 +39,14 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-              TextColumn::make('name')->searchable(),
+                TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->button(),
+                Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -61,7 +56,7 @@ class CourseResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCourses::route('/'),
+            'index' => Pages\ManageCampuses::route('/index'),
         ];
     }    
 }

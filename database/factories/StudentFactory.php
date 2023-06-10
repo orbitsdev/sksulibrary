@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Campus;
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -32,11 +34,11 @@ class StudentFactory extends Factory
             'country'=> $this->faker->country(),
             'state'=>$this->faker->state(),
             'postal_code'=>$this->faker->postcode(),
-            'campus'=> 'Isulan  Campus',
-            'course'=> 'BSIT',
+            'campus_id'=> Campus::inRandomOrder()->first()->id,
+            'course_id' => Course::inRandomOrder()->first()->id,
             'barcode'=>Str::random(10),
             'status'=>'single',
-            'year'=>'first-year',
+            'year'=>'1st Year',
             'profile'=>'',
             'school_id'=>'',
             'two_by_two'=>'',

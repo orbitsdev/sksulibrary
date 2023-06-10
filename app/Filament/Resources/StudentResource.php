@@ -13,14 +13,22 @@ use Ramsey\Uuid\Guid\Fields;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
 use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StudentResource\RelationManagers;
@@ -32,7 +40,12 @@ class StudentResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?int $navigationSort = 3;
-    protected static ?string $navigationGroup = 'University';
+
+    // protected static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count();
+    // }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -81,13 +94,14 @@ class StudentResource extends Resource
                         Grid::make(12)
                             ->schema([
 
-                                TextInput::make('campus')->columnSpan(4)->required(),
-                                TextInput::make('course')->columnSpan(4)->required(),
+                                Select::make('campus_id')->label('Campus') ->options(Campus::all()->pluck('name', 'id'))->searchable()->columnSpan(4),
+                                Select::make('course_id')->label('Course') ->options(Course::all()->pluck('name', 'id'))->searchable()->columnSpan(4),
                                 Select::make('year')->label('Current Year')->options([
-                                    'first-year' => '1st Year',
-                                    'second-year' => '2nd Year',
-                                    'third-year' => '3rd Year',
-                                    'fourth-year' => '4th Year',
+                                    '1st Year' => '1st Year',
+                                    '2nd Yea' => '2nd Year',
+                                    '3rd Year' => '3rd Year',
+                                    '4th Year' => '4th Year',
+                                    // '5th Year' => '5th Year',
                                 ])->required()->columnSpan(4)->default('first-year'),
 
                                 FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->required(),
@@ -103,6 +117,8 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
+
+              
                 TextColumn::make('id'),
                 TextColumn::make('id_number')->label('ID Number')->searchable(),
               
@@ -117,8 +133,9 @@ class StudentResource extends Resource
                 TextColumn::make('country')->searchable(),
                 TextColumn::make('state')->searchable(),
                 TextColumn::make('postal_code')->searchable(),
-                TextColumn::make('campus')->searchable(),
-                TextColumn::make('course')->searchable(),
+                TextColumn::make('campus.name')->searchable(),
+                TextColumn::make('course.name')->searchable(),
+              
                 TextColumn::make('barcode')->searchable(),
                 TextColumn::make('status')->searchable(),
                 TextColumn::make('year')->searchable(),
@@ -132,30 +149,59 @@ class StudentResource extends Resource
 
             ])
             ->filters([
-                //
+                // Filter::make('created_at')
+                // ->form([
+                //     Forms\Components\DatePicker::make('created_from'),
+                //     Forms\Components\DatePicker::make('created_until'),
+                // ])
+                // ->query(function (Builder $query, array $data): Builder {
+                //     return $query
+                //         ->when(
+                //             $data['created_from'],
+                //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                //         )
+                //         ->when(
+                //             $data['created_until'],
+                //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                //         );
+                // }),
+                SelectFilter::make('Campus')->relationship('campus', 'name'),
+                 SelectFilter::make('course_id')->label('Course')
+                ->options(Course::all()->pluck('name', 'id'))->searchable()->multiple(),
+                
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->button(),
-                Tables\Actions\EditAction::make()->button(),
-                Tables\Actions\DeleteAction::make()->button()->before(function( $action, $record){
-            
 
-                    if (Storage::disk('public')->exists($record->profile) && $record->profile != null) {
-
-                            Storage::disk('public')->delete($record->profile);
-                    }
-
-                    if (Storage::disk('public')->exists($record->school_id) && $record->school_id != null) {
-
-                            Storage::disk('public')->delete($record->school_id);
-                    }
-
-                    if (Storage::disk('public')->exists($record->two_by_two) && $record->two_by_two != null) {
-
-                            Storage::disk('public')->delete($record->two_by_two);
-                    }
-
-                }),
+                Tables\Actions\ActionGroup::make([
+                    Action::make('View Details')
+                    ->button()
+                    ->icon('heroicon-o-user')
+                    ->label('View Profile')
+                    ->action(fn ($record) =>$record)
+                    ->modalHeading('Student Details')
+                    ->modalContent(fn($record)=>  view('components.student-view', ['record'=> $record])),
+                    Tables\Actions\EditAction::make()->button(),
+                    Tables\Actions\DeleteAction::make()->button()->before(function( $action, $record){
+                
+    
+                        if (Storage::disk('public')->exists($record->profile) && $record->profile != null) {
+    
+                                Storage::disk('public')->delete($record->profile);
+                        }
+    
+                        if (Storage::disk('public')->exists($record->school_id) && $record->school_id != null) {
+    
+                                Storage::disk('public')->delete($record->school_id);
+                        }
+    
+                        if (Storage::disk('public')->exists($record->two_by_two) && $record->two_by_two != null) {
+    
+                                Storage::disk('public')->delete($record->two_by_two);
+                        }
+    
+                    }),
+                ]),
+               
             ])
             ->bulkActions([
         
@@ -172,6 +218,7 @@ class StudentResource extends Resource
     public static function getPages(): array
     {
         return [
+            'reports' => Pages\Reports::route('/reports'),
             'index' => Pages\ListStudents::route('/index'),
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),

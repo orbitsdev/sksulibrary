@@ -31,7 +31,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 0;
     protected static ?string $navigationLabel = 'Accounts';
 
 
@@ -50,6 +50,8 @@ class UserResource extends Resource
     {
         return $this->getResource()::getUrl('index');
     }
+
+
 
     // protected static function getNavigationBadge(): ?string
     // {

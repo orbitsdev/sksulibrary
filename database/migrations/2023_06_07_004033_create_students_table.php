@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->text('state')->nullable();
             $table->text('postal_code')->nullable();
-            $table->text('campus')->nullable();
-            $table->text('course')->nullable();
+            $table->foreignId('campus_id')->nullable();
+            $table->foreignId('course_id')->nullable();
             $table->text('barcode')->nullable();
             $table->text('status')->nullable();
             $table->string('year')->nullable();

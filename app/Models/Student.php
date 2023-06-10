@@ -20,5 +20,13 @@ class Student extends Model
         return $this->hasMany(DayLogin::class, 'student_id');
     }
 
+
+    public function course(){
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+    public function campus(){
+        return $this->belongsTo(Campus::class, 'campus_id');
+    }
+
     
 }

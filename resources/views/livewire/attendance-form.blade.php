@@ -29,12 +29,7 @@
           
             <div class="flex items-center justify-center mt-4">
                 <input type="checkbox" wire:model="isManualInputBarCode" class="mr-2 focus:outline-none focus:ring-0 focus:bg-transparent focus:border-accent-green hover:bg-accent-green hover:border-green checked:bg-green-400 checked:hover:bg-green-500 checked:active:bg-green-500">
-
-
-
-
-                <label for="vehicle1" class="text-gray-100  text-lg "> Manually Input Barcode</label>
-                
+                <label for="vehicle1" class="text-gray-100  text-lg "> Input Barcode Manually </label>       
             </div>
          
             <div class="flex items-center justify-center mt-10 h-5">
@@ -85,8 +80,8 @@
 
 
                     @if($studentLoginRecord =  $this->student->logins()->latest()->first())
-                 <div class="shadow rounded py-3 px-6 mt-1 bg-green-100">
-                     <div class="text-center">
+                     <div class="shadow rounded py-3 px-6 mt-1 bg-green-100">
+                          <div class="text-center">
                          <div class="text-md leading-6 text-green-900">Time in</div>
                          <div class="order-first text-2xl text-green-900 font-semibold tracking-tight">
                           {{ $studentLoginRecord->created_at->timezone('Asia/Manila')->format('h:i:s A - l')}}</div>
@@ -102,13 +97,10 @@
              @if ($logoutrecord && $logoutrecord->status == 'Logged out')
                   <div class="shadow rounded py-3 px-6 mt-1 bg-red-100">
                      <div class="text-center">
-
-                            <div class="text-md leading-6  text-red-900">Time out</div>
-                            <div class="order-first text-2xl text-red-900 font-semibold tracking-tight ">
-                                <div class="text-md leading-6  text-red-900">Time out</div>
+                        
+                                <div class="text-md leading-6 text-red-900">Time out</div>
                                 <div class="order-first text-2xl text-red-900 font-semibold tracking-tight ">
                                     {{$logoutrecord->updated_at->timezone('Asia/Manila')->format('h:i:s A - l') }}</div>
-                            </div>
                         </div>
                     </div>
                         @endif
@@ -139,10 +131,10 @@
 
 
 
-    <x-dialog />
+    {{-- <x-dialog /> --}}
 
 
-    <x-modal.card align="center" blur wire:model.defer="hasError">
+    <x-modal.card align="center" blur wire:model="hasError">
 
 
 
