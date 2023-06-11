@@ -104,9 +104,9 @@ class StudentResource extends Resource
                                     // '5th Year' => '5th Year',
                                 ])->required()->columnSpan(4)->default('1st Year'),
 
-                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->required(),
-                                FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id')->required(),
-                                FileUpload::make('two_by_two')->label('2x2 Picture')->columnSpan(12)->disk('public')->directory('users-two_by_two')->required(),
+                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile'),
+                                FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id'),
+                                FileUpload::make('two_by_two')->label('2x2 Picture')->columnSpan(12)->disk('public')->directory('users-two_by_two'),
                             ]),
 
                     ]),

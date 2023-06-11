@@ -29,16 +29,17 @@ class Reports extends Page implements Tables\Contracts\HasTable
     protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
 
     protected static string $view = 'filament.pages.reports';
-    
+
 
     public $report_type = 'all';
-    public $day;
-    public $selectId;
-    public $logins =[];
+    public $logins = [];
+    public $daySelected;
+    public $courseSelected;
+    public $yearSelected;
 
 
-
-    public function print(){
+    public function print()
+    {
         $this->dispatchBrowserEvent('printTable', ['newName' => 'dasd']);
     }
 
@@ -74,46 +75,107 @@ class Reports extends Page implements Tables\Contracts\HasTable
         return [
 
 
-            Grid::make(12,)
+            Grid::make(6)
                 ->schema([
                     // Select::make('report_type')->options([
                     //     'all' => 'All',
                     //     'By Course' => 'By Course',
                     // ])->columnSpan(3)->default('draft')->searchable()->label('Type')->reactive(),
-                    // Select::make('selectId')->options(DayRecord::pluck('created_at', 'id')->map(function ($date){
-                       
+                    // Select::make('daySelected')->options(DayRecord::pluck('created_at', 'id')->map(function ($date){
+
                     //         return $date->format('l - d , F Y ');
                     // }))->columnSpan(6)->default(1)->searchable()->label('Date')->reactive()->afterStateUpdated(function (Closure  $set, $state) {
-                        
+
                     //     $data = DayLogin::where('day_record_id', $state)->get();
 
                     //     $this->logins = $data;
-                                
-                        
+
+
                     // })->disablePlaceholderSelection(),
 
-                    Select::make('selectId')
-                    ->options(DayRecord::orderBy('created_at', 'desc')->pluck('created_at', 'id')->map(function ($date) {
-                        return $date->format('l - d , F Y ');
-                    }))
-                    ->columnSpan(3)
-                    ->default(1) // Set the default value to 1
-                    ->searchable()
-                    ->label('Select Date')
-                    ->reactive()
-                    ->afterStateUpdated(function (Closure $set, $state) {
+                    Select::make('daySelected')
+                        ->options(DayRecord::orderBy('created_at', 'desc')->pluck('created_at', 'id')->map(function ($date) {
+                            return $date->format('l - d , F Y ');
+                        }))
+                        ->columnSpan(2)
+                        ->default(1) // Set the default value to 1
+                        ->searchable()
+                        ->label('Select Date')
+                        ->reactive()
+                        ->afterStateUpdated(function (Closure $set, $state) {
+
+
+                            $data = DayLogin::orderBy('created_at', 'desc')->where('day_record_id', $state)->whereHas('logout', function($query){
+                                $query->whereIn('status', ['Logged out','Did Not Logout']);
+                            })->get();
+                            $this->logins = $data;
+                        })
+                        ->disablePlaceholderSelection(),
+
+                    Select::make('courseSelected')->options(Course::query()->pluck('name', 'id')->toArray())->searchable()->columnSpan(2)->label('Select  Course')->reactive()->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+                        
+                        if(!empty($get('daySelected'))){
+
+                          
+                            $data = DayLogin::whereHas('student.course',  function($query) use ($state){
+                                $query->where('id', $state);
+                            })->whereHas('logout', function($query){
+                                $query->whereIn('status', ['Logged out','Did Not Logout']);
+                            })->get();
+                            
+                         
+                            $this->logins = $data;
+                        }
+                    
+                       
+                    }),
+                    Select::make('yearSelected')->options([
+                        '1st Year' => '1st Year',
+                        '2nd Yea' => '2nd Year',
+                        '3rd Year' => '3rd Year',
+                        '4th Year' => '4th Year',
+                        // '5th Year' => '5th Year',
+                    ])->searchable()->columnSpan(2)->label('Select  Course')->reactive()->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+
+                      
+                        
+                        if(!empty($get('daySelected'))){
+
+
+                            // if has selected course
+
+                            if(!empty($get('courseSelected'))){
+                               
+                                $data = DayLogin::whereHas('logout', function($query){
+                                    $query->whereIn('status', ['Logged out','Did Not Logout']);
+                                })->whereHas('student.course',  function($query) use ($get){
+                                    $query->where('id', $get('courseSelected'));
+                                })->whereHas('student', function($query) use ($state){
+                                    $query->where('year', $state);
+                                })->get();
+                                
+                             
+                                $this->logins = $data;
+                            }
+
+                            
+                            $data  =  $data = DayLogin::whereHas('logout', function($query){
+                                $query->whereIn('status', ['Logged out','Did Not Logout']);
+                            })->whereHas('student', function($query) use ($state){
+                                $query->where('year', $state);
+                            })->get();
+
+                            $this->logins = $data;
+                        
+                           
+                        }
 
                         
-                        $data = DayLogin::orderBy('created_at', 'desc')->where('day_record_id', $state)->get();
-                        $this->logins = $data;
-                    })
-                    ->disablePlaceholderSelection(),
-
                     
-                    
-                
+                       
+                    }),
 
-                 
+
                 ]),
 
         ];
