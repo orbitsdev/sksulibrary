@@ -96,7 +96,7 @@ class AttendanceForm extends Component
                             }
 
                         }else{
-                          
+                            $this->todayRecord   = DayRecord::create();
                             $this->createDayLoginRecordWithLogout();
                            
                         }
@@ -162,7 +162,7 @@ class AttendanceForm extends Component
     }
 
     public function createDayLoginRecordWithLogout() {
-        $newLoginRecord = $this->todayRecord->daylogins()->create([  'student_id' => $this->student->id, ]);
+        $newLoginRecord = $this->todayRecord->daylogins()->create([ 'student_id' => $this->student->id, ]);
         $newLogoutRecord = $newLoginRecord->logout()->create(['status'=> 'Not Logout']);
         $this->student = Student::find($this->barcode);
         $this->isSuccess = true;

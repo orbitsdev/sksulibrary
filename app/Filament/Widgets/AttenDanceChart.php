@@ -21,18 +21,10 @@ class AttenDanceChart extends BarChartWidget
             'datasets' => [
                 [
                     'label' => 'Student Who Go In Library Per Day',
-                    'data' =>  DayRecord::query()
-                    ->withCount('daylogins')
-                    ->get()
-                    ->pluck('logins_count')
-                    ->toArray(),
+                    'data' => DayRecord::withCount('daylogins')->get()->pluck('daylogins_count')->toArray(),
                 ],
             ],
-            'labels' =>  DayRecord::query()
-            ->pluck('created_at')
-            ->map(function ($date) {
-                return Carbon::parse($date)->format(' F j');
-            }),
+            'labels' =>  DayRecord::query() ->pluck('created_at')->map(function ($date) { return Carbon::parse($date)->format(' F j');}),
             // 'datasets' => [
             //     [
             //         'label' => 'Student Who Go In Library',

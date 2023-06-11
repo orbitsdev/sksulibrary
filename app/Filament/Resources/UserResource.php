@@ -58,6 +58,15 @@ class UserResource extends Resource
     //     return static::getModel()::count();
     // }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereNotIn('email', ['admin@gmail.com']);
+    }
+
+    // protected function getTableQuery(): Builder 
+    // {
+    //     return User::query()->where('email', '!=', 'admin@gmail.com');
+    // } 
 
     public static function form(Form $form): Form
     {

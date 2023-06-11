@@ -37,14 +37,7 @@ Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
     return $builder
         ->groups([
            
-            NavigationGroup::make()
-                ->items([
-                    NavigationItem::make('Reports')
-                    ->icon('heroicon-o-document')
-                    ->activeIcon('heroicon-s-home')
-                    ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
-                    ->url(route('filament.pages.reports')),
-                ]),
+          
             NavigationGroup::make()
                 ->items([
                     NavigationItem::make('Dashboard')
@@ -63,6 +56,14 @@ Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
                     ...CampusResource::getNavigationItems(),
                     ...CourseResource::getNavigationItems(),
                     ...StudentResource::getNavigationItems(),
+                ]),
+            NavigationGroup::make('Documents')
+                ->items([
+                    NavigationItem::make('Reports')
+                    ->icon('heroicon-o-document-text')
+                    ->activeIcon('heroicon-s-document-text')
+                    ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
+                    ->url(route('filament.pages.reports')),
                 ]),
         ]);
 });
