@@ -38,7 +38,11 @@
     <div class="text-center " style="padding: 0px  20px ">
       <p>Republic of The Philippines</p>
       <p class="uppercase">Sultan Kudarat State University</p>
-      <p class="mt-20 font-semibold" style="padding-top: 20px">  2021 </p>
+      <p class="uppercase">{{$selectedPeriod}}</p>
+     
+      @if ($dayData)
+      <p class="mt-20 " style="padding-top: 20px">  {{$dayData->created_at->format('F d, Y')}}   </p>
+      @endif
     </div>
     <div class="ml-10">
       <img src="{{ asset('images/sksulogo2.png') }}" alt="" style="width: 60px; height: 60px">
@@ -49,32 +53,32 @@
     @if (count($logins) > 0)
     <thead>
       <tr>
-        <th scope="col" class="py-2 pr-3 text-left text-sm font-semibold sm:pl-6  " style="padding-left: 16px;">Name</th>
-        <th scope="col" class="py-2 pr-3 text-left text-sm font-semibold sm:pl-6  " style="padding-left: 16px;">ID Number</th>
-        <th scope="col" class="px-3 py-2 text-left text-sm font-semibold" style="padding-left: 16px;">Course</th>
-        <th scope="col" class="px-3 py-2 text-center text-sm font-semibold">Year</th>
-        <th scope="col" class="px-3 py-2 text-center text-sm font-semibold">Time In</th>
-        <th scope="col" class="px-3 py-2 text-center text-sm font-semibold">Time Out</th>
-        <th scope="col" class="px-3 py-2 text-center text-sm font-semibold">Time Spend</th>
-        {{-- <th scope="col" class="px-3 py-2 text-center text-sm font-semibold">Status </th> --}}
+        <th scope="col" class="py-2 pr-3 text-left text-xs font-semibold sm:pl-6  " style="padding-left: 16px;">Name</th>
+        {{-- <th scope="col" class="py-2 pr-3 text-left text-xs font-semibold sm:pl-6  " style="padding-left: 16px;">ID Number</th> --}}
+        <th scope="col" class="px-3 py-2 text-left text-xs font-semibold" style="padding-left: 16px;">Course</th>
+        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Year</th>
+        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time In</th>
+        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time Out</th>
+        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time Spend</th>
+        {{-- <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Status </th> --}}
       </tr>
     </thead>
     @endif
     <tbody class="divide-y divide-gray-200">
       @forelse ($logins as $item)
       <tr>
-        <td class="whitespace-normal py-2 pr-3 text-left text-sm font-medium  "  style="padding-left: 16px;">{{ $item->student->first_name }} {{ $item->student->last_name }}</td>
-        <td class="whitespace-normal py-2 pr-3 text-left text-sm font-medium  "  style="padding-left: 16px;">{{ $item->student->id_number }}</td>
-        <td class="whitespace-normal px-3 py-2 text-left text-sm" style="padding-left: 16px;">{{ $item->student->course->name }}</td>
-        <td class="whitespace-normal px-3 py-2 text-center text-sm">{{ $item->student->year }}</td>
-        <td class="whitespace-normal px-3 py-2 text-center text-sm">{{ $item->created_at->format('g:i A') }}</td>
+        <td class="whitespace-normal py-2 pr-3 text-left text-xs font-medium  "  style="padding-left: 16px;">{{ $item->student->first_name }} {{ $item->student->last_name }}</td>
+        {{-- <td class="whitespace-normal py-2 pr-3 text-left text-xs font-medium  "  style="padding-left: 16px;">{{ $item->student->id_number }}</td> --}}
+        <td class="whitespace-normal px-3 py-2 text-left text-xs" style="padding-left: 16px;">{{ $item->student->course->name }}</td>
+        <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->student->year }}</td>
+        <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->created_at->format('g:i A l') }}</td>
         @if($item->logout->status == 'Did Not Logout')
-        <td class="whitespace-normal px-3 py-2 text-center  font-semibold italic text-sm important"  style="color: #DC2626"> Did not log out </td>
-        <td class="whitespace-normal px-3 py-2 text-center  font-semibold italic text-sm important"  style="color: #DC2626"> Cannot determine</td>
+        <td class="whitespace-normal px-3 py-2 text-center   text-xs important"  style="color: #DC2626"> -  </td>
+        <td class="whitespace-normal px-3 py-2 text-center   text-xs important"  style="color: #DC2626"> - </td>
         @else
         
-        <td class="whitespace-normal px-3 py-2 text-center text-sm">{{ $item->logout->updated_at->format('g:i A') }}</td>
-        <td class="whitespace-normal px-3 py-2 text-center text-sm">
+        <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->logout->updated_at->format('g:i A') }}</td>
+        <td class="whitespace-normal px-3 py-2 text-center text-xs">
 
           {{
             \Carbon\CarbonInterval::seconds($item->logout->updated_at->diffInSeconds($item->created_at))->cascade()->forHumans(['parts' => 2, 'join' => true])
