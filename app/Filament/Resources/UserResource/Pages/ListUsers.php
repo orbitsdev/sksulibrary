@@ -45,8 +45,8 @@ class ListUsers extends ListRecords
                 // return Excel::download(new UserExport, 'invoices.xlsx');
                 return Excel::download(new UsersExport, 'users3.xlsx');
 
-            })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export User')
-            ->modalSubheading('Are you sure you\'d like to export users')
+            })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
+            ->modalSubheading('Are you sure you\'d like to export excel?')
             ->modalButton('Yes'),
             Actions\CreateAction::make(),
         ];

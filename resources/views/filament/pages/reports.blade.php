@@ -30,7 +30,7 @@
   <x-button rose spinner="print" wire:click="print" style="background: #03A340">Print</x-button>
 </div>
 
-<div class="print-container bg-white w-full">
+<div class="print-container bg-white w-full ">
   <div class="flex justify-center p-6">
     <div class="mr-10">
       <img src="{{ asset('images/logo.png') }}" alt="" style="width: 60px; height: 60px">

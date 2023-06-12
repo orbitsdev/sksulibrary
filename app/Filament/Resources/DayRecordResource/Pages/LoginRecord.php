@@ -2,14 +2,18 @@
 
 namespace App\Filament\Resources\DayRecordResource\Pages;
 
+use Filament\Tables;
+use App\Models\Student;
+use App\Models\DayLogin;
 use App\Models\DayRecord;
 use Filament\Resources\Pages\Page;
-use App\Filament\Resources\DayRecordResource;
-use App\Models\DayLogin;
-use App\Models\Student;
-use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\DayRecordResource;
+use App\Filament\Resources\StudentResource;
+
 class LoginRecord extends Page implements Tables\Contracts\HasTable
 {
 
@@ -35,7 +39,32 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
       $this->dayData = DayRecord::find($id);
     
     }
+    protected function getTableQuery(): Builder 
+    {
+        return DayLogin::query()->where('day_record_id' , $this->dayRecord);
+    } 
 
+    protected function getTableActions(): array
+
+    {
+
+        return [
+          Tables\Actions\ActionGroup::make([
+
+            Tables\Actions\Action::make('View')->button()->url(fn ($record): string =>  StudentResource::getUrl('details', $record->student_id)),
+            // ViewAction::make('View Details')
+            // ->button()
+            // ->icon('heroicon-o-user')
+            // ->label('View Profile')
+            // ->action(fn ($record) =>$record)
+            // ->modalHeading('Student Details')
+            // ->modalContent(fn($record)=>  view('components.student-view', ['record'=> $record])),
+            
+            
+        ]),
+        ];
+
+    }
     protected function getTableColumns(): array 
 
     {
@@ -52,9 +81,6 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
         ];
 
     }
-    protected function getTableQuery(): Builder 
-    {
-        return DayLogin::query()->where('day_record_id' , $this->dayRecord);
-    } 
+   
 
 }   

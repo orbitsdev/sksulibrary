@@ -34,7 +34,9 @@ class ManageCampuses extends ManageRecords
 
             Actions\Action::make('Export')->button()->action(function(){        
                 return Excel::download(new CampusExport, 'campuses.xlsx');
-            })->icon('heroicon-o-document-download'),
+            })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
+            ->modalSubheading('Are you sure you\'d like to export excel?')
+            ->modalButton('Yes'),
             Actions\CreateAction::make(),
         ];
     }

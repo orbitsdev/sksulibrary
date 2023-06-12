@@ -231,6 +231,7 @@ class StudentResource extends Resource
     {
         return [
             'reports' => Pages\Reports::route('/reports'),
+            'details' => Pages\StudentDetails::route('/student/details/{id}'),
             'index' => Pages\ListStudents::route('/index'),
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),

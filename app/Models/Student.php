@@ -17,6 +17,11 @@ class Student extends Model
     protected $guarded = [];
 
 
+    public function print()
+    {
+        $this->dispatchBrowserEvent('printTable', ['newName' => 'dasd']);
+    }
+
 
     public function logins(){
         return $this->hasMany(DayLogin::class, 'student_id');
