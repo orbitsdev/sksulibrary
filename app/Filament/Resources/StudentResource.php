@@ -192,6 +192,12 @@ class StudentResource extends Resource
                     ->action(fn ($record) =>$record)
                     ->modalHeading('Student Details')
                     ->modalContent(fn($record)=>  view('components.student-view', ['record'=> $record])),
+
+                    Tables\Actions\Action::make('View Details')
+                    ->button()
+                    ->icon('heroicon-o-user')
+                    ->label('View Profile')->url(fn ($record): string =>  StudentResource::getUrl('details', $record->id)),
+
                     Tables\Actions\EditAction::make()->button(),
                     Tables\Actions\DeleteAction::make()->button()->before(function( $action, $record){
                 
