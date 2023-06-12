@@ -20,6 +20,9 @@ class CampusResource extends Resource
     protected static ?string $model = Campus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-library';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-library';
+
+    
 
     // protected static function getNavigationBadge(): ?string
     // {

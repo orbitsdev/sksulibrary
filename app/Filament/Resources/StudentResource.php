@@ -35,9 +35,16 @@ use App\Filament\Resources\StudentResource\RelationManagers;
 
 class StudentResource extends Resource
 {
+
+    public static function getGloballySearchableAttributes(): array
+{
+    return ['first_name', 'last_name', 'id_number', ];
+}
     protected static ?string $model = Student::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-user-group';
+
 
     protected static ?int $navigationSort = 3;
 
@@ -45,6 +52,12 @@ class StudentResource extends Resource
     // {
     //     return static::getModel()::count();
     // }
+
+    
+    public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()->orderBy('created_at', 'desc');
+}
 
     public static function form(Form $form): Form
     {
@@ -98,7 +111,7 @@ class StudentResource extends Resource
                                 Select::make('course_id')->label('Course') ->options(Course::all()->pluck('name', 'id'))->searchable()->columnSpan(4),
                                 Select::make('year')->label('Current Year')->options([
                                     '1st Year' => '1st Year',
-                                    '2nd Yea' => '2nd Year',
+                                    '2nd Year' => '2nd Year',
                                     '3rd Year' => '3rd Year',
                                     '4th Year' => '4th Year',
                                     // '5th Year' => '5th Year',
@@ -119,33 +132,32 @@ class StudentResource extends Resource
             ->columns([
 
               
-                TextColumn::make('id'),
+                // TextColumn::make('id'),
                 TextColumn::make('id_number')->label('ID Number')->searchable(),
-              
                 TextColumn::make('first_name')->searchable(),
                 TextColumn::make('middle_name')->searchable(),
                 TextColumn::make('last_name')->searchable(),
                 TextColumn::make('last_name')->searchable(),
-                TextColumn::make('sex'),
-                TextColumn::make('contact_number')->label('Phone number')->searchable(),
-                TextColumn::make('street_address')->label('Street')->searchable(),
-                TextColumn::make('city')->searchable(),
-                TextColumn::make('country')->searchable(),
-                TextColumn::make('state')->searchable(),
-                TextColumn::make('postal_code')->searchable(),
-                TextColumn::make('campus.name')->searchable(),
                 TextColumn::make('course.name')->searchable(),
-              
-                TextColumn::make('barcode')->searchable(),
-                TextColumn::make('status')->searchable(),
                 TextColumn::make('year')->searchable(),
-                TextColumn::make('profile')->searchable(),
-                ImageColumn::make('profile')->label('Profile Picture')->circular()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->profile))
-                ->openUrlInNewTab(),
-                ImageColumn::make('school_id')->label('School Id Picture')->square()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->school_id))
-                ->openUrlInNewTab(),
-                ImageColumn::make('two_by_two')->label('2x2 Picture')->square()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->two_by_two))
-                ->openUrlInNewTab(),
+                // TextColumn::make('contact_number')->label('Phone number')->searchable(),
+                // TextColumn::make('barcode')->searchable(),
+                // TextColumn::make('sex'),
+                // TextColumn::make('street_address')->label('Street')->searchable(),
+                // TextColumn::make('city')->searchable(),
+                // TextColumn::make('country')->searchable(),
+                // TextColumn::make('state')->searchable(),
+                // TextColumn::make('postal_code')->searchable(),
+                // TextColumn::make('campus.name')->searchable(),
+              
+                // TextColumn::make('status')->searchable(),
+                // TextColumn::make('profile')->searchable(),
+                // ImageColumn::make('profile')->label('Profile Picture')->circular()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->profile))
+                // ->openUrlInNewTab(),
+                // ImageColumn::make('school_id')->label('School Id Picture')->square()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->school_id))
+                // ->openUrlInNewTab(),
+                // ImageColumn::make('two_by_two')->label('2x2 Picture')->square()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->two_by_two))
+                // ->openUrlInNewTab(),
 
             ])
             ->filters([
@@ -165,7 +177,7 @@ class StudentResource extends Resource
                 //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                 //         );
                 // }),
-                SelectFilter::make('Campus')->relationship('campus', 'name'),
+                // SelectFilter::make('Campus')->relationship('campus', 'name'),
                  SelectFilter::make('course_id')->label('Course')
                 ->options(Course::all()->pluck('name', 'id'))->searchable()->multiple(),
                 

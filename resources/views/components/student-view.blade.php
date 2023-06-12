@@ -46,13 +46,13 @@
         <div class="" >
 
             <x-list-tile :title="'ID NO'" :body="$record->id_number ?? ''"/>
-            <x-list-tile :title="'Barcode'" :body="$record->barcode ?? '' "/>
             <x-list-tile :title="'Name'" :body="$record->first_name.' '.$record->last_name "/>
-            <x-list-tile :title="'Campus '" :body="$record->campus->name ?? ''"/>
-            <x-list-tile :title="'Course '" :body="$record->course->name ?? ''"/>
-            <x-list-tile :title="'Year '" :body="$record->year ?? ''"/>
+            <x-list-tile :title="'Barcode'" :body="$record->barcode ?? '' "/>
+             <x-list-tile :title="'Course '" :body="$record->course->name ?? ''"/>
+             <x-list-tile :title="'Year '" :body="$record->year ?? ''"/>
             <x-list-tile :title="'Sex'" :body="$record->sex ?? ''"/>
             <x-list-tile :title="'Phone number'" :body="$record->contact_number??''"/>
+            <x-list-tile :title="'Campus '" :body="$record->campus->name ?? ''"/>
             <x-list-tile :title="'Street'" :body="$record->street_address ?? ''"/>
             <x-list-tile :title="'City'" :body="$record->city ?? ''"/>
             <x-list-tile :title="'Country'" :body="$record->country ?? ''"/>

@@ -15,13 +15,22 @@ class LibiraryRecordOverView extends BaseWidget
 
     protected int | string | array $columnSpan = 'full';
     protected static ?string $pollingInterval = '400ms';
+
+    
+    // public function setStatusFilter(){
+    //     dd('dasd');
+    // }
     protected function getCards(): array
     {
         return [
-            Card::make('System Accounts', User::query()->count()),
-            Card::make('Students', Student::query()->count()),
-            Card::make('Campuses', Campus::query()->count()),
-            Card::make('Courses', Course::query()->count()),
+            Card::make('System Accounts', User::query()->count())
+            ->extraAttributes([
+                'class' => 'cursor-pointer',
+                'wire:click' => '$emitUp("setStatusFilter", "processed")',
+            ]),
+            Card::make('Total Students', Student::query()->count()),
+            Card::make('Total Campuses', Campus::query()->count()),
+            Card::make('Total Courses', Course::query()->count()), 
             // Card::make('Daylogin', DayLogin::query()->latest()->count()),
         ];
     }

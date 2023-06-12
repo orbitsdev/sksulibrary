@@ -91,7 +91,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
 
                     Select::make('daySelected')
                         ->options(DayRecord::orderBy('created_at', 'desc')->pluck('created_at', 'id')->map(function ($date) {
-                            return $date->format('l - d , F Y ');
+                            return $date->format('F d,  Y - l ');
                         }))
                         ->columnSpan(2)
                         ->default(1) // Set the default value to 1
@@ -151,7 +151,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                     Select::make('yearSelected')->options([
                         'all' => 'All',
                         '1st Year' => '1st Year',
-                        '2nd Yea' => '2nd Year',
+                        '2nd Year' => '2nd Year',
                         '3rd Year' => '3rd Year',
                         '4th Year' => '4th Year',
                         // '5th Year' => '5th Year',

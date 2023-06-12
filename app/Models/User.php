@@ -43,7 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
 
      public function getFilamentName(): string
      {
-         return "{$this->first_name} {$this->last_name}";
+         return "{$this->email}";
      }
 
     protected $fillable = [

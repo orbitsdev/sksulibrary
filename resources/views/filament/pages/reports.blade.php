@@ -26,8 +26,8 @@
 <div class="b"></div>
 {{ $this->form }}
 
-<div class="p-10 flex justify-end w-full b">
-  <x-button rose spinner="print" wire:click="print" style="background: #006516">Print</x-button>
+<div class=" flex justify-end w-full b  ">
+  <x-button rose spinner="print" wire:click="print" style="background: #03A340">Print</x-button>
 </div>
 
 <div class="print-container bg-white w-full">
@@ -38,10 +38,10 @@
     <div class="text-center " style="padding: 0px  20px ">
       <p>Republic of The Philippines</p>
       <p class="uppercase">Sultan Kudarat State University</p>
-      <p class="uppercase">{{$selectedPeriod}}</p>
+     
      
       @if ($dayData)
-      <p class="mt-20 " style="padding-top: 20px">  {{$dayData->created_at->format('F d, Y')}}   </p>
+      <p class="mt-20 " style="padding-top: 20px">  {{$dayData->created_at->format('F d, Y - l ')}}   </p>
       @endif
     </div>
     <div class="ml-10">
@@ -73,8 +73,8 @@
         <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->student->year }}</td>
         <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->created_at->format('g:i A l') }}</td>
         @if($item->logout->status == 'Did Not Logout')
-        <td class="whitespace-normal px-3 py-2 text-center   text-xs important"  style="color: #DC2626"> -  </td>
-        <td class="whitespace-normal px-3 py-2 text-center   text-xs important"  style="color: #DC2626"> - </td>
+        <td class="whitespace-normal px-3 py-2 text-center   text-xs important"  style="color: #DC2626"> No Logout  </td>
+        <td class="whitespace-normal px-3 py-2 text-center    text-xs important"  style="color: #DC2626">  -</td>
         @else
         
         <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->logout->updated_at->format('g:i A') }}</td>

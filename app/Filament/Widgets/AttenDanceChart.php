@@ -8,7 +8,7 @@ use Filament\Widgets\BarChartWidget;
 
 class AttenDanceChart extends BarChartWidget
 {
-    protected static ?string $heading = 'Month Record';
+    protected static ?string $heading = 'Login Per Day';
 
     protected static ?int $sort = 3;
 

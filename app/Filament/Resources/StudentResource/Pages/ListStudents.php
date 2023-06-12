@@ -47,8 +47,8 @@ class ListStudents extends ListRecords
         ];
     }
 
-    protected function getTableActionsPosition(): ?string
-    {
-        return Position::BeforeCells;
-    }
+    // protected function getTableActionsPosition(): ?string
+    // {
+    //     return Position::BeforeCells;
+    // }
 }

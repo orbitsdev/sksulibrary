@@ -22,6 +22,8 @@ class CourseResource extends Resource
     protected static ?int $navigationSort = 2;
     
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-academic-cap';
+
 
 
      
@@ -50,8 +52,8 @@ class CourseResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->button(),
+                Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

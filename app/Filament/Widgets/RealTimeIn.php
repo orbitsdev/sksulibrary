@@ -5,26 +5,21 @@ namespace App\Filament\Widgets;
 use Closure;
 use Filament\Tables;
 use App\Models\DayLogin;
-use App\Models\DayRecord;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Contracts\Pagination\Paginator;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Contracts\Pagination\Paginator;
 
 
-
-class TodayRecord extends BaseWidget
+class RealTimeIn extends BaseWidget
 {
-
     protected int | string | array $columnSpan = '2';
 
-
-
-   
-
     protected static ?int $sort = 1;
-
-
     
+    protected function getTableRecordsPerPageSelectOptions(): array 
+    {
+        return [5];
+    } 
     protected function getTablePollingInterval(): ?string
 {
     return '1s';
@@ -51,16 +46,13 @@ class TodayRecord extends BaseWidget
     {
         return [
          
-            Tables\Columns\TextColumn::make('updated_at')->label('Time in') ->formatStateUsing(function ($record){ 
-                return $record->updated_at->diffForHumans();
             
-            }),
-
-            Tables\Columns\TextColumn::make('student.first_name')->label('Student Name') ->formatStateUsing(function ($record){ 
-                return strtoupper( $record->student->first_name . ' ' . $record->student->last_name);
-            }),
-            Tables\Columns\TextColumn::make('student.year')->label('Year '),
-            Tables\Columns\TextColumn::make('student.course.name')->label('Course'),
+            Tables\Columns\TextColumn::make('student.first_name')->label('Name')->formatStateUsing(function ($record){ 
+                return $record->student->first_name . ' ' . $record->student->last_name;
+            })->searchable(),
+            // Tables\Columns\TextColumn::make('student.course.name')->label('Course'),
+            Tables\Columns\TextColumn::make('student.year')->label('Year'),
+            Tables\Columns\TextColumn::make('updated_at')->label('TIme In') ->since(),
             
             
         ];
