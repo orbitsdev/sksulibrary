@@ -10,12 +10,12 @@
         visibility: hidden;
       }
   
-      .print-container,
-      .print-container * {
+      .printblecontianer,
+      .printblecontianer * {
         visibility: visible;
       }
   
-      .print-container {
+      .printblecontianer {
         position: absolute;
         top: 0;
         left: 50%;
@@ -25,168 +25,225 @@
   </style>
 
 <div class=" flex justify-end w-full b  ">
-  <x-button rose spinner="print" wire:click="print" style="background: #03A340">Print</x-button>
+  <x-button rose spinner="printDetails" wire:click="printDetails" style="background: #03A340">Print</x-button>
 </div>
-    <main class="print-container  p-10 bg-white" style="padding: 20px 10px ">
 
-        <div class="flex justify-center p-6">
-            <div class="mr-10">
-              <img src="{{ asset('images/logo.png') }}" alt="" style="width: 60px; height: 60px">
-            </div>
-            <div class="text-center " style="padding: 0px 20px 0px 20px  ">
-              <p>Republic of The Philippines</p>
-              <p class="uppercase">Sultan Kudarat State University</p>
+<div class="printblecontianer bg-white w-full">
+  <div class="flex justify-center p-6">
+    <div class="mr-10">
+      <img src="{{ asset('images/logo.png') }}" alt="" style="width: 60px; height: 60px">
+    </div>
+    <div class="text-center " style="padding: 0px  20px ">
+      <p>Republic of The Philippines</p>
+      <p class="uppercase">Sultan Kudarat State University</p>
+     
+  
+    </div>
+    <div class="ml-10">
+      <img src="{{ asset('images/sksulogo2.png') }}" alt="" style="width: 60px; height: 60px">
+    </div>
+  </div>
+
+  <div>
+    
+ 
+    
+    
+   
+    
+    
+    
+    {{-- @if($student->profile)
+    {{$student->profile}}
+    @endif
+    @if($student->school_id)
+    {{$student->school_id}}
+    @endif
+    @if($student->two_by_two)
+    {{$student->two_by_two}}
+    @endif --}}
+
+  </div>
+  
+
+  <div>
+    <div class="bg-white mt-6">
+      <div class="mx-auto max-w-3xl px-4 ">
+        <div class="w-full text-center">
+          <p class="mt-2 text-2xl font-simibold tracking-tight ">{{$student->last_name}}, {{$student->first_name}} {{$student->middle_name}}</p>
+          <p class="mt-1 text-base  "> @if($student->course)
+            {{$student->course->name}}
+            @endif </p>
+    
+          {{-- <div class="mt-8  ">
+            <div class="uppercase">ID NO.</div>
+            <div class=" font-semibold italic"> </div>
+          </div> --}}
+        </div>
+    
+        <div class="mt-6 border-t border-gray-200">
+     
+          <div class="flex space-x-6 border-b border-gray-200 py-10">
+            <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+            <div class="flex flex-auto flex-col">
+              <div>
+                <p class="font-medium text-gray-900">
+                  ID NO
+                </p>
+                <p class=" text-sm text-gray-600">
+                  {{$student->id_number}}
+                </p>
+              </div>
+              {{-- <div>
+                <p class="font-medium text-gray-900">
+                  Bar Code
+                </p>
+                <p class=" text-sm text-gray-600">
+                  {{$student->barcode}}
+                </p>
+              </div> --}}
+              <div class="mt-2">
+                <p class="font-medium text-gray-900">
+                  Year
+                </p>
+                <p class=" text-sm text-gray-600">
+                  {{$student->year}}
+                </p>
+              </div>
+              <div class="mt-2">
+                <p class="font-medium text-gray-900">
+                  Campus
+                </p>
+                <p class=" text-sm text-gray-600">
+              @if($student->campus)
+              {{$student->campus->name}}
+              @endif
+                </p>
+              </div>
              
-             
-            
-            </div>
-            <div class="ml-10">
-              <img src="{{ asset('images/sksulogo2.png') }}" alt="" style="width: 60px; height: 60px">
             </div>
           </div>
-        <div class="mx-auto max-w-3xl">
-          {{-- <div class="max-w-xl">
-            <h1 class="text-base font-medium text-indigo-600">Thank you!</h1>
-            <p class="mt-2 text-4xl font-bold tracking-tight">It's on the way!</p>
-            <p class="mt-2 text-base text-gray-500">Your order #14034056 has shipped and will be with you soon.</p>
-      
-            <dl class="mt-12 text-sm font-medium">
-              <dt class="text-gray-900">Tracking number</dt>
-              <dd class="mt-2 text-indigo-600">51547878755545848512</dd>
-            </dl>
-          </div> --}}
-      
-          <section aria-labelledby="order-heading" class=" border-t border-gray-200">
-            
-      
-            <h3 class="sr-only">Items</h3>
-            <div class="flex space-x-6 border-b border-gray-200 py-10">
-              <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="flex-none rounded-lg bg-gray-100 object-cover object-center mr-10 " style="width: 144px; height:144px">
-              <div class="flex flex-auto flex-col">
-                <div>
-
-                    <div class="flex items-center mt-1">
-                        <p class="w-16 border-r mr-4"> ID </p>
-                          <p class="italic font-semibold"> {{$student->id_number}}  
-                            
-                        </p>
-                    </div>
-                    {{-- <p class="text-gray-900 font-semibold"> ID:<span class="italic font-semibold "> {{$student->id_number }}</span></p> --}}
-                  
-                  <div class="flex items-center mt-1">
-                    <p class="w-16 border-r mr-4"> Name  </p>
-                      <p class=""> {{$student->first_name}},  {{$student->last_name}} {{$student->middle_name}} 
-                        
-                    </p>
-                </div>
-                  <div class="flex items-center mt-1">
-                    <p class="w-16 border-r mr-4"> Course  </p>
-                      <p class=""> {{$student->course->name}} 
-                        
-                    </p>
-                </div>
-                  <div class="flex items-center mt-1">
-                    <p class="w-16 border-r mr-4"> Year  </p>
-                      <p class=""> {{$student->year}}
-                        
-                    </p>
-                </div>
-                 
-                  {{-- <p class="">Phone Number{{$student->contact_number }}</p> --}}
-                </div>
+    
+          <div class="sm:ml-40 sm:pl-6">
+         
+    
+            <dl class="grid grid-cols-2 gap-x-6 py-10 ">
              
-              </div>
-            </div>
-      
-            <div class="">
-        
-            <p  class="mt-4">  </p>
-              <dl class="grid grid-cols-2 gap-x-4 py-8 ">
-                <div>
-                  <dt class="font-medium text-gray-900">Address</dt>
-                  <dd class="mt-2 text-gray-700">
-                    <address class="not-italic">
-                      <span class="block">{{$student->country}}</span>
-                      <span class="block">{{$student->street_address}}</span>
-                      <span class="block">{{$student->postal_code}}</span>
-                     
-                    </address>
-                  </dd>
-                </div>
-                <div>
-                  <dt class="font-medium text-gray-900">University</dt>
-                  <dd class="mt-2 text-gray-700">
-                    <address class="not-italic">
-                      <span class="block">{{$student->campus->name}}</span>
-                      <span class="block">{{$student->course->name}}</span>
-                      <span class="block">{{$student->barcode}}</span>
-                    </address>
-                  </dd>
-                </div>
-              </dl>
-      
-              <dl class="grid grid-cols-3 gap-x-6 border-t border-gray-200 py-10 text-sm">
-                <div>
-                    <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="flex-none rounded-lg bg-gray-100 object-cover object-center mr-10 " style="width: 144px; height:144px">
-                    <p class="mt-1 text-gray-500  ml-2 text-sm">Id Picture</p>
-                </div>
-                <div>
-                    <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="flex-none rounded-lg bg-gray-100 object-cover object-center mr-10 " style="width: 144px; height:144px">
-                    <p class="mt-1 text-gray-500  ml-2 text-sm">2x2 Picture</p>
-                </div>
-                <div>
-                    <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="flex-none rounded-lg bg-gray-100 object-cover object-center mr-10 " style="width: 144px; height:144px">
-                    <p class="mt-1 text-gray-500  ml-2 text-sm">Profile <Picture></Picture></p>
-                </div>
+              <div>
                
-              </dl>
-      
-           
-      
-              <div class="space-y-6 border-t py-8 border-gray-200 pt-10 ">
-                <div class="flex justify-between">
-                  <div class="font-medium text-gray-900">Total Logins </div>
-                  <div class="text-gray-700">{{$student->logins()->count()}}   </div>
-                </div>
-                
-                    </div>
-      
-              <div class="space-y-6 border-t py-8 border-gray-200 pt-10 ">
-                <div class="flex justify-between">
-                  <div class="font-medium text-gray-900">Total Login </div>
-                  <div class="whitespace-normal px-3 py-2 text-center ">
-                    {{-- {{
-                        $student->logins->sum(function ($login) {
-                            return $login->logout->updated_at->diffInSeconds($login->created_at);
-                        })
-                    }} --}}
+                <div class=" text-gray-700">
+                  <div>
+                    <p class="font-medium text-gray-900">
+                      Contact Number
+                    </p>
+                    <p class=" text-sm text-gray-600">
+                      {{$student->contact_number}}
+                    </p>
+                  </div>
+                  <div class="mt-2">
+                    <p class="font-medium text-gray-900">
+                      Street
+                    </p>
+                    <p class=" text-sm text-gray-600">
+                      {{$student->street_address}}
+                    </p>
+                  </div>
+                  <div class="mt-2">
+                    <p class="font-medium text-gray-900">
+                      City
+                    </p>
+                    <p class=" text-sm text-gray-600">
+                      {{$student->city}}
+                    </p>
+                  </div>
+                  <div class="mt-2">
+                    <p class="font-medium text-gray-900">
+                      Zip Code
+                    </p>
+                    <p class=" text-sm text-gray-600">
+                      {{$student->postal_code}}
+                    </p>
+                  </div>
 
-{{-- 
-                    {{ \Carbon\CarbonInterval::seconds($student->logins->sum(function ($login) {
-                        return $login->logout->updated_at->diffInSeconds($login->created_at);
-                    }))->cascade()->forHumans(['parts' => 3]) }} --}}
-                    {{ \Carbon\CarbonInterval::seconds($student->logins->sum(function ($login) {
-                        return $login->logout->updated_at->diffInSeconds($login->created_at);
-                    }))->cascade()->forHumans(['parts' => 2]) }}
-                    
+                  
                 </div>
+              </div>
+              <div>
+                <div>
+                  <p class="font-medium text-gray-900">
+                  Sex
+                  </p>
+                  <p class=" text-sm text-gray-600">
+                    {{$student->sex}}
+                  </p>
+                </div>  
+                <div>
+                  <p class="font-medium text-gray-900">
+                  Status
+                  </p>
+                  <p class=" text-sm text-gray-600">
+                    {{$student->status}}
+                  </p>
+                </div>  
+              </div>
+            </dl>
+           
+           
             
+    
+            <dl class="space-y-6 border-t border-gray-200 py-10" >
+              <div class="flex justify-between">
+                <dt class="font-medium text-gray-900 capitalize">Total Record in library </dt>
+                <dd class="text-gray-600">{{$student->logins()->count()}}</dd>
+              </div>
+            
+              <div class="flex justify-between">
+                <dt class="flex font-medium text-gray-900">
+                  Total Time Spend in library
+                  {{-- <span class="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-600">
+                   
+                  </span> --}}
+                </dt>
+                <dd class="text-gray-600">  {{ \Carbon\CarbonInterval::seconds($student->logins->sum(function ($login) {
+                  return $login->logout->updated_at->diffInSeconds($login->created_at);
+              }))->cascade()->forHumans(['parts' => 2]) }}
+              
+              </dd>
+              </div>
+              
+            </dl>
+            <dl class="grid grid-cols-2 gap-x-6 py-10  border-t ">
+
+              <div class="flex justify-center flex-col items-center">
+
+                <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
                 
+                <p class="text-xs text-gray-600 mt-2 text-center"> School Id <Picture></Picture></p>
+
+              </div>
+              <div class="flex justify-center flex-col items-center" >
+
+                <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
                 
-                
-                
-                </div>
-                
-                    </div>
-            </div>
-          </section>
+                <p class="text-xs text-gray-600 mt-2 text-center"> 2x2 Picture</p>
+
+              </div>
+             
+
+            </dl>
+          </div>
         </div>
-      </main>
+      </div>
+    </div>
+    
+  </div>
+</div>
+  
 
 
       
 <script>
-    window.addEventListener('printTable', event => {
+    window.addEventListener('printStudentDetails', function(){
       window.print();
     });
   </script>

@@ -20,9 +20,9 @@ class StudentDetails extends Page
        
     }
 
-    public function print()
+    public function printDetails()
     {
-        $this->dispatchBrowserEvent('printTable', ['newName' => 'dasd']);
+        $this->dispatchBrowserEvent('printStudentDetails');
     }
 
 
