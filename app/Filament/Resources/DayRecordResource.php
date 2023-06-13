@@ -53,7 +53,7 @@ class DayRecordResource extends Resource
                     return $record->created_at->format('F d, Y ');
                     // return $record->created_at->format('F d, Y - l');
 
-                })->searchable(),
+                })->searchable()->color('warning'),
 
                 // TextColumn::make('created_at')->dateTime('F d, Y - l')->label('Date Recorded')->searchable(),
                 TextColumn::make('daylogins')->label('Records')->formatStateUsing(function ($record) {
