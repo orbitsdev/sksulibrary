@@ -67,9 +67,9 @@
   
 
   <div>
-    <div class="bg-white mt-6">
-      <div class="mx-auto max-w-3xl px-4 ">
-        <div class="w-full text-center">
+    <div class="bg-white mt-4">
+      <div class="mx-auto max-w-3xl  ">
+        <div class="w-full text-center ">
           <p class="mt-2 text-2xl font-simibold tracking-tight ">{{$student->last_name}}, {{$student->first_name}} {{$student->middle_name}}</p>
           <p class="mt-1 text-base  "> @if($student->course)
             {{$student->course->name}}
@@ -81,7 +81,7 @@
           </div> --}}
         </div>
     
-        <div class="mt-6 border-t border-gray-200">
+        <div class="mt-10 border-t border-gray-200">
      
           <div class="flex space-x-6 border-b border-gray-200 py-10">
             <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
