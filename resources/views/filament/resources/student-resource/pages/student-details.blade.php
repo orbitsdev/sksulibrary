@@ -28,7 +28,7 @@
   <x-button rose spinner="printDetails" wire:click="printDetails" style="background: #03A340">Print</x-button>
 </div>
 
-<div class="printblecontianer bg-white w-full">
+<div class="printblecontianer  dark:bg-transparent bg-white w-full">
   <div class="flex justify-center p-6">
     <div class="mr-10">
       <img src="{{ asset('images/logo.png') }}" alt="" style="width: 60px; height: 60px">
@@ -67,7 +67,7 @@
   
 
   <div>
-    <div class="bg-white mt-4">
+    <div class=" mt-4">
       <div class="mx-auto max-w-3xl  ">
         <div class="w-full text-center ">
           <p class="mt-2 text-2xl font-simibold tracking-tight ">{{$student->last_name}}, {{$student->first_name}} {{$student->middle_name}}</p>
@@ -87,34 +87,34 @@
             <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
             <div class="flex flex-auto flex-col">
               <div>
-                <p class="font-medium text-gray-900">
+                <p class="font-medium ">
                   ID NO
                 </p>
-                <p class=" text-sm text-gray-600">
+                <p class=" text-sm ">
                   {{$student->id_number}}
                 </p>
               </div>
               {{-- <div>
-                <p class="font-medium text-gray-900">
+                <p class="font-medium ">
                   Bar Code
                 </p>
-                <p class=" text-sm text-gray-600">
+                <p class=" text-sm ">
                   {{$student->barcode}}
                 </p>
               </div> --}}
               <div class="mt-2">
-                <p class="font-medium text-gray-900">
+                <p class="font-medium ">
                   Year
                 </p>
-                <p class=" text-sm text-gray-600">
+                <p class=" text-sm ">
                   {{$student->year}}
                 </p>
               </div>
               <div class="mt-2">
-                <p class="font-medium text-gray-900">
+                <p class="font-medium ">
                   Campus
                 </p>
-                <p class=" text-sm text-gray-600">
+                <p class=" text-sm ">
               @if($student->campus)
               {{$student->campus->name}}
               @endif
@@ -131,36 +131,36 @@
              
               <div>
                
-                <div class=" text-gray-700">
+                <div class=" ">
                   <div>
-                    <p class="font-medium text-gray-900">
+                    <p class="font-medium ">
                       Contact Number
                     </p>
-                    <p class=" text-sm text-gray-600">
+                    <p class=" text-sm ">
                       {{$student->contact_number}}
                     </p>
                   </div>
                   <div class="mt-2">
-                    <p class="font-medium text-gray-900">
+                    <p class="font-medium ">
                       Street
                     </p>
-                    <p class=" text-sm text-gray-600">
+                    <p class=" text-sm ">
                       {{$student->street_address}}
                     </p>
                   </div>
                   <div class="mt-2">
-                    <p class="font-medium text-gray-900">
+                    <p class="font-medium ">
                       City
                     </p>
-                    <p class=" text-sm text-gray-600">
+                    <p class=" text-sm ">
                       {{$student->city}}
                     </p>
                   </div>
                   <div class="mt-2">
-                    <p class="font-medium text-gray-900">
+                    <p class="font-medium ">
                       Zip Code
                     </p>
-                    <p class=" text-sm text-gray-600">
+                    <p class=" text-sm ">
                       {{$student->postal_code}}
                     </p>
                   </div>
@@ -170,18 +170,18 @@
               </div>
               <div>
                 <div>
-                  <p class="font-medium text-gray-900">
+                  <p class="font-medium ">
                   Sex
                   </p>
-                  <p class=" text-sm text-gray-600">
+                  <p class=" text-sm ">
                     {{$student->sex}}
                   </p>
                 </div>  
                 <div>
-                  <p class="font-medium text-gray-900">
+                  <p class="font-medium ">
                   Status
                   </p>
-                  <p class=" text-sm text-gray-600">
+                  <p class=" text-sm ">
                     {{$student->status}}
                   </p>
                 </div>  
@@ -193,18 +193,18 @@
     
             <dl class="space-y-6 border-t border-gray-200 py-10" >
               <div class="flex justify-between">
-                <dt class="font-medium text-gray-900 capitalize">Total Record in library </dt>
-                <dd class="text-gray-600">{{$student->logins()->count()}}</dd>
+                <dt class="font-medium  capitalize">Total Record in library </dt>
+                <dd class="">{{$student->logins()->count()}}</dd>
               </div>
             
               <div class="flex justify-between">
-                <dt class="flex font-medium text-gray-900">
+                <dt class="flex font-medium ">
                   Total Time Spend in library
-                  {{-- <span class="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-600">
+                  {{-- <span class="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs ">
                    
                   </span> --}}
                 </dt>
-                <dd class="text-gray-600">  {{ \Carbon\CarbonInterval::seconds($student->logins->sum(function ($login) {
+                <dd class="">  {{ \Carbon\CarbonInterval::seconds($student->logins->sum(function ($login) {
                   return $login->logout->updated_at->diffInSeconds($login->created_at);
               }))->cascade()->forHumans(['parts' => 2]) }}
               
@@ -218,14 +218,14 @@
 
                 <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
                 
-                <p class="text-xs text-gray-600 mt-2 text-center"> School Id <Picture></Picture></p>
+                <p class="text-xs  mt-2 text-center"> School Id <Picture></Picture></p>
 
               </div>
               <div class="flex justify-center flex-col items-center" >
 
                 <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
                 
-                <p class="text-xs text-gray-600 mt-2 text-center"> 2x2 Picture</p>
+                <p class="text-xs  mt-2 text-center"> 2x2 Picture</p>
 
               </div>
              

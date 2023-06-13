@@ -17,8 +17,8 @@ class RealtimeResource extends Resource
 {
     protected static ?string $model = Realtime::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $activeNavigationIcon = 'heroicon-s-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-identification';
     protected static ?string $navigationLabel = 'Realtime Monitoring';
     public static function form(Form $form): Form
     {

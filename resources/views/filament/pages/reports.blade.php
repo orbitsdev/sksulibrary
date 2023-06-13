@@ -15,6 +15,7 @@
     }
 
     .print-container {
+      color: black;
       position: absolute;
       top: 0;
       left: 50%;
@@ -30,7 +31,7 @@
   <x-button rose spinner="print" wire:click="print" style="background: #03A340">Print</x-button>
 </div>
 
-<div class="print-container bg-white w-full ">
+<div class="print-container dark:bg-gray-800 bg-white w-full ">
   <div class="flex justify-center p-6">
     <div class="mr-10">
       <img src="{{ asset('images/logo.png') }}" alt="" style="width: 60px; height: 60px">
@@ -41,7 +42,7 @@
      
      
       @if ($dayData)
-      <p class="mt-20 " style="padding-top: 20px">  {{$dayData->created_at->format('F d, Y - l ')}}   </p>
+      <p class="mt-10 " style="padding-top: 20px">  {{$dayData->created_at->format('F d, Y - l ')}}   </p>
       @endif
     </div>
     <div class="ml-10">
@@ -71,7 +72,7 @@
         {{-- <td class="whitespace-normal py-2 pr-3 text-left text-xs font-medium  "  style="padding-left: 16px;">{{ $item->student->id_number }}</td> --}}
         <td class="whitespace-normal px-3 py-2 text-left text-xs" style="padding-left: 16px;">{{ $item->student->course->name }}</td>
         <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->student->year }}</td>
-        <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->created_at->format('g:i A l') }}</td>
+        <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->created_at->format('g:i A') }}</td>
         @if($item->logout->status == 'Did Not Logout')
         <td class="whitespace-normal px-3 py-2 text-center   text-xs important"  style="color: #DC2626"> No Logout  </td>
         <td class="whitespace-normal px-3 py-2 text-center    text-xs important"  style="color: #DC2626">  -</td>

@@ -16,22 +16,44 @@ class AttenDanceChart extends BarChartWidget
 
     protected function getData(): array
     {
-        return [
 
+        
+
+        $currentMonth = Carbon::now()->format('Y-m');
+
+        return [
             'datasets' => [
                 [
+                    'backgroundColor' => '#0CE461',
                     'label' => 'Student Who Go In Library Per Day',
-                    'data' => DayRecord::withCount('daylogins')->get()->pluck('daylogins_count')->toArray(),
+                    'data' => DayRecord::whereYear('created_at', '=', Carbon::now()->year)
+                        ->whereMonth('created_at', '=', Carbon::now()->month)
+                        ->withCount('daylogins')
+                        ->get()
+                        ->pluck('daylogins_count')
+                        ->toArray(),
                 ],
             ],
-            'labels' =>  DayRecord::query() ->pluck('created_at')->map(function ($date) { return Carbon::parse($date)->format(' F j');}),
-            // 'datasets' => [
-            //     [
-            //         'label' => 'Student Who Go In Library',
-            //         'data' => DayRecord::withCount('daylogins')->get()->pluck('day_logins_count')->toArray(),
-            //     ],
-            // ],
-            // 'labels' => DayRecord::query()->pluck('created_at')->map(fn ($date) => $date->format('M d')),
+            'labels' => DayRecord::whereYear('created_at', '=', Carbon::now()->year)
+                ->whereMonth('created_at', '=', Carbon::now()->month)
+                ->pluck('created_at')
+                ->map(function ($date) {
+                    return Carbon::parse($date)->format('F j');
+                })
+                ->toArray(),
         ];
+
+        // return [
+           
+        //     'datasets' => [
+        //         [
+        //             'backgroundColor' => '#0CE461',
+        //             'label' => 'Student Who Go In Library Per Day',
+        //             'data' => DayRecord::withCount('daylogins')->get()->pluck('daylogins_count')->toArray(),
+        //         ],
+        //     ],
+        //     'labels' =>  DayRecord::query() ->pluck('created_at')->map(function ($date) { return Carbon::parse($date)->format(' F j');}),
+         
+        // ];
     }
 }

@@ -52,6 +52,7 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
           Tables\Actions\ActionGroup::make([
 
             Tables\Actions\Action::make('View Profile')->icon('heroicon-o-user')->button()->url(fn ($record): string =>  StudentResource::getUrl('details', $record->student_id)),
+           
             // ViewAction::make('View Details')
             // ->button()
             // ->icon('heroicon-o-user')
@@ -71,13 +72,22 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
 
         return [
           TextColumn::make('student')->label('Student Name')->formatStateUsing(function($record){
-            return strtoupper($record->student->first_name . ' ' . $record->student->last_name);
+            return $record->student->first_name . ' ' . $record->student->last_name;
           }),
           TextColumn::make('student.id_number')->label('ID Number')->searchable(),
           TextColumn::make('student.course.name')->label('Course')->searchable(),
           TextColumn::make('student.campus.name')->label('Campus')->searchable(),
-          TextColumn::make('created_at')->label('Time in')->date('g:i A '),
-          TextColumn::make('logout.updated_at')->label('Time out')->date('g:i A  '),
+          TextColumn::make('created_at')->label('Time in')->date('g:i A ')->color('success'),
+          TextColumn::make('logout.updated_at')->label('Time out')->formatStateUsing(function($record){
+              if($record->logout->status == 'Logged out'){
+                return $record->logout->updated_at->format('g:i A ');
+              }
+
+              if($record->logout->status == 'Did Not Logout'){
+                return 'No Logout';
+              }
+              return '- Currently Inside  -';
+          })->color('danger'),
         ];
 
     }

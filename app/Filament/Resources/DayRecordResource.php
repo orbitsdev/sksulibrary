@@ -22,7 +22,7 @@ class DayRecordResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
     protected static ?string $activeNavigationIcon = 'heroicon-s-clipboard-list';
 
-    protected static ?string $navigationLabel = 'Record List';
+    protected static ?string $navigationLabel = 'Recorded Days List';
 
     protected static ?string $modelLabel = 'Recorded Days';
 
@@ -74,7 +74,20 @@ class DayRecordResource extends Resource
                 // Tables\Actions\Action::make('View')->button()->action(function ($record){
                 //    dd(DayRecordResource::getUrl('record' ,$record));
                 // }) ,
-                Tables\Actions\Action::make('View')->button()->url(fn ($record): string =>  DayRecordResource::getUrl('loginrecord', $record)),
+
+                Tables\Actions\ActionGroup::make([ 
+
+                    Tables\Actions\Action::make('View Recorded Logins')->icon('heroicon-o-document-text')->button()->url(fn ($record): string =>  DayRecordResource::getUrl('loginrecord', $record)),
+                    Tables\Actions\Action::make('Delete')->icon('heroicon-o-trash')->button()->action(function($record){
+                        if($record->daylogins->count() > 0){
+                            $record->daylogins()->delete();
+                        }
+                        $record->delete();
+                      })->color('danger')->requiresConfirmation()
+                      ->modalHeading('Delete Record')
+                      ->modalSubheading('Are you sure you\'d like to delete these record? all login record will also be deleted, please note  This cannot be undone.')
+                      ->modalButton('Yes, delete it'),
+                ]),
             ])
             ->bulkActions([
                 // Tables\Actions\DeleteBulkAction::make(),

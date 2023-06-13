@@ -13,9 +13,12 @@ class StudentDetails extends Page
     protected static string $view = 'filament.resources.student-resource.pages.student-details';
 
     public $student;
-    public function mount($id){
-        
+    public $reportType='student';
 
+
+
+    public function mount($id){
+    
         $this->student = Student::where('id', (int)$id)->first();
        
     }

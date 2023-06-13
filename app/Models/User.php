@@ -37,7 +37,9 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
      public function canAccessFilament(): bool
      {  
 
-        return self::whereIn('email', ['admin@gmail.com'])->count() > 0;
+       
+
+        return self::whereIn('email', ['admin@gmail.com', $this->email])->count() > 0;
         //  return str_ends_with('admin@gmail.com', '@gmail.com');
      }
 
