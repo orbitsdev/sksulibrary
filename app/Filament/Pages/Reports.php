@@ -19,6 +19,7 @@ use Illuminate\Contracts\View\View;
 use Filament\Support\Actions\Action;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 
 class Reports extends Page implements Tables\Contracts\HasTable
@@ -31,7 +32,8 @@ class Reports extends Page implements Tables\Contracts\HasTable
     protected static string $view = 'filament.pages.reports';
 
 
-    public $report_type = 'all';
+
+    public $search;
     public $logins = [];
     public $daySelected;
     public $dayData;
@@ -48,7 +50,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
 
         $this->form->fill();
 
-       $this->reportType = 'login_report';
+       $this->reportType = 'library';
        $this->yearSelected = 'all';
        $this->selectedPeriod = 'all';
        $this->selectedStatus = 'all';
@@ -94,10 +96,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
             Grid::make(6)
                 ->schema([
               
-                    Select::make('reportType')->options([
-                        'login_report'=> 'Library Report',
-                        'student'=> 'Student  Login Report',
-                    ])->reactive()->default('login_report')->disablePlaceholderSelection()->label('Type of Report'),
+                 
                    
                     Select::make('daySelected')
                         ->options(DayRecord::orderBy('created_at', 'desc')->pluck('created_at', 'id')->map(function ($date) {
@@ -115,7 +114,8 @@ class Reports extends Page implements Tables\Contracts\HasTable
                                 $query->whereIn('status', ['Logged out', 'Did Not Logout']);
                             })->get();
                             $this->logins = $data;
-                        })->hidden($this->reportType == 'login_report'? true : false),
+                            
+                        }),
                         
 
                     Select::make('courseSelected')->options(collect(Course::query()->pluck('name', 'id'))->prepend('All','all')->toArray())->searchable()->columnSpan(2)->label('Student course')->reactive()->disablePlaceholderSelection()->afterStateUpdated(function (Closure $get, Closure $set, $state) {
@@ -157,7 +157,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                             
                             $this->logins = $data;
                         }
-                    })->hidden($this->reportType == 'login_report'? true : false),
+                    }),
                     Select::make('yearSelected')->options([
                         'all' => 'All',
                         '1st Year' => '1st Year',
@@ -207,7 +207,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                             
                             $this->logins = $data;
                         }
-                    })->default('all')->disablePlaceholderSelection()->hidden($this->reportType == 'login_report'? true : false),
+                    })->default('all')->disablePlaceholderSelection(),
 
                     Select::make('selectedStatus')->options([
                         'all'=> 'All',
@@ -261,7 +261,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                       
                         
                         
-                    })->hidden($this->reportType == 'login_report'? true : false),
+                    }),
 
                     Select::make('selectedPeriod')->options([
                         'all'=> 'All',
@@ -319,7 +319,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                       
                         
                         
-                    })->hidden($this->reportType == 'login_report'? true : false),
+                    }),
 
                 ]),
 
