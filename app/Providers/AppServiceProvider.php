@@ -11,9 +11,10 @@ use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationGroup;
 use App\Filament\Resources\CampusResource;
 use App\Filament\Resources\CourseResource;
-use App\Filament\Resources\DayRecordResource;
 use Filament\Navigation\NavigationBuilder;
 use App\Filament\Resources\StudentResource;
+use App\Filament\Resources\RealtimeResource;
+use App\Filament\Resources\DayRecordResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -65,13 +66,12 @@ Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
             NavigationGroup::make('Library')
                 ->items([
                     ...DayRecordResource::getNavigationItems(),
+                    ...RealtimeResource::getNavigationItems(),
                     NavigationItem::make('Reports')
-                   
                     ->icon('heroicon-o-document-text')
                     ->activeIcon('heroicon-s-document-text')
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
-                    ->url(route('filament.pages.reports'))
-                    ,
+                    ->url(route('filament.pages.reports')),
                 ]),
         ]);
 });

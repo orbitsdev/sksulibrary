@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use Closure;
 use Filament\Tables;
 use App\Models\DayLogin;
+use App\Models\DayRecord;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
 
@@ -28,6 +29,15 @@ class RealTimeOut extends BaseWidget
 }
     protected function getTableQuery(): Builder
     {
+
+    
+        $latestDay = DayRecord::latest()->first();
+        if( $latestDay){
+            
+            return DayLogin::query()->where('day_record_id', $latestDay->id)->whereHas('logout', function($query){
+                $query->where('status','Logged out');
+            })->latest();
+        }
         return DayLogin::query()->whereHas('logout', function($query){
             $query->where('status','Logged out');
         })->latest();
@@ -43,7 +53,7 @@ class RealTimeOut extends BaseWidget
             })->searchable(),
             // Tables\Columns\TextColumn::make('student.course.name')->label('Course'),
             Tables\Columns\TextColumn::make('student.year')->label('Year'),
-            Tables\Columns\TextColumn::make('updated_at')->label('Time in')->since(),
+            Tables\Columns\TextColumn::make('logout.updated_at')->label('Time out')->since()->color('danger'),
             
         ];
     }

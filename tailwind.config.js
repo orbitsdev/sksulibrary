@@ -20,6 +20,7 @@ module.exports = {
                 primary: colors.green,
                 success: colors.green,
                 warning: colors.yellow,
+                info: colors.blue,
 
                 // warning: colors.yellow,
                 main: '#0A4F01',

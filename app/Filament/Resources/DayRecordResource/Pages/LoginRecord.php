@@ -51,7 +51,7 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
         return [
           Tables\Actions\ActionGroup::make([
 
-            Tables\Actions\Action::make('View')->button()->url(fn ($record): string =>  StudentResource::getUrl('details', $record->student_id)),
+            Tables\Actions\Action::make('View Profile')->icon('heroicon-o-user')->button()->url(fn ($record): string =>  StudentResource::getUrl('details', $record->student_id)),
             // ViewAction::make('View Details')
             // ->button()
             // ->icon('heroicon-o-user')

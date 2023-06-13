@@ -5,9 +5,10 @@ namespace App\Filament\Widgets;
 use Closure;
 use Filament\Tables;
 use App\Models\DayLogin;
+use App\Models\DayRecord;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Contracts\Pagination\Paginator;
+use Filament\Widgets\TableWidget as BaseWidget;
 
 
 class RealTimeIn extends BaseWidget
@@ -28,7 +29,16 @@ class RealTimeIn extends BaseWidget
     protected function getTableQuery(): Builder
     {   
 
-        return DayLogin::query()->whereHas('logout', function($query){
+        $latestDay = DayRecord::latest()->first();
+
+        if($latestDay){
+            return DayLogin::query()->where('day_record_id', $latestDay->id)->whereHas( 'logout', function($query){
+                $query->where('status','Not Logout');
+            })->latest();
+
+        }
+
+        return DayLogin::query()->whereHas( 'logout', function($query){
             $query->where('status','Not Logout');
         })->latest();
 
@@ -52,7 +62,7 @@ class RealTimeIn extends BaseWidget
             })->searchable(),
             // Tables\Columns\TextColumn::make('student.course.name')->label('Course'),
             Tables\Columns\TextColumn::make('student.year')->label('Year'),
-            Tables\Columns\TextColumn::make('updated_at')->label('TIme In') ->since(),
+            Tables\Columns\TextColumn::make('updated_at')->label('TIme In') ->since()->color('success'),
             
             
         ];

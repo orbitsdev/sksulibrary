@@ -91,6 +91,8 @@ class DayRecordResource extends Resource
     public static function getPages(): array
     {
         return [
+          
+            // 'realtimemonitoring' => RealtimeMonitoring::route('/realtimemonitoring'),
             'index' => Pages\ListDayRecords::route('/index'),
             'loginrecord' => Pages\LoginRecord::route('/loginrecord/{id}'),
             // 'create' => Pages\CreateDayRecord::route('/create'),

@@ -236,6 +236,7 @@ class StudentResource extends Resource
     public static function getPages(): array
     {
         return [
+            
             'reports' => Pages\Reports::route('/reports'),
             'details' => Pages\StudentDetails::route('/student/details/{id}'),
             'index' => Pages\ListStudents::route('/index'),
