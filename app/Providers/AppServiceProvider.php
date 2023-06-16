@@ -15,6 +15,7 @@ use Filament\Navigation\NavigationBuilder;
 use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\RealtimeResource;
 use App\Filament\Resources\DayRecordResource;
+use App\Filament\Resources\IndividualResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -67,11 +68,18 @@ Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 ->items([
                     ...DayRecordResource::getNavigationItems(),
                     ...RealtimeResource::getNavigationItems(),
-                    NavigationItem::make('Reports')
+                   
+                    NavigationItem::make('Overall Reports')
                     ->icon('heroicon-o-document-text')
                     ->activeIcon('heroicon-s-document-text')
                     ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
                     ->url(route('filament.pages.reports')),
+                    ...IndividualResource::getNavigationItems(),
+                    // NavigationItem::make('Individual Reports')
+                    // ->icon('heroicon-o-document-report')
+                    // ->activeIcon('heroicon-s-document-report')
+                    // ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.students.individualReport'))
+                    // ->url(route('filament.resources.students.individualReport')),
                 ]),
         ]);
 });

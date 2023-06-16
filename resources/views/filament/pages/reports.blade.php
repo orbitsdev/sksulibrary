@@ -103,6 +103,14 @@
       @endforelse
     </tbody>
   </table>
+  @if (count($logins) > 0)
+  <div class="flex justify-end items-center mt-40 m-10  " style="margin-top: 20px">
+    <div class="w-20 pb-8 " style="text-align: center">
+        <p class=" font-bold" style="text-align:center mb-1">{{count($logins)}}</p>
+        <p class="font-bold border-t border-black pt-1" style="text-align:center">Total</p>
+    </div>
+</div>
+  @endif
 </div>
 
 <script>

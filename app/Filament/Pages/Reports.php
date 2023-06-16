@@ -315,10 +315,8 @@ class Reports extends Page implements Tables\Contracts\HasTable
                             
                             $this->logins = $data;
                         }
-
-                      
                         
-                        
+                
                     }),
 
                 ]),
