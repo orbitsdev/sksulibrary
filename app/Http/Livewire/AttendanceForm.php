@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Quote;
 use App\Models\Student;
 use Livewire\Component;
 use App\Models\DayLogin;
@@ -26,7 +27,21 @@ class AttendanceForm extends Component
     public $errorType = 'not-found';
     public $errorMessage='';
     public $errorHeader='';
+    public $quotes = [];
+    protected $listeners = ['test'=> 'test'];
+   
+    
+    
+    public function test(){
+        $this->dispatchBrowserEvent('name-updated', ['newName' => 'newName']);
+    }
+    public function mount(){
+  
+        // $this->test();
+        // $this->emit('testEmit');
 
+        // dd($this->quotes);
+    }
     public function render()
     {
         return view('livewire.attendance-form');

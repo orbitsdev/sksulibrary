@@ -16,6 +16,7 @@ use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\RealtimeResource;
 use App\Filament\Resources\DayRecordResource;
 use App\Filament\Resources\IndividualResource;
+use App\Filament\Resources\QuoteResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -80,6 +81,11 @@ Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
                     // ->activeIcon('heroicon-s-document-report')
                     // ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.students.individualReport'))
                     // ->url(route('filament.resources.students.individualReport')),
+                ]),
+
+                NavigationGroup::make('Settings')
+                ->items([
+                    ...QuoteResource::getNavigationItems(),
                 ]),
         ]);
 });

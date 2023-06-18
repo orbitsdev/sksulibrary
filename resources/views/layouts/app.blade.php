@@ -14,6 +14,54 @@
         @livewireStyles
         @livewireScripts
         @stack('scripts')
+
+
+        <style>
+            .custom-checkbox input[type="checkbox"]:checked {
+    background-color: #22C55E; /* Green color when checked */
+    border-color: #22C55E; /* Green color when checked */
+  }
+  
+  .custom-checkbox input[type="checkbox"]:checked:hover {
+    background-color: #2DBF73; /* Green color when checked and hovered */
+    border-color: #2DBF73; /* Green color when checked and hovered */
+
+
+  }
+
+
+  .custom-checkbox input[type="checkbox"]:hover {
+    --tw-ring-color: #22C55E; /* Green color for hover */
+  }
+
+  .custom-checkbox input[type="checkbox"]:checked {
+    background-color: #22C55E; /* Green color when checked */
+    border-color: #22C55E; /* Green color when checked */
+  }
+
+  .customebg{
+    background: #F6F2FD;
+  }
+
+  .buttonbg{
+    background: #31FF77;
+  }
+
+  .c-font{
+    color: #120F30;
+  }
+
+  .c-field input:focus { 
+    outline: none !important;
+    border-color: red;
+    box-shadow: 0 0 10px red;
+ }
+
+ .bhover:hover{
+  background: #16A34A;
+ }
+
+          </style>
     </head>
 
     <body class="antialiased">

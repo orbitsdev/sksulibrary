@@ -76,7 +76,7 @@ class RealtimeMonitoring extends Page implements Tables\Contracts\HasTable
                 if($record->logout->status == 'Logged out'){
                     return $record->logout->updated_at->diffForHumans();
                 }else{
-                    return '';
+                    return '- Currently Inside -';
                 }
 
             })->color('danger'),
