@@ -43,6 +43,9 @@
      
       @if ($dayData)
       <p class="mt-10 " style="padding-top: 20px">  {{$dayData->created_at->format('F d, Y - l ')}}   </p>
+      @else
+      <p class="mt-10 " style="padding-top: 20px">  {{now()->format('F d, Y - l ')}}   </p>
+
       @endif
     </div>
     <div class="ml-10">

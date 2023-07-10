@@ -63,7 +63,8 @@ class RealtimeMonitoring extends Page implements Tables\Contracts\HasTable
             Tables\Columns\TextColumn::make('updated_at')->label('Time in')->formatStateUsing(function($record){
               
                 if($record->logout->status == 'Logged out'){
-                    return 'Signed out';
+                    // return 'Signed out';
+                    return $record->updated_at->format('h:i a');
                 }
 
                 return $record->updated_at->diffForHumans();
@@ -74,7 +75,8 @@ class RealtimeMonitoring extends Page implements Tables\Contracts\HasTable
             Tables\Columns\TextColumn::make('logout.updated_at')->label('Time out')->formatStateUsing(function($record){
 
                 if($record->logout->status == 'Logged out'){
-                    return $record->logout->updated_at->diffForHumans();
+                    // return $record->logout->updated_at->diffForHumans();
+                    return $record->logout->updated_at->format('h:i a');
                 }else{
                     return '- Currently Inside -';
                 }
