@@ -30,7 +30,12 @@ class RealtimeMonitoring extends Page implements Tables\Contracts\HasTable
     public function mount(){
         
        $this->latestDay = DayRecord::latest()->first();
-        $this->latestRecord = DayLogin::latest()->first();
+       if($this->latestDay){
+           $this->latestRecord = DayLogin::latest()->first();           
+        }
+        else{
+            DayLogin::latest()->first();
+       }
     }
 
 
@@ -40,14 +45,23 @@ class RealtimeMonitoring extends Page implements Tables\Contracts\HasTable
     }
 
     protected function getTableQuery(): Builder 
-    {
-        return DayLogin::query()
-        ->where('day_record_id', $this->latestDay->id)
-        ->orderBy('created_at', 'desc')
+    {   
+
+        if($this->latestDay){
+            return DayLogin::query()
+            ->where('day_record_id', $this->latestDay->id)
+            ->orderBy('created_at', 'desc')
+            ->whereHas('logout', function($query){
+                $query->where('status', '!=', 'Did Not Logout');
+            })
+            ->latest();
+        }
+
+        return DayLogin::query() ->orderBy('created_at', 'desc')
         ->whereHas('logout', function($query){
             $query->where('status', '!=', 'Did Not Logout');
-        })
-        ->latest();
+        });
+       
         // return DayLogin::query()->orderBy('created_at', 'desc')->whereHas('logout')->latest();
     } 
 

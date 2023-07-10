@@ -57,7 +57,7 @@ public function mount(): void {
                     return $date->format('F d,  Y - l ');
                 }))
                 ->columnSpan(2)
-                ->default(DayRecord::latest()->first()->id)
+                ->default(DayRecord::latest()->first()->id ?? null)
                 ->searchable()
                 ->label('Date')
                 ->reactive()
