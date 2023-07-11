@@ -61,15 +61,13 @@ class Reports extends Page implements Tables\Contracts\HasTable
          $this->daySelected = DayRecord::orderBy('created_at', 'desc')->first();
          if(!empty($this->daySelected)){
             $this->dayData = DayRecord::where('id', $this->daySelected)->first();
-            $this->logins = DayLogin::latest()->where('day_record_id', $this->daySelected)->whereHas('logout', function ($query) {
+            $this->logins = DayLogin::latest()->where('day_record_id', $this->daySelected->id)->whereHas('logout', function ($query) {
                 $query->whereIn('status', ['Logged out', 'Did Not Logout']);
             })->get();
-        
+            
          }
          $this->dayData = DayRecord::latest()->first();
-         $this->logins = DayLogin::latest()->whereHas('logout', function ($query) {
-             $query->whereIn('status', ['Logged out', 'Did Not Logout']);
-         })->get();
+         $this->logins = DayLogin::latest()->get();
 
 
 

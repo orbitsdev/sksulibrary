@@ -79,7 +79,19 @@
           <td class="whitespace-normal px-3 py-2 text-center    text-xs important"  style="color: #DC2626">  -</td>
           @else
           
-          <td class="whitespace-normal px-3 py-2 text-center text-xs">{{ $item->logout->updated_at->format('g:i A') }}</td>
+          <td class="whitespace-normal px-3 py-2 text-center text-xs">
+        
+            {{-- {{ $item->logout->updated_at->format('g:i A') }} --}}
+            @if($item->logout->status == 'Logged out')
+            {{ $item->logout->updated_at->format('g:i A') }}
+            @elseif($item->logout->status == 'Not Logout')
+            - Currently Inside -
+            @else
+            
+        - Did Not Logout -
+          
+            @endif
+          </td>
           <td class="whitespace-normal px-3 py-2 text-center text-xs">
   
             {{
