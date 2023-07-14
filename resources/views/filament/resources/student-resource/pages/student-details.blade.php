@@ -84,7 +84,16 @@
         <div class="mt-10 border-t border-gray-200">
      
           <div class="flex space-x-6 border-b border-gray-200 py-10">
-            <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+            @if(!empty($student->profile))
+            <a target="_blank" href="{{Storage::disk('public')->url($student->profile)}}">
+              <img src="{{Storage::disk('public')->url($student->profile)}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+            </a>
+
+            @else
+            <img src="{{asset('images/placeholder.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+
+            @endif
+
             <div class="flex flex-auto flex-col">
               <div>
                 <p class="font-medium ">
@@ -216,14 +225,28 @@
 
               <div class="flex justify-center flex-col items-center">
 
-                <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+
+                @if(!empty($student->school_id))
+                <a target="_blank" href="{{Storage::disk('public')->url($student->school_id)}}">
+                  <img src="{{Storage::disk('public')->url($student->school_id)}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+
+                </a>
+                @else
+                <img src="{{asset('images/placeholder.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+                @endif
+
                 
                 <p class="text-xs  mt-2 text-center"> School Id <Picture></Picture></p>
 
               </div>
               <div class="flex justify-center flex-col items-center" >
-
-                <img src="{{asset('images/girl.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+                @if(!empty($student->two_by_two))
+                <a target="_blank" href="{{Storage::disk('public')->url($student->two_by_two)}}">
+                  <img src="{{Storage::disk('public')->url($student->two_by_two)}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+                </a>
+                @else
+                <img src="{{asset('images/placeholder.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
+                @endif
                 
                 <p class="text-xs  mt-2 text-center"> 2x2 Picture</p>
 

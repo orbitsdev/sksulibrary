@@ -3,11 +3,16 @@
 <div class="grid grid-cols-2 ">
     <div class="col-span-1 text-center">
         <div class="mb-14">
-
+         
             <div class="flex justify-center">
                 
                 <div style="width: 220px; height:220px">
+                    @if(!empty($record->profile))
+                    <img src="{{Storage::url($record->profile)}}" alt="" class="w-full h-full">
+
+                    @else
                     <img src="{{asset('images/girl.jpg')}}" alt="" class="w-full h-full">
+                    @endif
                     
                 </div>
             </div>
@@ -18,7 +23,13 @@
             <div class="flex justify-center">
                 
                 <div style="width:auto; height:300px">
+                    @if(!empty($record->two_by_two))
+                    <img src="{{Storage::url($record->two_by_two)}}" alt="" class="w-full h-full">
+                    
+                    @else
                     <img src="{{asset('images/girl.jpg')}}" alt="" class="w-full h-full">
+                    
+                    @endif
                     
                 </div>
             </div>
@@ -29,7 +40,13 @@
             <div class="flex justify-center">
                 
                 <div style="width:auto; height:300px; ">
+                    @if(!empty($record->school_id))
+                    <img src="{{Storage::url($record->school_id)}}" alt="" class="w-full h-full">
+                    
+                    @else
                     <img src="{{asset('images/girl.jpg')}}" alt="" class="w-full h-full">
+                    
+                    @endif
                     
                 </div>
             </div>

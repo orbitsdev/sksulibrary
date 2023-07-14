@@ -133,6 +133,23 @@ class StudentResource extends Resource
 
               
                 // TextColumn::make('id'),
+                ImageColumn::make('profile')->circular()->label('Profile')->url(function(Student $record){
+                    if(!empty($record->profile)){
+                        return Storage::disk('public')->url($record->profile);
+
+                    }
+                })->openUrlInNewTab(),
+                ImageColumn::make('school_id')->square()->label('School Id')->url(function(Student $record){
+                    if(!empty($record->school_id)){
+                        return Storage::disk('public')->url($record->school_id);
+
+                    }
+                })->openUrlInNewTab(),
+                ImageColumn::make('two_by_two')->square()->label('2x2 Picture')->url(function(Student $record){
+                    if(!empty($record->two_by_two)){
+                        return Storage::disk('public')->url($record->two_by_two);
+                    }
+                })->openUrlInNewTab(),
                 TextColumn::make('id_number')->label('ID Number')->searchable(),
                 TextColumn::make('first_name')->searchable(),
                 TextColumn::make('middle_name')->searchable(),
