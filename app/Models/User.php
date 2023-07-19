@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Role;
 use App\Models\Course;
+use App\Models\Teller;
 use App\Models\UserInformation;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\HasName;
@@ -91,5 +93,12 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
 
     public function course(){
         return $this->hasOne(Course::class, 'course_id');
+    }
+    
+    public function roles(){
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+    }
+    public function teller(){
+        return $this->hasOne(Teller::class, 'user_id');
     }
 }

@@ -1,10 +1,14 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
         </x-slot>
 
-        <x-validation-errors class="mb-4" />
+        <x-validation-errors class="mb-6" />
+        <div class="w-full flex items-center justify-center mt-4 mb-2">
+            <img src="{{asset('images/logo.png')}}" class="w-24 h-24 " alt="sksu.pnh">
+            
+        </div>
+        <h1 class="text-center text-2xl font-bold text-gray-800 uppercase mt-3"> SKSU QUEQUES</h1>
 
         @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
@@ -16,12 +20,12 @@
             @csrf
 
             <div>
-                <x-label for="email" value="{{ __('Email') }}" />
+                <x-label for="email" > Email</x-label>
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
             <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
+                <x-label for="password" > Password</x-label>
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
 
@@ -39,7 +43,7 @@
                     </a>
                 @endif
 
-                <x-button class="ml-4">
+                <x-button type="submit" class="ml-4">
                     {{ __('Log in') }}
                 </x-button>
             </div>
