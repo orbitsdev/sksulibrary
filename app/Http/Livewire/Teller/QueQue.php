@@ -102,6 +102,7 @@ class QueQue extends Component
 
 
     public function selectNumber($ququeId){
+      
 
         if(empty($this->currentQueque)){
             $selectedNumber = QuequeModel::find($ququeId);
