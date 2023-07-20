@@ -11,6 +11,7 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
@@ -39,9 +40,13 @@ class ManageTeller extends Page implements Tables\Contracts\HasTable, Forms\Cont
     {
 
         return [
-            TextColumn::make('user.email')->searchable(),
-            TextColumn::make('teller_name')->label('Teller Name')->searchable(),
-            TextColumn::make('teller_number')->label('Teller number')->searchable(),
+            // TextColumn::make('user.email')->searchable(),
+            TextColumn::make('teller_name')->label('Name')->searchable(),
+            TextColumn::make('id_number')->label('Account ID Number')->searchable(),
+            TextColumn::make('teller_letter')->label('Desk Id')->searchable()->formatStateUsing(function($state){
+                return strtoupper($state);
+            }),
+            TextColumn::make('password')->label('Password')->searchable(),
         ];
     }
 
@@ -72,23 +77,37 @@ class ManageTeller extends Page implements Tables\Contracts\HasTable, Forms\Cont
                 return static::getModel()::create($data);
             })->form([
 
-                Select::make('user_id')
-                    ->options(
+                // Select::make('user_id')
+                //     ->options(
 
-                        User::query()->whereDoesntHave('teller')->get()->pluck('email', 'id')
-                        // User::query()
-                        //     ->whereDoesntHave('teller')
-                        //     ->get()
-                        //     ->pluck(['name', 'id'])
-                )
-                ->required()
-                ->searchable(),
+                //         User::query()->whereDoesntHave('teller')->get()->pluck('email', 'id')
+                //         // User::query()
+                //         //     ->whereDoesntHave('teller')
+                //         //     ->get()
+                //         //     ->pluck(['name', 'id'])
+                // )
+                // ->required()
+                // ->searchable(),
                 Forms\Components\TextInput::make('teller_name')
                 ->label('Name')
                 ->required(),
-                Forms\Components\TextInput::make('teller_number')
-                ->label('Desk number')
+                 Select::make('teller_letter')
+                    ->options([
+                        'a'=>'A',
+                        'b'=>'B',
+                        'c'=>'C',
+                        'd'=>'D',
+                        'e'=>'E',
+                        'f'=>'F',
+                        'g'=>'G',
+                    ])->label('Desk Id')->unique()->required()->searchable(),
+                Forms\Components\TextInput::make('id_number')
+                ->label('Account ID Number')
                 ->unique()
+                ->required(),
+                Forms\Components\TextInput::make('password')
+                ->label('Teller Password')
+               
                 ->required(),
 
 

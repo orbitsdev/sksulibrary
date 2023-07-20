@@ -12,12 +12,12 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @wireUiScripts
+        @vite(['resources/css/custom.css', 'resources/css/app.css', 'resources/js/app.js'])
 
         <!-- Styles -->
         @livewireStyles
-        @wireUiScripts
-        <script src="//unpkg.com/alpinejs" defer></script>
+      
         <style>
 
             .sksubg{
@@ -53,13 +53,15 @@
 
             <!-- Page Content -->
             <main>
-              
+            <div>
                 {{ $slot }}
+
+            </div>
             </main>
         </div>
 
         @stack('modals')
-
         @livewireScripts
+        <x-dialog z-index="z-50" blur="md" align="center" />
     </body>
 </html>

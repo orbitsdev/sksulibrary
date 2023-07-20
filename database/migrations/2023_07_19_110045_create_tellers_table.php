@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tellers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
+            // $table->foreignId('user_id')->nullable();
             $table->string('teller_name');
-            $table->integer('teller_number')->unique();
+            $table->string('teller_letter')->unique();
+            $table->string('id_number')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

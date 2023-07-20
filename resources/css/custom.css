@@ -1,0 +1,21 @@
+
+
+
+.skbutton{
+    background: #14532d !important;
+}
+
+.skbutton:hover{
+    background: #166534 !important;
+}
+
+
+
+.tellerbutton{
+    background: #103f20 !important;
+    border:none !important;
+}
+
+.tellerbutton:hover{
+    background: #154d28 !important;
+}

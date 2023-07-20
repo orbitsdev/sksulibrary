@@ -7,17 +7,7 @@
         <h2 class="text-4xl font-semibold text-white mb-8">Teller A</h2>
         
         <div class="bg-[#0d3119] w-2/3 p-8 rounded-lg shadow-lg grid grid-cols-1 gap-8">
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold text-white mb-2">Search Skipped number </h3>
-                <div class="bg-white text-[#103f20] rounded-lg p-4">
-                  <div class="mb-4">
-                    <label class="block text-sm font-medium">Queque number</label>
-                    <input type="text" class="border border-gray-300 p-2 rounded w-full">
-                  </div>
-                
-                  <!-- Add more input fields or selects as needed -->
-                </div>
-              </div>
+          
           <div class="grid grid-cols-3 gap-8">
             <div class="flex flex-col items-center justify-start p-8 rounded bg-[#103f20]">
               <h3 class="text-xl font-semibold text-white mb-2">Current Queue Number</h3>

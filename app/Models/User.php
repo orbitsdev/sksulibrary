@@ -42,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
        
 
         return self::whereIn('email', ['admin@gmail.com', $this->email])->count() > 0;
+        // return self::whereIn('email', ['admin@gmail.com'])->count() > 0;
         //  return str_ends_with('admin@gmail.com', '@gmail.com');
      }
 
@@ -98,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser, Has
     public function roles(){
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
-    public function teller(){
-        return $this->hasOne(Teller::class, 'user_id');
-    }
+    // public function teller(){
+    //     return $this->hasOne(Teller::class, 'user_id');
+    // }
 }

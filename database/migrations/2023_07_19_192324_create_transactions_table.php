@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('queque_id')->nullable();
+            $table->foreignId('teller_id')->nullable();
             $table->string('client_name')->nullable();
             $table->timestamps();
         });
