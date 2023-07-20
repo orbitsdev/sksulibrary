@@ -1,5 +1,5 @@
 
-import './path/to/custom.css';
+
 
 import Alpine from 'alpinejs'
 import Focus from '@alpinejs/focus'
