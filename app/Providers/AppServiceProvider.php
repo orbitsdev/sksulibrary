@@ -18,6 +18,7 @@ use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\RealtimeResource;
 use App\Filament\Resources\DayRecordResource;
 use App\Filament\Resources\IndividualResource;
+use App\Filament\Resources\QuequeResource;
 use App\Filament\Resources\TellerResource;
 
 class AppServiceProvider extends ServiceProvider
@@ -107,6 +108,7 @@ class AppServiceProvider extends ServiceProvider
                         NavigationGroup::make('QUEUES')
                         ->items([
                             ...TellerResource::getNavigationItems(),
+                            ...QuequeResource::getNavigationItems(),
                            
                         ]),
                     // NavigationGroup::make('Settings')

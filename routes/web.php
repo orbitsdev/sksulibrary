@@ -31,9 +31,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 
-Route::get('/queque', function(){
-    return view('queque.index');
-})->name('queque.index');
+// Route::get('/queque', function(){
+//     return view('queque.index');
+// })->name('queque.index');
 Route::get('/queque/monitor', function(){
     return view('queque.monitor');
 })->name('queque.monitor');

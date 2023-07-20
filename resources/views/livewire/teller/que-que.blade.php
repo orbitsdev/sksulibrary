@@ -70,13 +70,14 @@
 
                     </div>
                 </div>
-                <div class="w-full p-4" wire:poll.2s>
+                <div class="w-full p-4" wire:poll.750ms>
 
                   <div class="mb-4">
                     <p class="text-gray-100 text-sm mb-1">Hold transactions {{ $selectedHoldTransaction }}</p>
-                    <x-select placeholder="e.g 5" searchable wire:model="selectedHoldTransaction" wire:ignore>
+                  
+                    <x-select placeholder="e.g 5" searchable wire:model="selectedHoldTransaction" >
     
-                        @foreach ($holdTransaction as $item)
+                        @foreach ($holdnumbers as $item)
                             <x-select.option label="{{ $item->number }}" value="{{ $item->id }}" />
                         @endforeach
     
@@ -95,29 +96,20 @@
                             @endif
                         </h1>
                         <div class="grid grid-cols-3 gap-8 min-h-40  border-2 border-green-900 rounded-md">
-
                             @forelse($waitingNumbers as $item)
-                                @unless ($currentQueque && $currentQueque->id == $item->id)
-                                    <div class="flex flex-col items-center justify-center  h-40 p-8 rounded bg-[#103f20] cursor-pointer transition-all hover:scale-105 hover:bg-[#154d28]"
-                                        wire:click="selectNumber({{ $item->id }})" wire:ignore>
-                                        <p class="text-6xl font-semibold text-gray-100">{{ $item->number }}</p>
-                                    </div>
-                                @endunless
-                                {{-- <div class="flex flex-col items-center justify-start p-8 rounded bg-[#103f20]">
-                <h3 class="text-xl font-semibold text-gray-100 mb-2">Transaction Status</h3>
-                <p class="text-3xl font-semibold text-gray-100">In Progress</p>
-              </div>
-              
-              <div class="flex flex-col items-center justify-start p-8 rounded bg-[#103f20]">
-                <h3 class="text-xl font-semibold text-gray-100 mb-2">Next Queue Number</h3>
-                <p class="text-6xl font-semibold text-gray-100">A5</p>
-              </div> --}}
-                            @empty
-                                <div class="flex items-center justify-center col-span-3  h-40">
-                                    <h1 class=" text-gray-300 bg-green"> No number/person are called at the moment </h1>
-                                </div>
-                        </div>
-                        @endforelse
+        @if($currentQueque && $currentQueque->id == $item->id)
+            <!-- If selected, do not show anything -->
+        @else
+            <div class="flex flex-col items-center justify-center h-40 p-8 rounded bg-[#103f20] cursor-pointer transition-all hover:scale-105 hover:bg-[#154d28]"
+                wire:click="selectNumber({{ $item->id }})" >
+                <p class="text-6xl font-semibold text-gray-100">{{ $item->number }}</p>
+            </div>
+        @endif
+    @empty
+        <div class="flex items-center justify-center col-span-3 h-40">
+            <h1 class="text-gray-300"> No number/person is called at the moment </h1>
+        </div>
+    @endforelse
                     </div>
                     <div class="mt-10">
                         @if (empty($currentQueque))

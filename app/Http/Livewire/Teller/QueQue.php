@@ -34,7 +34,7 @@ class QueQue extends Component
             
 
             $this->selectNumber($this->selectedHoldTransaction);
-            $this->reset('selectedHoldTransaction');
+        
 
         }else{
             $this->dialog()->info(
@@ -149,7 +149,6 @@ class QueQue extends Component
        
 
 
-        // dd($ququeId);
        
     }
 
