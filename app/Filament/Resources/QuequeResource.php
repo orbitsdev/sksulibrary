@@ -44,8 +44,8 @@ class QuequeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Id')->searchable(),
-                TextColumn::make('number')->label('Queqye number')->searchable(),
+                TextColumn::make('id')->label('Id'),
+                TextColumn::make('number')->label('QueQue number')->searchable(),
                 TextColumn::make('status')->label('Status')->searchable(),
                 TextColumn::make('updated_at')->label('Date')->formatStateUsing(function($record){
                                       return $record->updated_at->diffForHumans();
