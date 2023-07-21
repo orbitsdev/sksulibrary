@@ -79,7 +79,7 @@
                 <div class="w-full p-4" wire:poll.750ms>
 
                     <div class="mb-4">
-                        <p class="text-gray-100 text-sm mb-1">Hold transactions {{ $selectedHoldTransaction }}</p>
+                        <p class="text-gray-100 text-sm mb-1">Hold transactions </p>
 
                         <x-select placeholder="e.g 5" searchable wire:model="selectedHoldTransaction">
 
@@ -98,7 +98,7 @@
               </p> --}}
                         <h1 class="text-gray-100 text-2xl uppercase font-semibold mb-4"> Next Numbers
                             @if (empty($currentQueque) && count($waitingNumbers) > 0)
-                                <span class="text-sm ml-2 text-gray-200"> Please Select One</span>
+                                <span class="text-sm ml-2 text-gray-300 capitalize"> click number to select</span>
                             @endif
                         </h1>
                         <div class="grid grid-cols-3 gap-8 min-h-40  border-2 border-green-900 rounded-md">

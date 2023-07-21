@@ -138,7 +138,7 @@ class QueQue extends Component
         }else{
             $this->dialog()->info(
     
-                $title = 'You can only select number once at a time',
+                $title = 'You can only select number one at a time',
     
                 $description = 'Please Finish the transaction first'
     
