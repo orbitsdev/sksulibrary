@@ -10,23 +10,20 @@
               <p class="text-gray-200 text-4xl mt-3 text-center">Please be patient while waiting..</p>
               
             </div>
-            
             <div class="mt-8">
-              <h3 class="text-4xl font-extrabold mb-4 text-gray-200  uppercase ">Being Serve </h3>
-              <ul class="text-gray-100 divide-y divide-gray-200">
-
-            
+              <h2 class="text-4xl font-extrabold mb-4 text-gray-200 uppercase">Currently Being Served</h2>
+              <ul class="text-gray-800 divide-y divide-gray-200">
+              
+                <!-- Use <li> for each transaction -->
                 @foreach($currentTransactions as $item)
                 <li class="flex items-center justify-between py-2">
-                  <span class="text-gray-800 p-6 inline-flex items-center  bg-yellow-300 font-extrabold font-sans text-4xl font-weight-bolder rounded-r-md mr-8 capitalize"> {{$item->number}}  </span>
-                  <span class=" font-semibold text-yellow-200 font-sans text-4xl py-6  font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}  </span>
+                  <span class="bg-yellow-300 font-extrabold font-sans text-4xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
+                  <span class="font-semibold text-yellow-200 font-sans text-4xl py-2 font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
                 </li>
-
                 @endforeach
-
-              
               </ul>
             </div>
+            
           </div>
           
       
