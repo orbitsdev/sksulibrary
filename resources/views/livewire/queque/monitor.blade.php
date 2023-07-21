@@ -15,6 +15,10 @@
               <ul class="text-gray-800 divide-y divide-gray-200">
               
                 <!-- Use <li> for each transaction -->
+                  <li class="flex items-center justify-between py-2">
+                    <span class="bg-yellow-300 font-extrabold font-sans text-4xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> 1</span>
+                    <span class="font-semibold text-yellow-200 font-sans text-4xl py-2 font-weight-bolder capitalize">Teller 2</span>
+                  </li>
                 @foreach($currentTransactions as $item)
                 <li class="flex items-center justify-between py-2">
                   <span class="bg-yellow-300 font-extrabold font-sans text-4xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
