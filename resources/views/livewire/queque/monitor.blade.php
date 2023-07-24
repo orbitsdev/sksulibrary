@@ -7,17 +7,17 @@
             </div>
           
             <div class="mt-4 border-white border-t-8">
-              <h2 class="text-7xl  font-extrabold  py-6  text-center mb-8 bg-black text-white uppercase  rounded  ">NOW SERVING</h2>
+              <h2 class="xl:text-7xl lg:2xl  font-extrabold  py-6  text-center mb-8 bg-black text-white uppercase  rounded  ">NOW SERVING</h2>
               <ul class="text-gray-800 ">
               
              
                 @foreach($currentTransactions as $item)
-                <li class="flex items-center justify-between bg-yellow-300 border-b mb-6  rounded animate-linear-progress animate-pulse">
-                  <span class="font-extrabold font-sans text-7xl font-weight-bolder p-4 text-black capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
-                  <span class="font-extrabold font-sans text-7xl font-weight-bolder px-6 py-4  bg-black text-yellow-300 capitalize inline-block min-w-[221px] text-center">{{$item->number}}</span>
+                <li class="flex items-center justify-between bg-green-500 border-b mb-6  rounded animate-linear-progress animate-pulse">
+                  <span class="font-extrabold font-sans xl:text-7xl lg:4xl font-weight-bolder p-4 text-black capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
+                  <span class="font-extrabold font-sans xl:text-7xl lg:4xl font-weight-bolder px-6 py-4  bg-black text-green-400 capitalize inline-block min-w-[221px] text-center">{{$item->number}}</span>
 
-                  {{-- <span class="bg-yellow-300 font-extrabold font-sans text-8xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
-                  <span class="font-bold text-yellow-200 font-sans text-7xl py-2 font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}</span> --}}
+                  {{-- <span class="bg-green-300 font-extrabold font-sans text-8xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
+                  <span class="font-bold text-green-200 font-sans text-7xl py-2 font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}</span> --}}
                 </li>
                 @endforeach
                
@@ -33,7 +33,7 @@
           </div>
           
       
-        <div class="flex-1 bg-yellow-300">
+        <div class="flex-1 bg-green-500">
           <div class="p-8
            flex flex-col justify-center items-center h-full">
             <h1 class="text-8xl font-extrabold uppercase bg-[#103f20] text-white px-8  rounded py-6 text-center mb-8 w-full">NEXT NUMBERS</h1>
