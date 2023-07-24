@@ -162,7 +162,7 @@
                                     <x-button wire:click="callNumber({{ $currentQueque->number }})"
                                         spinner="callNumber"
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
-                                        label="Announce Number " />
+                                        label="Announce Number ( Voice Assistant ) " />
                                    
                                 </div>
 
