@@ -30,7 +30,7 @@
       
         <div class="flex-1 bg-gray-50">
           <div class="p-8 flex flex-col justify-center items-center h-full">
-            <h1 class="text-5xl font-bold uppercase text-[#103f20] text-center mb-8">NEXT NUMBERS</h1>
+            <h1 class="text-7xl font-bold uppercase text-[#103f20] text-center mb-8">NEXT NUMBERS</h1>
             <div class="w-full h-full grid grid-cols-2 gap-4">
 
                 @forelse($waitingTransactions as $item)

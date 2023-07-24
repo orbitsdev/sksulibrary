@@ -71,10 +71,23 @@
                             <p class="text-7xl font-semibold text-gray-100">
                                 {{ $currentQueque->number }}
                             </p>
+                           
+                                
                         @endIf
 
 
                     </div>
+                    {{-- <div class="mt-4 min-h-20">
+                        @if(!empty($currentQueque))
+                        <p class="text-gray-300 text-sm mb-4 leading-none">Some individuals might not be able to see the monitor. You can use this button to make an announcement:</p>
+                        <x-button wire:click="callNumber({{ $currentQueque->id }})"
+                            spinner="callNumber"
+                            class="shout text-black text-simibold text-lg py-3 rounded  transition-all px-4 w-full"
+                            label="Anounce Selected Number  " >
+
+                        </x-button>
+                        @endif
+                    </div> --}}
                 </div>
                 <div class="w-full p-4" wire:poll.750ms>
 
@@ -146,7 +159,21 @@
                                         spinner="holdTransaction"
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Hold Transaction" />
+                                    <x-button wire:click="callNumber({{ $currentQueque->id }})"
+                                        spinner="callNumber"
+                                        class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
+                                        label="Announce Number " />
+                                   
                                 </div>
+
+                                {{-- <div class="mt-8">
+                                    <p class="text-gray-200 text-sm mb-4 leading-none">Some individuals might not be able to see the monitor. You can use this button to make an announcement:</p>
+
+                                    <x-button wire:click="callNumber({{ $currentQueque->id }})"
+                                        spinner="callNumber"
+                                        class="shout capitallize text-gray-200 text-xl py-3 rounded  transition-all px-4 "
+                                        label="Announce  Selected Number" />
+                            </div> --}}
 
                             @endif
                         </div>
@@ -163,5 +190,19 @@
 
             </div>
         </div>
+
+        <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    Livewire.on('shoutNumber', numberSelected => {
+
+            var intro = 'Calling number';
+            var msg = new SpeechSynthesisUtterance();
+            msg.text = intro+numberSelected.toString(); // Convert the number to string and set it as text
+            window.speechSynthesis.speak(msg);
+        });
+});
+
+        </script>
 
     </div>

@@ -24,3 +24,13 @@
 .tellerbutton:hover{
     background: #154d28 !important;
 }
+
+.shout{
+    background: #103f20 !important;
+    border:none !important;
+    font-weight: 700;
+}
+
+.shout:hover{
+    background: #154d28 !important;
+}

@@ -209,6 +209,12 @@ class QueQue extends Component
         );
     }
 
+
+    public function callNumber($ququeId){
+       $this->emit('shoutNumber', $ququeId);
+
+    }
+    
     public function logout(){
          session()->forget('teller_id');
  
