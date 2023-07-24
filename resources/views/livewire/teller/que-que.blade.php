@@ -159,7 +159,7 @@
                                         spinner="holdTransaction"
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Hold Transaction" />
-                                    <x-button wire:click="callNumber({{ $currentQueque->id }})"
+                                    <x-button wire:click="callNumber({{ $currentQueque->number }})"
                                         spinner="callNumber"
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Announce Number " />
