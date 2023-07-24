@@ -1,37 +1,43 @@
 <div>
     <div class="flex h-screen bg-[#103f20]" wire:poll.1s>
-        <div class="bg-[#0d3119] w-1/3 p-8">
-            <div class="flex justify-center">
-                <h2 class="text-6xl font-semibold text-gray-100 mb-4 mr-4">SKSU ICT</h2>
+        <div class="bg-[#0d3119] w-1/3 py-7 px-6">
+            <div class="flex justify-center items-center">
+                <h2 class="text-6xl font-extrabold text-gray-100 mb-4 mr-4">SKSU ICT</h2>
                 <img src="{{asset('images/logo.png')}}" class="w-16 h-16" alt="sksu.png">
             </div>
-            <div class="h-24  flex items-center justify-center">
-
-              <p class="text-gray-200 text-4xl mt-3 text-center">Please be patient while waiting..</p>
+          
+            <div class="mt-4 border-white border-t-8">
+              <h2 class="text-6xl  font-extrabold px-6 py-6  text-center mb-4 bg-black text-white uppercase  rounded  ">NOW SERVING</h2>
+              <ul class="text-gray-800 ">
               
-            </div>
-            <div class="mt-8">
-              <h2 class="text-4xl font-extrabold mb-4 text-gray-200 uppercase">Currently Being Served</h2>
-              <ul class="text-gray-800 divide-y divide-gray-200">
-              
-                <!-- Use <li> for each transaction -->
-                 
+             
                 @foreach($currentTransactions as $item)
-                <li class="flex items-center justify-between py-2">
-                  <span class="bg-yellow-300 font-extrabold font-sans text-4xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
-                  <span class="font-semibold text-yellow-200 font-sans text-4xl py-2 font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
+                <li class="flex items-center justify-between bg-yellow-300 border-b mb-6  rounded animate-linear-progress animate-pulse">
+                  <span class="font-extrabold font-sans text-7xl font-weight-bolder p-4 text-black capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
+                  <span class="font-extrabold font-sans text-7xl font-weight-bolder px-6 py-4  bg-black text-yellow-300 capitalize inline-block min-w-[221px] text-center">{{$item->number}}</span>
+
+                  {{-- <span class="bg-yellow-300 font-extrabold font-sans text-8xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
+                  <span class="font-bold text-yellow-200 font-sans text-7xl py-2 font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}</span> --}}
                 </li>
                 @endforeach
+               
+              
               </ul>
             </div>
+              {{-- <div class="min-h-24  flex items-center justify-center mt-8">
+
+              <p class="text-gray-200 text-7xl font-bold  text-center">Please be patient while waiting..</p>
+              
+            </div> --}}
             
           </div>
           
       
-        <div class="flex-1 bg-gray-50">
-          <div class="p-8 flex flex-col justify-center items-center h-full">
-            <h1 class="text-7xl font-bold uppercase text-[#103f20] text-center mb-8">NEXT NUMBERS</h1>
-            <div class="w-full h-full grid grid-cols-2 gap-4">
+        <div class="flex-1 bg-yellow-300">
+          <div class="p-8
+           flex flex-col justify-center items-center h-full">
+            <h1 class="text-8xl font-extrabold uppercase bg-[#103f20] text-white px-8  rounded py-6 text-center mb-8 w-full">NEXT NUMBERS</h1>
+            <div class="w-full h-full grid grid-cols-2 gap-8">
 
                 @forelse($waitingTransactions as $item)
                 @if(count($waitingTransactions) == 1)
