@@ -7,7 +7,7 @@
             </div>
           
             <div class="mt-4 border-white border-t-8">
-              <h2 class="text-6xl  font-extrabold px-6 py-6  text-center mb-4 bg-black text-white uppercase  rounded  ">NOW SERVING</h2>
+              <h2 class="text-7xl  font-extrabold  py-6  text-center mb-8 bg-black text-white uppercase  rounded  ">NOW SERVING</h2>
               <ul class="text-gray-800 ">
               
              
