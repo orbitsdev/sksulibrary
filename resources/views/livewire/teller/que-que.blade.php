@@ -196,7 +196,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     Livewire.on('shoutNumber', numberSelected => {
 
-            var intro = 'Calling number';
+            var intro = 'number';
             var msg = new SpeechSynthesisUtterance();
             msg.text = intro+numberSelected.toString(); // Convert the number to string and set it as text
             window.speechSynthesis.speak(msg);
