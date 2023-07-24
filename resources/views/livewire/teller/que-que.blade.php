@@ -112,12 +112,15 @@
                         <h1 class="text-gray-100 text-2xl uppercase font-semibold mb-4"> Next Numbers
                             @if (empty($currentQueque) && count($waitingNumbers) > 0)
                                 <span class="text-sm ml-2 text-gray-300 capitalize"> click number to select</span>
+                                @else
+                                
+                                {{-- <span class="text-sm ml-2 text-gray-300 capitalize"> You can double click the number if you want to anounce it</span> --}}
                             @endif
                         </h1>
                         <div class="grid grid-cols-3 gap-8 min-h-40  border-2 border-green-900 rounded-md">
                             @forelse($waitingNumbers as $item)
                                 <button type="button" class="flex flex-col items-center justify-center h-40 p-8 rounded bg-[#103f20] cursor-pointer transition-all hover:scale-105 hover:bg-[#154d28]"
-                                    wire:click="selectNumber({{ $item->id }})">
+                               wire:click="selectNumber({{ $item->id }})"  >
                                     <p class="text-6xl font-semibold text-gray-100">{{ $item->number }}</p>
                                 </button>
                             @empty
@@ -160,6 +163,7 @@
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Hold Transaction" />
                                     <x-button wire:click="callNumber({{ $currentQueque->number }})"
+                                        
                                         spinner="callNumber"
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Announce Number ( Voice Assistant ) " />

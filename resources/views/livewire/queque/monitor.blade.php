@@ -6,15 +6,15 @@
                 <img src="{{asset('images/logo.png')}}" class="w-16 h-16" alt="sksu.png">
             </div>
           
-            <div class="mt-4 border-white border-t-8">
-              <h2 class="xl:text-7xl lg:2xl  font-extrabold  py-6  text-center mb-8 bg-black text-white uppercase  rounded  ">NOW SERVING</h2>
+            <div class="mt-4 border-green-400 border-t-8 rounded shadow " >
+              <h2 class="xl:text-5xl lg:2xl  font-extrabold  py-6  text-center mb-8 bg-black text-white uppercase  rounded   ">NOW SERVING</h2>
               <ul class="text-gray-800 ">
               
              
                 @foreach($currentTransactions as $item)
-                <li class="flex items-center justify-between bg-green-500 border-b mb-6  rounded animate-linear-progress animate-pulse">
-                  <span class="font-extrabold font-sans xl:text-7xl lg:4xl font-weight-bolder p-4 text-black capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
-                  <span class="font-extrabold font-sans xl:text-7xl lg:4xl font-weight-bolder px-6 py-4  bg-black text-green-400 capitalize inline-block min-w-[221px] text-center">{{$item->number}}</span>
+                <li class="flex items-center justify-between bg-green-500 border-b mb-6  rounded animate-linear-progress animate-pulse ">
+                  <span class="font-extrabold font-sans xl:text-6xl lg:4xl font-weight-bolder p-4 text-black capitalize">Teller {{$item->transaction->teller->teller_letter}}</span>
+                  <span class="font-extrabold font-sans xl:text-6xl lg:4xl font-weight-bolder px-6 py-4  bg-black text-green-400 capitalize inline-block min-w-[221px] text-center ">{{$item->number}}</span>
 
                   {{-- <span class="bg-green-300 font-extrabold font-sans text-8xl font-weight-bolder rounded-r-md px-6 py-2 capitalize"> {{$item->number}}</span>
                   <span class="font-bold text-green-200 font-sans text-7xl py-2 font-weight-bolder capitalize">Teller {{$item->transaction->teller->teller_letter}}</span> --}}
