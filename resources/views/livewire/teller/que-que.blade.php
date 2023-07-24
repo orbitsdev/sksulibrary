@@ -92,7 +92,7 @@
                 <div class="w-full p-4" wire:poll.750ms>
 
                     <div class="mb-4">
-                        <p class="text-gray-100 text-sm mb-1">Hold transactions </p>
+                        <p class="text-white text-sm mb-2 text-simibold ">Hold transactions <span class="text-sm"> ( Search & Reselect )<span> </p>
 
                         <x-select placeholder="e.g 5" searchable wire:model="selectedHoldTransaction">
 
