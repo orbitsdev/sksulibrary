@@ -88,7 +88,7 @@ class QueQue extends Component
     public function render()
     {   
 
-        $this->pendingQueque = QuequeModel::oldest()->where('status', 'waiting')->take(3)->get();
+        $this->pendingQueque = QuequeModel::oldest()->where('status', 'waiting')->take(4)->get();
         $this->holdTransaction = QuequeModel::where('status','hold')->whereHas('transactions', function($query) {
             $query->where('teller_id', $this->teller->id);
         })->latest()->get();
