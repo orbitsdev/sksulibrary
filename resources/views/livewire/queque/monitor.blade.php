@@ -47,19 +47,19 @@
                 </div>
                 @elseif(count($waitingTransactions) ==2  )
                 <div class="flex flex-col col-span-1 items-center font-sans justify-center bg-[#103f20] rounded-lg shadow-lg p-2">
-                    <span class="text-[16rem] leading-[1] cursor-vertical-text font-extrabold text-gray-100 ">{{$item->number}}</span>
+                    <span class="text-[15.2rem] leading-[1] cursor-vertical-text font-extrabold text-gray-100 ">{{$item->number}}</span>
                     
                 </div>
 
                 @elseif(count($waitingTransactions) ==3  )
                 <div class="flex flex-col col-span-1 items-center font-sans justify-center bg-[#103f20] rounded-lg shadow-lg p-2">
-                    <span class="text-[16rem] leading-[1] cursor-vertical-text font-extrabold text-gray-100 ">{{$item->number}} </span>
+                    <span class="text-[15.2rem] leading-[1] cursor-vertical-text font-extrabold text-gray-100 ">21{{$item->number}} </span>
                     
                 </div>
 
                 @elseif(count($waitingTransactions) ==4  )
                 <div class="flex flex-col col-span-1 items-center font-sans justify-center bg-[#103f20] rounded-lg shadow-lg p-2">
-                    <span class="text-[16rem] leading-[1] cursor-vertical-text font-extrabold text-gray-100 ">{{$item->number}} </span>
+                    <span class="text-[15.2rem] leading-[1] cursor-vertical-text font-extrabold text-gray-100 ">{{$item->number}} </span>
                     
                 </div>
 
