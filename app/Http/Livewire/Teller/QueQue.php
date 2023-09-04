@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire\Teller;
 
+use Exception;
 use App\Models\Teller;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 use App\Models\Queque as QuequeModel;
 
 class QueQue extends Component
@@ -14,146 +16,174 @@ class QueQue extends Component
 
     public $teller;
     public $currentQueque;
-    public $pendingQueque=[];
-    public $holdTransaction=[];
+    public $pendingQueque = [];
+    public $holdTransaction = [];
     public $selectedHoldTransaction;
 
-    public function mount(){
-        if(session()->has('teller_id')){
-            
+    public function mount()
+    {
+        if (session()->has('teller_id')) {
+
             $this->teller = Teller::find(session('teller_id'));
             $this->getUnfinishTransaction();
-         
         }
     }
 
     public function updatedselectedHoldTransaction()
     {
 
-        if(empty($this->currentQueque)){
-            
+        if (empty($this->currentQueque)) {
+
 
             $this->selectNumber($this->selectedHoldTransaction);
-        
-
-        }else{
+        } else {
             $this->dialog()->info(
-    
+
                 $title = 'You can only select number once at a time',
-    
+
                 $description = 'Please Finish or Cancel the transaction first'
-    
+
             );
         }
     }
 
 
 
-    public function getUnfinishTransaction(){
+    public function getUnfinishTransaction()
+    {
 
-       $unfinishTransaction =  Transaction::latest()
-        ->where('teller_id', $this->teller->id)
-        ->whereHas('queque', function ($query) {
-            $query->where('status', 'processing');
-        })
-        ->first();
+        $unfinishTransaction =  Transaction::latest()
+            ->where('teller_id', $this->teller->id)
+            ->whereHas('queque', function ($query) {
+                $query->where('status', 'processing');
+            })
+            ->first();
 
-        if($unfinishTransaction){
-        $this->currentQueque = $unfinishTransaction->queque;
+        if ($unfinishTransaction) {
+            $this->currentQueque = $unfinishTransaction->queque;
         }
     }
 
-    public function callNextPerson(){
+    public function callNextPerson()
+    {
+
+        // $latestQueque = QuequeModel::latest()->first();
+
+        // if(empty($latestQueque)){
+        //     $newQueQue = QuequeModel::create([
+        //         'number' => 1,
+        //         'status' => 'waiting',
+        //     ]);
+        // }  else{
+        //     $latestNumber = $latestQueque->number;
+
+        //     $newQueQue = QuequeModel::create([
+        //         'number' => $latestNumber+1,
+        //         'status' => 'waiting',
+        //     ]);
+
+        // } 
+
+
+        // new code
+        DB::beginTransaction();
+
+        try {
 
             $latestQueque = QuequeModel::latest()->first();
 
-            if(empty($latestQueque)){
+
+            if (empty($latestQueque)) {
+                // If the table is empty, create a new record with number 1.
                 $newQueQue = QuequeModel::create([
                     'number' => 1,
                     'status' => 'waiting',
                 ]);
-            }  else{
+            } else {
                 $latestNumber = $latestQueque->number;
-                
+                $isNumberExist =  QuequeModel::where('number', $latestNumber)->exists();
+                if ($isNumberExist) {
+                    $newNumber = $latestNumber + 1;
+                } else {
+                    $newNumber = $latestNumber;
+                }
+
                 $newQueQue = QuequeModel::create([
-                    'number' => $latestNumber+1,
+                    'number' => $newNumber,
                     'status' => 'waiting',
                 ]);
+            }
 
-            } 
-
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+        }
     }
 
 
     public function render()
-    {   
+    {
 
         $this->pendingQueque = QuequeModel::oldest()->where('status', 'waiting')->take(4)->get();
-        $this->holdTransaction = QuequeModel::where('status','hold')->whereHas('transactions', function($query) {
+        $this->holdTransaction = QuequeModel::where('status', 'hold')->whereHas('transactions', function ($query) {
             $query->where('teller_id', $this->teller->id);
         })->latest()->get();
-      
+
         // $this->pendingQueque =QuequeModel::latest()->take(3)->get();
-        return view('livewire.teller.que-que',[
+        return view('livewire.teller.que-que', [
             'waitingNumbers' => $this->pendingQueque,
             'holdnumbers' => $this->holdTransaction,
         ]);
     }
 
 
-    public function selectNumber($ququeId){
-      
+    public function selectNumber($ququeId)
+    {
 
-        if(empty($this->currentQueque)){
+
+        if (empty($this->currentQueque)) {
             $selectedNumber = QuequeModel::find($ququeId);
-            if($selectedNumber){
-                
-                if($selectedNumber->status != 'waiting'  && $selectedNumber->status != 'hold'){
+            if ($selectedNumber) {
+
+                if ($selectedNumber->status != 'waiting'  && $selectedNumber->status != 'hold') {
                     $this->dialog()->error(
-    
+
                         $title = 'Error !!!',
                         $description = 'Number is already taken by another teller'
                     );
-                } else{
-    
-                     $this->currentQueque = $selectedNumber;
-                     $this->currentQueque->status = 'processing';
-                     $this->currentQueque->save();
+                } else {
 
-                     Transaction::create([
-                        'queque_id'=> $this->currentQueque->id,
-                        'teller_id'=> $this->teller->id,
-                     ]);
+                    $this->currentQueque = $selectedNumber;
+                    $this->currentQueque->status = 'processing';
+                    $this->currentQueque->save();
+
+                    Transaction::create([
+                        'queque_id' => $this->currentQueque->id,
+                        'teller_id' => $this->teller->id,
+                    ]);
                 }
-    
-            }else{
+            } else {
                 $this->dialog()->error(
-    
+
                     $title = 'Not Found',
-        
+
                     $description = 'Number is not found in the database it might be already deleted'
-        
+
                 );
             }
-        }else{
+        } else {
             $this->dialog()->info(
-    
+
                 $title = 'You can only select number one at a time',
-    
+
                 $description = 'Please Finish the transaction first'
-    
+
             );
         }
-            
-       
-       
-       
-
-
-       
     }
 
-    public function completeTransaction($ququeId){
+    public function completeTransaction($ququeId)
+    {
         $selectedNumber = QuequeModel::find($ququeId);
         $this->currentQueque->status = 'completed';
         $this->currentQueque->save();
@@ -166,10 +196,10 @@ class QueQue extends Component
 
         );
         $this->currentQueque = null;
-        
     }
-    public function cancelTransaction($ququeId){
-        
+    public function cancelTransaction($ququeId)
+    {
+
         $selectedNumber = QuequeModel::find($ququeId);
         $this->currentQueque->status = 'waiting';
         $this->currentQueque->save();
@@ -182,11 +212,10 @@ class QueQue extends Component
             $description = 'Your Transaction was canceled'
 
         );
-      
-        
     }
 
-    public function holdTransaction($ququeId){
+    public function holdTransaction($ququeId)
+    {
         $selectedNumber = QuequeModel::find($ququeId);
         $this->currentQueque->status = 'hold';
         $this->currentQueque->save();
@@ -210,15 +239,16 @@ class QueQue extends Component
     }
 
 
-    public function callNumber($number){
-       $this->emit('shoutNumber', $number);
-
+    public function callNumber($number)
+    {
+        $this->emit('shoutNumber', $number);
     }
 
-    public function logout(){
-         session()->forget('teller_id');
- 
-         // Redirect the teller to the desired page
-         return redirect()->route('teller.login');
-     }
+    public function logout()
+    {
+        session()->forget('teller_id');
+
+        // Redirect the teller to the desired page
+        return redirect()->route('teller.login');
+    }
 }

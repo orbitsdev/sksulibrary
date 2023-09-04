@@ -117,11 +117,11 @@
                                 {{-- <span class="text-sm ml-2 text-gray-300 capitalize"> You can double click the number if you want to anounce it</span> --}}
                             @endif
                         </h1>
-                        <div class="grid grid-cols-4 gap-8 min-h-40  border-2 border-green-900 rounded-md">
+                        <div class="grid sm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4  gap-8 min-h-40  border-2 border-green-900 rounded-md">
                             @forelse($waitingNumbers as $item)
-                                <button type="button" class="flex flex-col items-center justify-center h-40 p-8 rounded bg-[#103f20] cursor-pointer transition-all hover:scale-105 hover:bg-[#154d28]"
+                                <button type="button" class="flex flex-col items-center justify-center sm:h-10 lg:h-40 p-8 rounded bg-[#103f20] cursor-pointer transition-all hover:scale-105 hover:bg-[#154d28]"
                                wire:click="selectNumber({{ $item->id }})"  >
-                                    <p class="text-6xl font-semibold text-gray-100">{{ $item->number }}</p>
+                                    <p class="sm:text-2xl xl:text-6xl lg:text-6xl font-semibold text-gray-100">22{{ $item->number }}</p>
                                 </button>
                             @empty
                                 <div class="flex items-center justify-center col-span-3 h-40">
@@ -140,7 +140,7 @@
                                     </div>
                                 @endIf
                             @else
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4">
                                     @if (count($pendingQueque) < 4)
                                         <x-button wire:click="callNextPerson" spinner="callNextPerson"
                                             class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
