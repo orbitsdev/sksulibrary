@@ -10,5 +10,8 @@ class CreateUserInformation extends CreateRecord
 {
     protected static string $resource = UserInformationResource::class;
 
-  
+    protected function getRedirectUrl(): string
+    {
+        return  $this->getResource()::getUrl('index');
+    }
 }

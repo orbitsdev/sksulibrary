@@ -34,3 +34,144 @@
 .shout:hover{
     background: #154d28 !important;
 }
+
+
+
+
+
+
+
+
+
+
+.sksu-primary{
+    background: #1c753a;
+}
+.sksu-font{
+    color: #1c753a;
+}
+
+.sksu-bg{
+    background: #036624;
+}
+.green1{
+    background: #045820;
+}
+
+.nav-bg{
+  background-image: linear-gradient( rgba(4, 150, 54, 0.80), rgba(9, 160, 59, 0.80)), url('../../public/images/line.png') ;
+  /* background-image: linear-gradient( rgba(4, 151, 54, 0.85), rgba(9, 151, 54, 0.50)), url('../../public/images/line.png') ; */
+}
+
+
+.department {
+    position: relative;
+    text-align: center;
+  }
+  
+  .department::before,
+  .department::after {
+    content: "";
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 68%;
+    background: white;
+    transform: translateY(-50%);
+  }
+  
+  .department::before {
+    width: 27%;
+    left: 0;
+    transform-origin: left;
+  }
+  
+  .department::after {
+    width: 27%;
+    right: 0;
+    transform-origin: right;
+  }
+
+  .sk-button{
+    background: #e5e7eb !important;
+    color: #6b7280 !important;
+    
+  }
+  
+  .sk-button:hover{
+    background: #166534 !important;
+    color: white !important;
+  }
+  
+  .ok{
+    color: white !important;
+    background: #166534 !important;
+    
+  }
+  .ok:hover{
+    background: #15803d !important;
+    color: white !important;
+    
+  }
+  
+  .okt{
+    color: #166534 !important;
+    border: 1px solid #166534 !important;
+    background: white !important;
+    
+  }
+  .okt:hover{
+    color: #15803d !important;
+    border: 1px solid #15803d !important;
+    background: rgb(237, 238, 237) !important;
+    
+  }
+ 
+  .modal-c{
+    background: #166534 !important;
+    color: white !important;
+
+  }
+
+
+  .swithlabel  {
+    color: #6b7280 !important;
+    
+  }
+
+  
+.mm {
+  position: relative;
+  text-align: center;
+}
+
+.mm::before{
+  content: "";
+  display: block;
+  height: 8px;
+  position: absolute;
+  top: 68%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 1));
+  transform: translateY(-50%);
+}
+.mm::after {
+  content: "";
+  display: block;
+  height: 8px;
+  position: absolute;
+  top: 68%;
+  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 1));
+  transform: translateY(-50%);
+}
+
+.mm::before {
+  width: 40%;
+  left: 0;
+  transform-origin: left;
+}
+
+.mm::after {
+  width: 40%;
+  right: 0;
+  transform-origin: right;
+} 

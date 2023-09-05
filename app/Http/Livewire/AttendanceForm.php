@@ -67,7 +67,7 @@ class AttendanceForm extends Component
 
             if (!empty($this->barcode)) {
 
-                $this->student = Student::find($this->barcode);
+                $this->student = Student::where('id_number',$this->barcode)->first();
                 // $this->todayRecord = $this->getLatestDayRecord();
              
                 if($this->student !== null){
@@ -137,6 +137,7 @@ class AttendanceForm extends Component
                
 
             DB::commit(); 
+            $this->barcode =null;
         }catch(QueryException $e){
             DB::rollBack(); 
             $this->showError( $e->getCode(), $e->getMessage() ,'exception' );
@@ -172,27 +173,27 @@ class AttendanceForm extends Component
 
         
         $this->isSuccess = true;
-        $this->student = Student::find($this->barcode);
+        $this->student = Student::where('id_number', $this->barcode)->first();
 
     }
 
     public function createDayLoginRecordWithLogout() {
         $newLoginRecord = $this->todayRecord->daylogins()->create([ 'student_id' => $this->student->id, ]);
         $newLogoutRecord = $newLoginRecord->logout()->create(['status'=> 'Not Logout']);
-        $this->student = Student::find($this->barcode);
+        $this->student = Student::where('id_number', $this->barcode)->first();
         $this->isSuccess = true;
     }
 
 
     public function updateLogoutRecordStatus($logoutRecord){
         $logoutRecord->update(['status' => 'Logged out']);
-        $this->student = Student::find($this->barcode);
+        $this->student = Student::where('id_number', $this->barcode)->first();
         $this->isSuccess = true;
     }
 
     public function createLogoutRecord($studentLoginRecord){
         $newLogoutRecord = $studentLoginRecord->logout()->create(['status'=> 'Logged out']);
-        $this->student = Student::find($this->barcode);
+        $this->student = Student::where('id_number', $this->barcode)->first();
         $this->isSuccess = true;
     }
 

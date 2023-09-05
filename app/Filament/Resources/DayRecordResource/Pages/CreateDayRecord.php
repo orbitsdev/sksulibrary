@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDayRecord extends CreateRecord
 {
     protected static string $resource = DayRecordResource::class;
+
+    protected function getRedirectUrl(): string
+{
+    return  $this->getResource()::getUrl('index');
+}
 }
