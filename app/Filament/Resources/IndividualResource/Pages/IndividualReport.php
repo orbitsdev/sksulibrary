@@ -5,13 +5,15 @@ namespace App\Filament\Resources\IndividualResource\Pages;
 use Closure;
 use Filament\Forms;
 use App\Models\Student;
-use App\Models\DayRecord;
 use App\Models\DayLogin;
+use App\Models\DayRecord;
 
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Grid;
+use Maatwebsite\Excel\Facades\Excel;
 use Filament\Forms\Components\Select;
+use App\Exports\IndividualReportExport;
 use App\Filament\Resources\IndividualResource;
 
 
@@ -35,6 +37,18 @@ class IndividualReport extends Page implements Forms\Contracts\HasForms
     public $idNumber;
 
     
+    
+    public function exportToExcel(){
+        
+        if(!empty($this->student)){
+            $filename = $this->student?->first_name.'-'.$this->student?->last_name;  
+            
+        }else{
+            
+            $filename = 'individualreport';
+        }
+        return Excel::download(new IndividualReportExport($this->logins), $filename.'.xlsx');
+    }
 
     public function print()
     {

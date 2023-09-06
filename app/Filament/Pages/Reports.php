@@ -13,10 +13,12 @@ use App\Models\Student;
 use App\Models\DayLogin;
 use Filament\Pages\Page;
 use App\Models\DayRecord;
+use App\Exports\OverAllExport;
 use Illuminate\Support\Carbon;
 use Filament\Forms\Components\Grid;
 use Illuminate\Contracts\View\View;
 use Filament\Support\Actions\Action;
+use Maatwebsite\Excel\Facades\Excel;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -45,6 +47,11 @@ class Reports extends Page implements Tables\Contracts\HasTable
     public $hideInputs;
 
 
+
+
+    public function exportToExcel(){
+        return Excel::download(new OverAllExport($this->logins), 'overallreport.xlsx');
+    }
 
     public function mount(): void {
 

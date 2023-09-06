@@ -1,5 +1,5 @@
 
-<div class="min-h-screen relative bg-gray-100   ">
+<div class="min-h-screen relative bg-white   ">
     <div class=" border-green-500  rounded flex items-center justify-end  ">
         @livewire('test-live-wire')
     </div>
@@ -24,14 +24,14 @@
                         <x-input  wire:model.debounce.700ms="barcode" autofocus
                             class="block border-gray-300 active:border-green-600 focus:border-green-600 outline-emerald-500 p-2 mt-1 w-full h-12" />
                     </div>
-                    <div class="text-center mt-4 flex items-center">
-                        <p class="text-xs  text-gray-600 mr-4">Auto-Trigger: Active by default, Click to Take Control</p>
+                    <div class="text-center mt-4 flex items-center justify-center">
+                        <p class="text-xs  text-gray-500 mr-4">Auto-Trigger: Active by default, Click to Take Control</p>
                         <x-toggle lg wire:model="isManualInputBarCode" class="swithlabel" />
                     </div>
                     
                     
 
-                    <div class="mt-6 flex justify-end h-24E  ">
+                    <div class="mt-6 flex justify-end h-10   ">
                         @if($isManualInputBarCode)
                         <x-button wire:click="readBarCodeManually" spinner="readBarCodeManually" 
                             class="sk-button max-h-14 px-[34px] py-[12px]  w-full justify-center capitalize">
@@ -47,7 +47,7 @@
 
 
 
-                    <div class="pt-16 flex  justify-end flex-col ">
+                    <div class="pt-[44px] flex  justify-end flex-col ">
                         <a href="/admin"
                             class="tex-sm text-slate-500 hover:text-green-700 ">Admin?</a>
                         <p class="text-slate-500 text-sm "> Unauthorized personnel are not permitted access to this area
@@ -83,8 +83,9 @@
                             class="h-full w-full object-cover rounded">
                             
                             @else
-                            <img src="{{ asset('/images/sksulogo.png') }}" alt="profile.jpg"
+                            <img src="{{ asset('/images/placeholder.jpg') }}" alt="profile.jpg"
                             class="h-full w-full object-cover rounded">
+                            <p class="text-center">NO PROFILE</p>
 
                             @endif
                           
@@ -114,50 +115,53 @@
 
                             
                         </div>
-                        <P class="text-4xl font-bold uppercase text-right ">
-                            {{ now()->timezone('Asia/Manila')->format('h:i:s A') }}
+                        <div class="flex items-center justify-between">
 
-                        </P>
-                        <P class="text-4xl font-bold uppercase  text-right ">
-                            {{ now()->timezone('Asia/Manila')->format('F d, Y') }}
-
-                        </P>
+                            <P class="text-3xl font-bold uppercase   ">
+                                {{ now()->timezone('Asia/Manila')->format('M d, Y') }}
+    
+                            </P>
+                            <P class="text-3xl font-bold uppercase  ">
+                                {{ now()->timezone('Asia/Manila')->format('h:i:s A') }}
+    
+                            </P>
+                        </div>
                       
 
                        
                     
 
 
-                        <div class="  mt-6">
-                            <P class="text-2xl text-center p-0 font-semibold capitalize">
+                        <div class="  mt-4">
+                            <P class="text-3xl text-center p-0 font-semibold capitalize">
                                 {{$student?->last_name}} , {{$student?->middle_name}} {{$student?->first_name}} 
                             </P>
 
                         </div>
                         <div class="mt-6 flex items-center justify-between border-b ">
-                            <P class="mt-2 text-md  ">
-                                {{$student?->id_number}}
-                            </P>
-                            <P class="mt-2 text-md  ">
+                            <P class="mt-2 text  capitalize">
                                Id Number
+                            </P>
+                            <P class="mt-2 text  ">
+                                {{$student?->id_number}}
                             </P>
 
                         </div>
                         <div class="flex items-center justify-between border-b ">
+                            <P class="mt-2 text-md  capitalize">
+                                School year
+                            </P>
                             <P class="mt-2 text-md  ">
                                 {{$student?->year}}
                             </P>
-                            <P class="mt-2 text-md  ">
-                                School year
-                            </P>
 
                         </div>
                         <div class="flex items-center justify-between border-b ">
-                            <P class="mt-2 text-md  ">
-                               {{$student?->course?->name}}
-                            </P>
-                            <P class="mt-2 text-md  ">
+                            <P class="mt-2 text-md   capitalize"">
                                Course
+                            </P>
+                            <P class="mt-2 text-md">
+                               {{$student?->course?->name}}
                             </P>
 
                         </div>

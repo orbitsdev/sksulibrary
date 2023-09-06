@@ -28,7 +28,8 @@
 {{ $this->form }}
 
 <div class=" flex justify-end w-full b  ">
-  <x-button rose spinner="print" wire:click="print" style="background: #03A340">Print</x-button>
+  <x-button rose spinner="exportToExcel" wire:click="exportToExcel" style="background: #03A340" icon="newspaper"  class="mr-4">Export </x-button>
+  <x-button rose spinner="print" wire:click="print" style="background: #03A340" icon="printer" >Print</x-button>
 </div>
 
 <div class="print-container dark:bg-gray-800 bg-white w-full ">
