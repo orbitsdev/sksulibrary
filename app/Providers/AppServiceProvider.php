@@ -19,6 +19,7 @@ use App\Filament\Resources\RealtimeResource;
 use App\Filament\Resources\DayRecordResource;
 use App\Filament\Resources\IndividualResource;
 use App\Filament\Resources\QuequeResource;
+use App\Filament\Resources\SalesReportResource;
 use App\Filament\Resources\TellerResource;
 
 class AppServiceProvider extends ServiceProvider
@@ -105,12 +106,12 @@ class AppServiceProvider extends ServiceProvider
                             // ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.students.individualReport'))
                             // ->url(route('filament.resources.students.individualReport')),
                         ]),
-                        NavigationGroup::make('QUEUES')
-                        ->items([
-                            ...TellerResource::getNavigationItems(),
-                            ...QuequeResource::getNavigationItems(),
+                        // NavigationGroup::make('QUEUES')
+                        // ->items([
+                        //     ...TellerResource::getNavigationItems(),
+                        //     ...QuequeResource::getNavigationItems(),
                            
-                        ]),
+                        // ]),
                     // NavigationGroup::make('Settings')
                     // ->items([
                     //     ...QuoteResource::getNavigationItems(),
