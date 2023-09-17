@@ -10,7 +10,7 @@
 <table>
     <thead>
     <tr style="background-color: #D6EEEE">
-        <th>Name</th>
+        <th>Campus Name</th>
     </tr>
     </thead>
     <tbody>

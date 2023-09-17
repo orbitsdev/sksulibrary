@@ -56,7 +56,7 @@ class ListStudents extends ListRecords
             })->icon('heroicon-o-save')->form([
                 FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
             ])
-            ->modalSubheading("When updating accounts, ensure data accuracy. Confirm member names exist in the database (e.g., campus, department, course, section). Remember, names are case-sensitive. Modifying non-existent names won't save and may cause errors. Questions or need assistance? Contact us; we're here to help!")            
+            ->modalSubheading("When updating accounts, ensure data accuracy. Confirm member names exist in the database (e.g., campus, department, course, section). Remember, names are case-sensitive. Modifying non-existeng data won't reflect in the record. Questions or need assistance? Contact us; we're here to help!")            
             ->label('Import to Updates')
             ,
             Actions\Action::make('Export')->button()->action(function(array $data) {
@@ -66,9 +66,12 @@ class ListStudents extends ListRecords
                 return Excel::download(new StudentExport, 'students.xlsx');
 
             })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
-            ->modalSubheading('Are you sure you\'d like to export excel?')
-            ->modalButton('Yes'),
-            Actions\CreateAction::make(),
+            ->modalSubheading('Donwload Excel as Report or Reference')
+            ->modalButton('Yes')
+            ->label('Download Reference')
+            ,
+            
+            Actions\CreateAction::make()->label('New Student'),
           
         ];
     }

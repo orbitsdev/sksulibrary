@@ -58,8 +58,8 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('campus.name')->searchable()->label('Campus Name'),
                 TextColumn::make('name')->searchable()->label('Course Name'),
+                TextColumn::make('campus.name')->searchable()->label('Campus Name'),
             ])
             ->filters([
 

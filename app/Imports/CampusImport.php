@@ -17,14 +17,14 @@ class CampusImport implements ToModel ,WithHeadingRow
     {   
 
         
-
-        $campus = Campus::where('name', $row['name'])->first();
+       
+        $campus = Campus::where('name', $row['campus_name'])->first();
 
         if($campus){
 
         }else{
             return new Campus([
-                'name'=> $row['name']
+                'name'=> $row['campus_name']
             ]);
 
         }

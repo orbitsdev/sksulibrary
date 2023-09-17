@@ -41,8 +41,10 @@ class ManageCourses extends ManageRecords
                 // return Excel::download(new UserExport, 'invoices.xlsx');
                 return Excel::download(new CourseExport, 'courses.xlsx');
 
-            })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
-            ->modalSubheading('Are you sure you\'d like to export excel?')
+            })
+            ->label('Download Reference')
+            ->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
+            ->modalSubheading('Donwload Excel as Report or Reference. Existing name wont be created again')
             ->modalButton('Yes'),
             Actions\CreateAction::make(),
         ];

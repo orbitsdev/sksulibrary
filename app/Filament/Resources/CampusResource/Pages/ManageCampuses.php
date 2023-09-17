@@ -32,10 +32,10 @@ class ManageCampuses extends ManageRecords
                 FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
             ]),
 
-            Actions\Action::make('Export')->button()->action(function(){        
+            Actions\Action::make('Download Reference')->button()->action(function(){        
                 return Excel::download(new CampusExport, 'campuses.xlsx');
             })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
-            ->modalSubheading('Are you sure you\'d like to export excel?')
+            ->modalSubheading('Donwload Excel as Report or Reference. . Note that an existing name won\'t be created.')
             ->modalButton('Yes'),
             Actions\CreateAction::make(),
         ];

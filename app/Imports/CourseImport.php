@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Campus;
 use App\Models\Course;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -14,14 +15,23 @@ class CourseImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {   
+       
+    
+        $name = Course::where('name', $row['course_name'])->first();
 
-        $name = Course::where('name', $row['name'])->first();
+        $courseExist = Campus::find($row['campus_id']); 
+        
+        $campus= null;
+        if($courseExist){
+            $campus = $courseExist->id;
+        }
 
 
         if($name){
         }else{
             return new Course([
-                'name'=> $row['name'],
+                'name'=> $row['course_name'],
+                'campus_id'=> $campus,
             ]);
 
         }
