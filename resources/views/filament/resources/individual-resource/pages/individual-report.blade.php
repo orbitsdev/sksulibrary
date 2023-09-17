@@ -1,4 +1,4 @@
-<x-filament::page>
+ <x-filament::page>
 
 <style>
     @media print {

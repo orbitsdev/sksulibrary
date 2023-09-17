@@ -22,7 +22,7 @@ class DayRecordResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
     protected static ?string $activeNavigationIcon = 'heroicon-s-clipboard-list';
 
-    protected static ?string $navigationLabel = 'Recorded Days List';
+    protected static ?string $navigationLabel = 'Daily List';
 
     protected static ?string $modelLabel = 'Recorded Days';
 

@@ -207,6 +207,7 @@ public function mount(): void {
                     'all'=> 'All',
                     'Logged out'=> 'Logged out',
                     'Did Not Logout'=> 'Did Not Logout',
+                    'Not Logout'=> 'Currently Inside'
                 ])->columnSpan(2)->label('Record status')->reactive()->default('all')
                 ->disablePlaceholderSelection()
                 ->afterStateUpdated(function (Closure $get, Closure $set, $state) {

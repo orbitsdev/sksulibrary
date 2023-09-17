@@ -78,28 +78,25 @@ class AppServiceProvider extends ServiceProvider
                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.dashboard'))
                                 ->url(route('filament.pages.dashboard')),
                         ]),
-                    NavigationGroup::make('System')
-                        ->items([
 
-                            ...UserResource::getNavigationItems(),
-                        ]),
-                    NavigationGroup::make('University')
+                    NavigationGroup::make('Management')
                         ->items([
-                            ...CampusResource::getNavigationItems(),
-                            ...CourseResource::getNavigationItems(),
+                            ...UserResource::getNavigationItems(),
                             ...StudentResource::getNavigationItems(),
+                            ...CourseResource::getNavigationItems(),
+                            ...CampusResource::getNavigationItems(),
                         ]),
-                    NavigationGroup::make('Library')
+                    NavigationGroup::make('Report')
                         ->items([
                             ...DayRecordResource::getNavigationItems(),
                             ...RealtimeResource::getNavigationItems(),
-
-                            NavigationItem::make('Overall Reports')
-                                ->icon('heroicon-o-document-text')
-                                ->activeIcon('heroicon-s-document-text')
-                                ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
-                                ->url(route('filament.pages.reports')),
                             ...IndividualResource::getNavigationItems(),
+                            
+                                                        NavigationItem::make('Overall Reports')
+                                                            ->icon('heroicon-o-document-text')
+                                                            ->activeIcon('heroicon-s-document-text')
+                                                            ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
+                                                            ->url(route('filament.pages.reports')),
                             // NavigationItem::make('Individual Reports')
                             // ->icon('heroicon-o-document-report')
                             // ->activeIcon('heroicon-s-document-report')

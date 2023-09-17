@@ -7,6 +7,7 @@
             <th>Time In</th>
             <th>Time Out</th>
             <th>Time Spend</th>
+            <th>Campus</th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,10 @@
                 {{
                     \Carbon\CarbonInterval::seconds($item->logout?->updated_at->diffInSeconds($item->created_at))->cascade()->forHumans(['parts' => 2, 'join' => true])
                 }}
+            </td>
+            <td width="50">
+                {{$item->student?->course?->campus?->name}}
+
             </td>
         </tr>
         @endforeach

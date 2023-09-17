@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Campus;
 use App\Models\Queque;
+use App\Observers\CampusObserver;
 use App\Observers\QuequeObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -28,6 +30,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Queque::observe(QuequeObserver::class);
+        Campus::observe(CampusObserver::class);
     }
 
     /**

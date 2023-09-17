@@ -20,6 +20,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
@@ -39,6 +40,13 @@ class StudentResource extends Resource
     public static function getGloballySearchableAttributes(): array
 {
     return ['first_name', 'last_name', 'id_number', ];
+}
+
+public static function getGlobalSearchResultDetails(Model $record): array
+{
+    return [
+        'Student' => $record?->first_name . ' '. $record?->last_name . ' '. $record?->middle_name,
+    ];
 }
     protected static ?string $model = Student::class;
 
@@ -69,8 +77,8 @@ class StudentResource extends Resource
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('id_number')->columnSpan(4)->required(),
-                                TextInput::make('barcode')->columnSpan(8)->required(),
+                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true),
+                                // TextInput::make('barcode')->columnSpan(8)->required(),
                              
                             ]),
                     ]),
@@ -78,9 +86,12 @@ class StudentResource extends Resource
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('first_name')->label('Given name')->columnSpan(4)->required(),
-                                TextInput::make('middle_name')->label('Middle Initial')->columnSpan(4)->required(),
-                                TextInput::make('last_name')->label('Family Name')->columnSpan(4)->required(),
+                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required(),
+                                TextInput::make('first_name')->label('First Name')->columnSpan(3)->required(),
+                                TextInput::make('middle_name')->label('Middle Name')->columnSpan(3)->required(),
+                                Select::make('sex')->columnSpan(3)->options(['male'=> 'Male', 'female'=> 'Female'])->default('male')
+                                ->required()
+                                ,
                             ]),
                     ]),
 
@@ -89,13 +100,12 @@ class StudentResource extends Resource
                         Grid::make(12)
                         ->schema([
 
-                            Select::make('sex')->columnSpan(3)->options(['male'=> 'Male', 'female'=> 'Female'])->default('male'),
-                            TextInput::make('contact_number')->label('Phone number')->columnSpan(3)->tel(),
-                            TextInput::make('street_address')->label('Street')->columnSpan(6),
-                            TextInput::make('city')->columnSpan(4),
-                            TextInput::make('country')->columnSpan(8),
-                            TextInput::make('postal_code')->columnSpan(4),
-                            TextInput::make('state')->columnSpan(8),
+                            TextInput::make('contact_number')->label('Phone number')->columnSpan(6)->tel()->required(),
+                            TextInput::make('street_address')->label('Street')->columnSpan(6)->label('Street Address')->required(),
+                            TextInput::make('country')->columnSpan(4)->required(),
+                            TextInput::make('city')->columnSpan(4)->required(),
+                            TextInput::make('postal_code')->columnSpan(4)->required(),
+                        
 
                           
                         ]),
@@ -107,19 +117,31 @@ class StudentResource extends Resource
                         Grid::make(12)
                             ->schema([
 
-                                Select::make('campus_id')->label('Campus') ->options(Campus::all()->pluck('name', 'id'))->searchable()->columnSpan(4),
-                                Select::make('course_id')->label('Course') ->options(Course::all()->pluck('name', 'id'))->searchable()->columnSpan(4),
+                                Select::make('campus_id')->label('Campus') ->options(Campus::all()->pluck('name', 'id'))->searchable()->columnSpan(4)
+                                ->reactive()
+                                ->required()
+                                ,
+                                Select::make('course_id')->label('Course') ->options(function($get){   
+                                    return Course::when($get('campus_id'), function($query) use($get){
+                                        $query->where('campus_id', $get('campus_id'));
+                                    })->pluck('name','id');
+                                })
+                                ->searchable()
+                                ->columnSpan(4)
+                                ->required()
+                                ,
                                 Select::make('year')->label('Current Year')->options([
                                     '1st Year' => '1st Year',
                                     '2nd Year' => '2nd Year',
                                     '3rd Year' => '3rd Year',
                                     '4th Year' => '4th Year',
                                     // '5th Year' => '5th Year',
-                                ])->required()->columnSpan(4)->default('1st Year'),
+                                ])
+                                ->required()->columnSpan(4)->default('1st Year'),
 
-                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile'),
-                                FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id'),
-                                FileUpload::make('two_by_two')->label('2x2 Picture')->columnSpan(12)->disk('public')->directory('users-two_by_two'),
+                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->label('Image'),
+                                // FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id'),
+                                // FileUpload::make('two_by_two')->label('2x2 Picture')->columnSpan(12)->disk('public')->directory('users-two_by_two'),
                             ]),
 
                     ]),
@@ -133,71 +155,118 @@ class StudentResource extends Resource
 
               
                 // TextColumn::make('id'),
-                ImageColumn::make('profile')->circular()->label('Profile')->url(function(Student $record){
-                    if(!empty($record->profile)){
-                        return Storage::disk('public')->url($record->profile);
+                // ImageColumn::make('profile')->circular()->label('Profile')->url(function(Student $record){
+                //     if(!empty($record->profile)){
+                //         return Storage::disk('public')->url($record->profile);
 
-                    }
-                })->openUrlInNewTab(),
-                ImageColumn::make('school_id')->square()->label('School Id')->url(function(Student $record){
-                    if(!empty($record->school_id)){
-                        return Storage::disk('public')->url($record->school_id);
+                //     }
+                // })->openUrlInNewTab(),
+                // ImageColumn::make('school_id')->square()->label('School Id')->url(function(Student $record){
+                //     if(!empty($record->school_id)){
+                //         return Storage::disk('public')->url($record->school_id);
 
-                    }
-                })->openUrlInNewTab(),
-                ImageColumn::make('two_by_two')->square()->label('2x2 Picture')->url(function(Student $record){
-                    if(!empty($record->two_by_two)){
-                        return Storage::disk('public')->url($record->two_by_two);
-                    }
-                })->openUrlInNewTab(),
+                //     }
+                // })->openUrlInNewTab(),
+                // ImageColumn::make('two_by_two')->square()->label('2x2 Picture')->url(function(Student $record){
+                //     if(!empty($record->two_by_two)){
+                //         return Storage::disk('public')->url($record->two_by_two);
+                //     }
+                // })->openUrlInNewTab(),
                 TextColumn::make('id_number')->label('ID Number')->searchable(),
-                TextColumn::make('first_name')->searchable(),
-                TextColumn::make('middle_name')->searchable(),
-                TextColumn::make('last_name')->searchable(),
-                TextColumn::make('last_name')->searchable(),
-                TextColumn::make('course.name')->searchable(),
-                TextColumn::make('year')->searchable(),
-                // TextColumn::make('contact_number')->label('Phone number')->searchable(),
-                // TextColumn::make('barcode')->searchable(),
-                // TextColumn::make('sex'),
-                // TextColumn::make('street_address')->label('Street')->searchable(),
-                // TextColumn::make('city')->searchable(),
-                // TextColumn::make('country')->searchable(),
-                // TextColumn::make('state')->searchable(),
-                // TextColumn::make('postal_code')->searchable(),
-                // TextColumn::make('campus.name')->searchable(),
+                // TextColumn::make('first_name')->searchable()->formatStateUsing(function(Student $record){
+                //     return $record?->last_name. ',' . $record?->first_name .' ' . $record?->middle_name;
+                // })
+                // ->searchable(query: function (Builder $query, string $search): Builder {
+                //     return $query
+                //         ->where('first_name', 'like', "%{$search}%")
+                //         ->orWhere('middle_name', 'like', "%{$search}%")
+                //         ->orWhere('last_name', 'like', "%{$search}%")
+                //         ;
+                // })->label('Student Name')
+                // ,
+                TextColumn::make('first_name')->label('First Name')->searchable(),
+                TextColumn::make('middle_name')->label('Middle Name')->searchable(),
+                TextColumn::make('last_name')->label('Last Name')->searchable(),
+                TextColumn::make('course.campus.name')->searchable()->label('Campus'),
+                TextColumn::make('course.name')->searchable()->label('Course'),
+                TextColumn::make('year')->searchable()->label('YEar'),
               
-                // TextColumn::make('status')->searchable(),
-                // TextColumn::make('profile')->searchable(),
-                // ImageColumn::make('profile')->label('Profile Picture')->circular()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->profile))
-                // ->openUrlInNewTab(),
-                // ImageColumn::make('school_id')->label('School Id Picture')->square()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->school_id))
-                // ->openUrlInNewTab(),
-                // ImageColumn::make('two_by_two')->label('2x2 Picture')->square()->height(100)->url(fn ($record) => Storage::disk('public')->url($record->two_by_two))
-                // ->openUrlInNewTab(),
 
             ])
             ->filters([
-                // Filter::make('created_at')
-                // ->form([
-                //     Forms\Components\DatePicker::make('created_from'),
-                //     Forms\Components\DatePicker::make('created_until'),
-                // ])
-                // ->query(function (Builder $query, array $data): Builder {
-                //     return $query
-                //         ->when(
-                //             $data['created_from'],
-                //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                //         )
-                //         ->when(
-                //             $data['created_until'],
-                //             fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+             
+                // SelectFilter::make('campus')
+                // ->label('Campus')
+                // ->options(
+                //     function () {
+                //         // could be more discerning here, and select a distinct list of aircraft id's
+                //         // that actually appear in the Daily Logs, so we aren't presenting filter options
+                //         // which don't exist in the table, but in my case we know they are all used
+                //         return Campus::all()->pluck('name', 'id')->toArray();
+                //     }
+                // )
+                // ->query(function (Builder $query, array $data) {
+                //     if (!empty($data['value']))
+                //     {
+                //         // if we have a value (the aircraft ID from our options() query), just query a nested
+                //         // set of whereHas() clauses to reach our target, in this case two deep
+                //         $query->whereHas(
+                //             'course.campus',
+                //             function($query) use ($data){
+                //                 $query->where('id', $data['value']);
+                //             }
                 //         );
+                //     }
                 // }),
-                // SelectFilter::make('Campus')->relationship('campus', 'name'),
-                 SelectFilter::make('course_id')->label('Course')
-                ->options(Course::all()->pluck('name', 'id'))->searchable()->multiple(),
-                
+                //  SelectFilter::make('course_id')->label('Course')
+                // ->options(Course::all()->pluck('name', 'id'))->searchable()->multiple()->label('By Course'),
+                SelectFilter::make('campus')
+    ->label('Campus')
+    ->form([
+        // Campus dropdown
+        Select::make('campus_id')
+            ->label('Campus Name')
+            ->options(fn () => Campus::all()->pluck('name', 'id')->toArray())
+            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                $courseId = (int) $get('course_id');
+                $campus = Campus::find($state);
+
+                if ($campus && $courseId && $course = Course::find($courseId)) {
+                    if ($course->campus_id !== $campus->id) {
+                        // Course doesn't belong to the selected campus, unselect it
+                        $set('course_id', null);
+                    }
+                }
+            })
+            ->reactive(),
+
+        // Course dropdown
+        Select::make('course_id')
+            ->label('Course')
+            ->options(function (callable $get, callable $set) {
+                $campus = Campus::find($get('campus_id'));
+
+                if ($campus) {
+                    return $campus->courses->pluck('name', 'id');
+                }
+
+                return Course::all()->pluck('name', 'id');
+            }),
+    ])
+    ->query(function (Builder $query, array $data) {
+        $courseId = (int) $data['course_id'];
+        $campusId = (int) $data['campus_id'];
+
+        // Apply filters to your query based on campus and course selections
+        if (!empty($campusId)) {
+            $query->where('campus_id', $campusId);
+        }
+
+        if (!empty($courseId)) {
+            $query->where('course_id', $courseId);
+        }
+    })
+
             ])
             ->actions([
 

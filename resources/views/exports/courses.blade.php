@@ -16,7 +16,7 @@
     <tbody>
     @foreach($items as $item)
         <tr>
-            <td width="50">{{ $item->name }}</td>
+            <td width="50">{{ $item?->name }}</td>
            
         </tr>
     @endforeach

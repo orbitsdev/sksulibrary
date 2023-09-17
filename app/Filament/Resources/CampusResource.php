@@ -8,12 +8,16 @@ use App\Models\Campus;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Repeater;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CampusResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CampusResource\RelationManagers;
+use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 
 class CampusResource extends Resource
 {
@@ -22,7 +26,7 @@ class CampusResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-library';
     protected static ?string $activeNavigationIcon = 'heroicon-s-library';
 
-    
+
 
     // protected static function getNavigationBadge(): ?string
     // {
@@ -34,7 +38,16 @@ class CampusResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->maxLength(255)->columnSpan(2)->required(),
+                TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name'),
+                Repeater::make('courses')
+                ->relationship()
+                ->schema([
+                    TextInput::make('name')->required()->label('Course Name')->required(),
+                   
+                ])
+                ->columnSpanFull(),
+
+
             ]);
     }
 
@@ -43,6 +56,10 @@ class CampusResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable(),
+                // TagsColumn::make('courses.name')->separator(',')
+                // ->wrap()
+                // ,
+                TextColumn::make('courses_count')->counts('courses')->label('Total Course')->color('primary'),
             ])
             ->filters([
                 //
@@ -55,11 +72,11 @@ class CampusResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageCampuses::route('/index'),
         ];
-    }    
+    }
 }

@@ -19,7 +19,7 @@ class IndividualResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-report';
     protected static ?string $activeNavigationIcon = 'heroicon-s-document-report';
-    protected static ?string $navigationLabel = 'Individual Reports';
+    protected static ?string $navigationLabel = 'Individual Overview';
 
 
     public static function form(Form $form): Form

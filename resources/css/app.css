@@ -113,6 +113,18 @@
     color: white !important;
     
   }
+  .cancel{
+
+    
+  }
+  .cancel:hover{
+
+    
+  }
+
+  .confirmc{
+    z-index: 1000 !important;
+  }
   
   .okt{
     color: #166534 !important;

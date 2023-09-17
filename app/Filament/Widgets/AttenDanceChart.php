@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\DayRecord;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Filament\Widgets\BarChartWidget;
 
 class AttenDanceChart extends BarChartWidget
@@ -14,34 +15,35 @@ class AttenDanceChart extends BarChartWidget
 
     protected int | string | array $columnSpan = 'full';
 
-    protected function getData(): array
-    {
+    
 
-        
-
-        $currentMonth = Carbon::now()->format('Y-m');
-
-        return [
-            'datasets' => [
-                [
-                    'backgroundColor' => '#0CE461',
-                    'label' => 'Student Who Go In Library Per Day',
-                    'data' => DayRecord::whereYear('created_at', '=', Carbon::now()->year)
-                        ->whereMonth('created_at', '=', Carbon::now()->month)
-                        ->withCount('daylogins')
-                        ->get()
-                        ->pluck('daylogins_count')
-                        ->toArray(),
+        protected function getData(): array
+        {
+            // Get the data using a raw SQL query
+            $data = DB::table('day_records')
+                ->join('day_logins', 'day_records.id', '=', 'day_logins.day_record_id')
+                ->join('students', 'day_logins.student_id', '=', 'students.id')
+                ->join('courses', 'students.course_id', '=', 'courses.id')
+                ->select('courses.name as course_name', DB::raw('COUNT(day_logins.id) as login_count'))
+                ->whereYear('day_records.created_at', '=', Carbon::now()->year)
+                ->whereMonth('day_records.created_at', '=', Carbon::now()->month)
+                ->groupBy('courses.name')
+                ->get();
+    
+            $labels = $data->pluck('course_name')->toArray();
+            $loginCounts = $data->pluck('login_count')->toArray();
+    
+            return [
+                'datasets' => [
+                    [
+                        'backgroundColor' => '#0CE461',
+                        'label' => 'Number Of Students Visited Per Course',
+                        'data' => $loginCounts,
+                    ],
                 ],
-            ],
-            'labels' => DayRecord::whereYear('created_at', '=', Carbon::now()->year)
-                ->whereMonth('created_at', '=', Carbon::now()->month)
-                ->pluck('created_at')
-                ->map(function ($date) {
-                    return Carbon::parse($date)->format('F j');
-                })
-                ->toArray(),
-        ];
+                'labels' => $labels,
+            ];
+        }
 
         // return [
            
@@ -55,5 +57,5 @@ class AttenDanceChart extends BarChartWidget
         //     'labels' =>  DayRecord::query() ->pluck('created_at')->map(function ($date) { return Carbon::parse($date)->format(' F j');}),
          
         // ];
-    }
+    
 }

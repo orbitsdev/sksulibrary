@@ -8,6 +8,7 @@ use Filament\Forms;
 use App\Models\Test;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Campus;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\DayLogin;
@@ -40,6 +41,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
     public $daySelected;
     public $dayData;
     public $courseSelected;
+    public $campusSelected;
     public $yearSelected;
     public $selectedPeriod;
     public $selectedStatus;
@@ -140,47 +142,42 @@ class Reports extends Page implements Tables\Contracts\HasTable
                             
                         }),
                         
-
-                    Select::make('courseSelected')->options(collect(Course::query()->pluck('name', 'id'))->prepend('All','all')->toArray())->searchable()->columnSpan(2)->label('Student course')->reactive()->disablePlaceholderSelection()->afterStateUpdated(function (Closure $get, Closure $set, $state) {
-
-                        if(!empty($get('daySelected'))){
-                               
-                            $data = DayLogin::orderBy('created_at', 'desc')->where('day_record_id', $get('daySelected'))
-                              
-                            ->when($state != 'all',  function($query) use ($state){
-                                $query->whereHas('student.course',  function ($query) use ($state) {
-                                    $query->where('id', $state);
-                                });
-                            })
-                          
-                            ->when($get('yearSelected') != 'all', function($query) use ($get){
-                                $query->whereHas('student', function($query) use($get){
-                                    $query->where('year', $get('yearSelected'));
-                                });
-                              
-                            })
-                            ->when($get('selectedStatus') != 'all', function ($query) use ($get) {
-                               
-                                $query->whereHas('logout', function ($query) use ($get) {
-                                    $query->where('status', $get('selectedStatus'));
-                                });
-                            })
-                            ->when($get('selectedPeriod') != 'all', function ($query) use ($get) {
-                                 
-                                if($get('selectedPeriod') == 'am'){
-                                        $query->whereTime('created_at', '<', '12:00:00');
-                                }
-                              if($get('selectedPeriod') == 'pm'){
-                                        $query->whereTime('created_at', '>=', '12:00:00');
-
-                                }
-
-                            })
-                            ->get();
+                        Select::make('D')
+                        ->options(function () {
+                            $campusId = $this->campusSelected; // Assuming you have a property called campusSelected to store the selected campus ID.
                             
-                            $this->logins = $data;
-                        }
-                    }),
+                            return collect(Course::query()
+                                ->where('campus_id', $campusId) // Filter courses based on the selected campus.
+                                ->pluck('name', 'id'))
+                                ->prepend('All', 'all')
+                                ->toArray();
+                        })
+                        ->searchable()
+                        ->columnSpan(2)
+                        ->label('Campus Name')
+                        ->reactive()
+                        ->disablePlaceholderSelection()
+                        ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+                            // Your existing code here, with modifications for filtering courses based on the selected campus.
+                            if (!empty($get('daySelected'))) {
+                                $data = DayLogin::orderBy('created_at', 'desc')
+                                    ->where('day_record_id', $get('daySelected'))
+                                    ->when($state != 'all', function ($query) use ($state) {
+                                        $query->whereHas('student.course.campus', function ($query) use ($state) {
+                                            $query->where('id', $state);
+                                        });
+                                    })
+                                    ->when($get('courseSelected') != 'all', function ($query) use ($get) {
+                                        $query->whereHas('student.course', function ($query) use ($get) {
+                                            $query->where('id', $get('courseSelected'));
+                                        });
+                                    })
+                                    // Other conditions as needed.
+                                    ->get();
+                                $this->logins = $data;
+                            }
+                        }),
+                    
                     Select::make('yearSelected')->options([
                         'all' => 'All',
                         '1st Year' => '1st Year',
@@ -236,6 +233,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                         'all'=> 'All',
                         'Logged out'=> 'Logged out',
                         'Did Not Logout'=> 'Did Not Logout',
+                        'Not Logout'=> 'Currently Inside',
                     ])->columnSpan(2)->label('Record status')->reactive()->default('all')
                     ->disablePlaceholderSelection()
                     ->afterStateUpdated(function (Closure $get, Closure $set, $state) {

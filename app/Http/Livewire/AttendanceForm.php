@@ -28,6 +28,8 @@ class AttendanceForm extends Component
     public $errorMessage='';
     public $errorHeader='';
     public $quotes = [];
+    public $confirmLogin = false;
+    public $isConfirmationShow = false;
     protected $listeners = ['test'=> 'test'];
    
     
@@ -37,11 +39,8 @@ class AttendanceForm extends Component
     }
     public function mount(){
   
-        // $this->test();
-        // $this->emit('testEmit');
-
-        // dd($this->quotes);
     }
+
     public function render()
     {
         return view('livewire.attendance-form');
@@ -71,68 +70,33 @@ class AttendanceForm extends Component
                 // $this->todayRecord = $this->getLatestDayRecord();
              
                 if($this->student !== null){
+                    
 
-                    $this->todayRecord = DayRecord::latest()->first();
+                        $this->todayRecord = DayRecord::latest()->first();
 
-                    if($this->todayRecord !== null){
-                        
-
-                        $nowDate = now()->startOfDay();
-                        $activeRecord = $this->todayRecord->created_at->startOfDay();
-
-
-                        if($nowDate->equalTo($activeRecord)){
+                        if($this->todayRecord !== null){
+                            $this->showStudentDetails();
                             
-                            if( $studentLoginRecord =  $this->student->logins()->latest()->first()){    
 
-                                if($logoutRecord = $studentLoginRecord->logout){
-                                    
-
-                                    if($logoutRecord->status == 'Not Logout'){
-
-                                        $this->updateLogoutRecordStatus($logoutRecord);
-                                      
-
-                                    }else{
-                                        $this->createDayLoginRecordWithLogout();
-                                        
-                                    }
-
-                                }else{
-                                    $this->createLogoutRecord($studentLoginRecord);
-                                    
-                                }
-                              
-
-                            }else{
-
-                                $this->createDayLoginRecordWithLogout();
-                              
-                            }
-
-                        }else{
-                            $this->todayRecord   = DayRecord::create();
-                            $this->createDayLoginRecordWithLogout();
-                           
-                        }
+                          
                         
-                        // else if($nowDate->greaterThan($activeRecord)){
-                        // }else{
-                        //     dd('error for it is impossilble that  now date can be less than to the activerecord. unless  you modify it');
-                        // }
-                        // dd('continue the process');
+                       
                         
                     }else{
                         
                         $this->todayRecord   = DayRecord::create();
-                        $this->createDayLoginRecordWithLogout();
+                        $this->showStudentDetails();
+                        
+                        // $this->createDayLoginRecordWithLogout();
                         
                     }
                     
 
                 }else{
-                    $this->showError('Error', "Please register first your barcode to the admin." ,'not-found' );
+                    $this->showError('Error', "Please register student account first to the admin." ,'not-found' );
                 }
+            }else{
+                $this->showError('Error', "Please enter id number",'not-found' );
             }
                
 
@@ -180,27 +144,102 @@ class AttendanceForm extends Component
     public function createDayLoginRecordWithLogout() {
         $newLoginRecord = $this->todayRecord->daylogins()->create([ 'student_id' => $this->student->id, ]);
         $newLogoutRecord = $newLoginRecord->logout()->create(['status'=> 'Not Logout']);
-        $this->student = Student::where('id_number', $this->barcode)->first();
-        $this->isSuccess = true;
+        // $this->student = Student::where('id_number', $this->barcode)->first();
+        $this->clearInformation();
+        // $this->isSuccess = true;
     }
 
 
     public function updateLogoutRecordStatus($logoutRecord){
         $logoutRecord->update(['status' => 'Logged out']);
-        $this->student = Student::where('id_number', $this->barcode)->first();
-        $this->isSuccess = true;
+        // $this->student = Student::where('id_number', $this->barcode)->first();
+        // $this->isSuccess = true;
+        $this->clearInformation();
     }
 
     public function createLogoutRecord($studentLoginRecord){
         $newLogoutRecord = $studentLoginRecord->logout()->create(['status'=> 'Logged out']);
-        $this->student = Student::where('id_number', $this->barcode)->first();
-        $this->isSuccess = true;
+        // $this->student = Student::where('id_number', $this->barcode)->first();
+        $this->clearInformation();
+
     }
 
     public function readBarCodeManually(): void
     {
         $this->readBarCode();
     }
+
+    
+
+
+    public function showStudentDetails(){
+        $this->isSuccess =true;
+    }
+
+
+    public function processLog(){
+      
+          $nowDate = now()->startOfDay();
+        $activeRecord = $this->todayRecord->created_at->startOfDay();
+
+
+                            if($nowDate->equalTo($activeRecord)){
+                                
+                                if( $studentLoginRecord =  $this->student->logins()->latest()->first()){    
+
+                                    if($logoutRecord = $studentLoginRecord->logout){
+                                        
+
+                                        if($logoutRecord->status == 'Not Logout'){
+
+                                            $this->updateLogoutRecordStatus($logoutRecord);
+                                        
+
+                                        }else{
+                                            $this->createDayLoginRecordWithLogout();
+                                            
+                                        }
+
+                                    }else{
+                                        $this->createLogoutRecord($studentLoginRecord);
+                                        
+                                    }
+                                
+
+                                }else{
+
+                                    $this->createDayLoginRecordWithLogout();
+                                
+                                }
+
+                            }else{
+                                $this->todayRecord   = DayRecord::create();
+                                $this->createDayLoginRecordWithLogout();
+                            
+                            }
+    }
+
+
+    public function showConfirmation (){
+        $this->isConfirmationShow = true;
+    }
+
+    
+    public function cancelProcess(){
+
+        $this->clearInformation();
+    }
+
+    public function clearInformation(){
+
+        $this->isConfirmationShow = false;
+        $this->isSuccess = false;
+        $this->barcode = null;
+        $this->student = null;
+        $this->todayRecord = null;
+    }
+
+    
 
 
 

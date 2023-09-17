@@ -1,6 +1,6 @@
 
 <div class="min-h-screen relative bg-white   ">
-    <div class=" border-green-500  rounded flex items-center justify-end  ">
+    <div class=" border-green-500  rounded flex items-center justify-center  ">
         @livewire('test-live-wire')
     </div>
     <div class="max-w-[1200px]   mx-auto h-screen">
@@ -11,7 +11,7 @@
 
 
 
-                    <p class="uppercase text-3xl text-gray-500 text-center tracking-tight pb-10"> SKSU LIBRARY LOGS
+                    <p class="uppercase text-3xl text-gray-500 text-center tracking-tight pb-10">  Library Management System
                         </p>
                   <div class="flex justify-center mt-2">
 
@@ -47,12 +47,12 @@
 
 
 
-                    <div class="pt-[44px] flex  justify-end flex-col ">
+                    {{-- <div class="pt-[44px] flex  justify-end flex-col ">
                         <a href="/admin"
                             class="tex-sm text-slate-500 hover:text-green-700 ">Admin?</a>
                         <p class="text-slate-500 text-sm "> Unauthorized personnel are not permitted access to this area
                         </p>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="p-10  sksu-primary col-span-6 flex items-center justify-center min-h-[560px]">
                     <img src="{{ asset('/images/sksulogo.png') }}" alt="" class="w-[300px] h-[300px]">
@@ -62,13 +62,45 @@
         </div>
     </div>
 
-    <x-modal.card align="center" blur  wire:model="isSuccess" max-width="6xl" show="true" class="ok"
+    
+
+<x-modal.card align="center" z-index="z-50"  blur wire:model="isConfirmationShow" show="true" >
+    <h1 class="text-xl text-center">Are you sure you 
+        want to proceed?</h1>
+
+            <x-slot name="footer">
+                <div class="flex justify-end gap-x-4">
+    
+                    <div class="flex">
+                        {{-- <x-button flat label="Cancel" x-on:click="close" /> --}}
+                        <x-button wire:click="processLog" spinner="processLog" 
+                        icon="check" 
+                        class="sk-button max-h-14 px-[34px] py-[12px]  w-full justify-center capitalize mr-2 ">
+                        Yes
+                    </x-button>
+                        <x-button wire:click="cancelProcess" spinner="cancelProcess" 
+                        icon="x" 
+                        class="sk-button max-h-14 px-[34px] py-[12px]  w-full justify-center capitalize">
+                        No
+                    </x-button>
+                    </div>
+                </div>
+            </x-slot>
+
+</x-modal.card>
+
+
+    <x-modal.card align="center" blur  z-index="z-40" wire:model="isSuccess" max-width="6xl" show="true" 
         spacing="p-20">
         @if ($student != null && $todayRecord != null)
             <div class="modal-c rounded-md p-6 relative">
+                <P class="text-3xl font-bold uppercase text-center ">
+                    {{ now()->timezone('Asia/Manila')->format('F d, Y') }}
+
+                </P>
                 <div class="relative">
                     <img src="{{ asset('images/sksulogo.png') }}" alt="sksu-logo.png"
-                    class="w-32 h-32 mx-auto absolute top-[-60px] left-0 right-0">    
+                    class="w-24 h-24 mx-auto absolute top-[-45px]  right-5">    
                    
                       
                 </div>
@@ -115,17 +147,7 @@
 
                             
                         </div>
-                        <div class="flex items-center justify-between">
-
-                            <P class="text-3xl font-bold uppercase   ">
-                                {{ now()->timezone('Asia/Manila')->format('M d, Y') }}
-    
-                            </P>
-                            <P class="text-3xl font-bold uppercase  ">
-                                {{ now()->timezone('Asia/Manila')->format('h:i:s A') }}
-    
-                            </P>
-                        </div>
+                      
                       
 
                        
@@ -133,35 +155,27 @@
 
 
                         <div class="  mt-4">
-                            <P class="text-3xl text-center p-0 font-semibold capitalize">
+                            <P class="text-4xl text-center p-0 font-semibold capitalize">
                                 {{$student?->last_name}} , {{$student?->middle_name}} {{$student?->first_name}} 
                             </P>
 
                         </div>
-                        <div class="mt-6 flex items-center justify-between border-b ">
+                        <div class="mt-6 flex items-center justify-between">
                             <P class="mt-2 text  capitalize">
-                               Id Number
+                               ID Number
                             </P>
-                            <P class="mt-2 text  ">
-                                {{$student?->id_number}}
-                            </P>
-
-                        </div>
-                        <div class="flex items-center justify-between border-b ">
-                            <P class="mt-2 text-md  capitalize">
-                                School year
-                            </P>
-                            <P class="mt-2 text-md  ">
-                                {{$student?->year}}
+                            <P class="mt-2 text-xl ">
+                             {{$student?->id_number}}
                             </P>
 
                         </div>
-                        <div class="flex items-center justify-between border-b ">
+                     
+                        <div class="flex items-center justify-between  ">
                             <P class="mt-2 text-md   capitalize"">
                                Course
                             </P>
-                            <P class="mt-2 text-md">
-                               {{$student?->course?->name}}
+                            <P class="mt-2 text-xl ">
+                             {{$student?->course?->name}}
                             </P>
 
                         </div>
@@ -179,8 +193,12 @@
 
                 <div class="flex">
                     {{-- <x-button flat label="Cancel" x-on:click="close" /> --}}
-                    <x-button class="bg-green-700 ok transition-all" primary label="DONE" icon="check"
-                        x-on:click="close" />
+                    <x-button class="bg-green-700 ok transition-all" spinner="showConfirmation" primary label="Confirm" 
+                       wire:click="showConfirmation" 
+                        
+                        />
+                    {{-- <x-button class="bg-green-700 ok transition-all" primary label="DONE" icon="check"
+                        x-on:click="close" /> --}}
                 </div>
             </div>
         </x-slot>
@@ -215,6 +233,8 @@
     </x-slot>
 
 </x-modal.card>
+
+
 
 {{-- <div class="h-screen ">
 

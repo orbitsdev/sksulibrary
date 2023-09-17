@@ -19,7 +19,7 @@ class RealtimeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $activeNavigationIcon = 'heroicon-s-identification';
-    protected static ?string $navigationLabel = 'Realtime Monitoring';
+    protected static ?string $navigationLabel = 'Realtime Statistics';
     public static function form(Form $form): Form
     {
         return $form
