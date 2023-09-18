@@ -28,8 +28,8 @@ class CourseForUpdateImport implements ToModel, WithHeadingRow
 
         if($course){
             $course->update([
-                'name'=> $row['course_name'],
-                'campus_id'=> $campus,
+            'name'=> $row['course_name'],
+            'campus_id'=> $campus,
             ]);
            
         }else{
