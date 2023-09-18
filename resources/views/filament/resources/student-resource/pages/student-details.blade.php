@@ -206,54 +206,10 @@
                 <dd class="">{{$student->logins()->count()}}</dd>
               </div>
             
-              <div class="flex justify-between">
-                <dt class="flex font-medium ">
-                  Total Time Spend in library
-                  {{-- <span class="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs ">
-                   
-                  </span> --}}
-                </dt>
-                <dd class="">  {{ \Carbon\CarbonInterval::seconds($student->logins->sum(function ($login) {
-                  return $login->logout->updated_at->diffInSeconds($login->created_at);
-              }))->cascade()->forHumans(['parts' => 2]) }}
-              
-              </dd>
-              </div>
+           
               
             </dl>
-            <dl class="grid grid-cols-2 gap-x-6 py-10  border-t ">
-
-              <div class="flex justify-center flex-col items-center">
-
-
-                @if(!empty($student->school_id))
-                <a target="_blank" href="{{Storage::disk('public')->url($student->school_id)}}">
-                  <img src="{{Storage::disk('public')->url($student->school_id)}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
-
-                </a>
-                @else
-                <img src="{{asset('images/placeholder.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
-                @endif
-
-                
-                <p class="text-xs  mt-2 text-center"> School Id <Picture></Picture></p>
-
-              </div>
-              <div class="flex justify-center flex-col items-center" >
-                @if(!empty($student->two_by_two))
-                <a target="_blank" href="{{Storage::disk('public')->url($student->two_by_two)}}">
-                  <img src="{{Storage::disk('public')->url($student->two_by_two)}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
-                </a>
-                @else
-                <img src="{{asset('images/placeholder.jpg')}}" alt="Glass bottle with black plastic pour top and mesh insert." class="h-20 w-20 flex-none rounded-lg bg-gray-100 object-cover object-center sm:h-40 sm:w-40">
-                @endif
-                
-                <p class="text-xs  mt-2 text-center"> 2x2 Picture</p>
-
-              </div>
-             
-
-            </dl>
+          
           </div>
         </div>
       </div>

@@ -29,7 +29,7 @@ class StudentImport implements ToModel,WithHeadingRow
             }else{
     
                 $campusExist = Campus::find($row['campus_id']);
-                $courseExist = Course::find($row['campus_id']); 
+                $courseExist = Course::find($row['course_id']); 
     
                 $campus = null;
                 $course = null;

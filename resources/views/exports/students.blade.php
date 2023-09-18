@@ -33,10 +33,19 @@
             <td align="left" width="40">{{ $item?->country }}</td>
             <td align="left" width="40">{{ $item?->postal_code }}</td>
             <td align="left" width="40">{{ $item?->year }}</td>
-            <td align="left" width="40">{{ $item?->campus?->id }}</td>
-            <td align="left" width="40">{{ $item?->course?->id }}</td>
-            <td align="left" width="40">{{ $item?->course?->campus->id }} = {{ $item?->course?->campus->name }}</td>
-            <td align="left" width="40">{{ $item?->course?->id }} = {{ $item?->course?->name }}</td>
+            <td align="left" width="40">{{ empty($item->course) ? '' : $item->course->id }}</td>
+            <td align="left" width="40">{{ empty($item->course) || empty($item->course->campus) ? '' : $item->course->campus->id }}</td>
+            <td align="left" width="40">
+                @if (empty($item->course) || empty($item->course->campus))
+                    {{ '' }}
+                @else
+                    {{ $item->course->campus->name }}
+                @endif
+            </td>
+            
+
+            
+            
         </tr>
         @endforeach
     </tbody>

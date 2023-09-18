@@ -17,7 +17,6 @@
     @foreach($items as $item)
         <tr>
             <td width="50">{{ $item?->name }}</td>
-           
         </tr>
     @endforeach
     </tbody>

@@ -17,7 +17,7 @@ class CampusImport implements ToModel ,WithHeadingRow
     {   
 
         
-       
+
         $campus = Campus::where('name', $row['campus_name'])->first();
 
         if($campus){

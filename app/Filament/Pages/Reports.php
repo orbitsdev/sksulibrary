@@ -135,45 +135,35 @@ class Reports extends Page implements Tables\Contracts\HasTable
                         ->afterStateUpdated(function (Closure $set, $state) {
 
                             $this->dayData = DayRecord::where('id', $state)->first();
-                            $data = DayLogin::orderBy('created_at', 'desc')->where('day_record_id', $state)->whereHas('logout', function ($query) {
-                                $query->whereIn('status', ['Logged out', 'Did Not Logout']);
-                            })->get();
+                            $data = DayLogin::orderBy('created_at', 'desc')->where('day_record_id', $state)->whereHas('logout')->get();
                             $this->logins = $data;
                             
                         }),
                         
-                        Select::make('D')
-                        ->options(function () {
-                            $campusId = $this->campusSelected; // Assuming you have a property called campusSelected to store the selected campus ID.
-                            
-                            return collect(Course::query()
-                                ->where('campus_id', $campusId) // Filter courses based on the selected campus.
-                                ->pluck('name', 'id'))
-                                ->prepend('All', 'all')
-                                ->toArray();
-                        })
+                        Select::make('courseSelected')
+                        ->options(collect(Course::query() // Filter courses based on the selected campus.
+                        ->pluck('name', 'id'))
+                        ->prepend('All', 'all')
+                        ->toArray())
                         ->searchable()
                         ->columnSpan(2)
-                        ->label('Campus Name')
+                        ->label('Course Name')
                         ->reactive()
                         ->disablePlaceholderSelection()
                         ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+                            
                             // Your existing code here, with modifications for filtering courses based on the selected campus.
                             if (!empty($get('daySelected'))) {
                                 $data = DayLogin::orderBy('created_at', 'desc')
                                     ->where('day_record_id', $get('daySelected'))
                                     ->when($state != 'all', function ($query) use ($state) {
-                                        $query->whereHas('student.course.campus', function ($query) use ($state) {
-                                            $query->where('id', $state);
+                                        $query->whereHas('student.course', function ($query) use ($state) {
+                                            $query->where('id', (int)$state);
                                         });
                                     })
-                                    ->when($get('courseSelected') != 'all', function ($query) use ($get) {
-                                        $query->whereHas('student.course', function ($query) use ($get) {
-                                            $query->where('id', $get('courseSelected'));
-                                        });
-                                    })
-                                    // Other conditions as needed.
+                                
                                     ->get();
+                              
                                 $this->logins = $data;
                             }
                         }),
@@ -198,6 +188,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
                                     $query->where('id', $get('courseSelected'));
                                 });
                             })
+                            
                           
                             ->when($state != 'all', function($query) use ($state){
                                
@@ -205,6 +196,11 @@ class Reports extends Page implements Tables\Contracts\HasTable
                                     $query->where('year', $state);
                                 });
                               
+                            })
+                            ->when($get('courseSelected') != 'all', function ($query) use ($get) {
+                                $query->whereHas('student.course', function ($query) use ($get) {
+                                    $query->where('id', (int)$get('courseSelected'));
+                                });
                             })
                             ->when($get('selectedStatus') != 'all', function ($query) use ($get) {
                                
@@ -257,6 +253,12 @@ class Reports extends Page implements Tables\Contracts\HasTable
                                 });
                               
                             })
+
+                            ->when($get('courseSelected') != 'all', function ($query) use ($get) {
+                                $query->whereHas('student.course', function ($query) use ($get) {
+                                    $query->where('id', (int)$get('courseSelected'));
+                                });
+                            })
                             ->when($state != 'all', function ($query) use ($state) {
                                
                                 $query->whereHas('logout', function ($query) use ($state) {
@@ -302,9 +304,9 @@ class Reports extends Page implements Tables\Contracts\HasTable
                                     $query->where('id', $get('courseSelected'));
                                 });
                             })
-                            ->when($get('courseSelected') != 'all',  function($query) use ($get){
-                                $query->whereHas('student.course',  function ($query) use ($get) {
-                                    $query->where('id', $get('courseSelected'));
+                            ->when($get('courseSelected') != 'all', function ($query) use ($get) {
+                                $query->whereHas('student.course', function ($query) use ($get) {
+                                    $query->where('id', (int)$get('courseSelected'));
                                 });
                             })
                           

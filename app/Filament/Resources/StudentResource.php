@@ -77,7 +77,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true),
+                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true)->numeric(),
                                 // TextInput::make('barcode')->columnSpan(8)->required(),
                              
                             ]),

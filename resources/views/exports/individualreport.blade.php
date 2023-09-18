@@ -6,7 +6,8 @@
             <th>Year</th>
             <th>Time In</th>
             <th>Time Out</th>
-            <th>Time Spend</th>
+            <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Campus</th>
+            {{-- <th>Time Spend</th> --}}
         </tr>
     </thead>
     <tbody>

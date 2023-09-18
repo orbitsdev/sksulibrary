@@ -20,13 +20,12 @@ class StudentExport implements FromView
         } else{
             $students = [
                 (object) [
-                    'id' => 1,
-                    'id_number' => '2021-0001',
+                    'id_number' => 20210001, // Changed to an integer
                     'first_name' => 'John',
-                    'last_name' => 'Doe',
                     'middle_name' => 'Smith',
+                    'last_name' => 'Doe',
                     'sex' => 'Male',
-                    'contact_number' => '123-456-7890',
+                    'contact_number' => '09231234567',
                     'street_address' => '123 Main Street',
                     'city' => 'Example City',
                     'country' => 'Example Country',
@@ -35,18 +34,16 @@ class StudentExport implements FromView
                     'course_id' => 1, // Replace with the appropriate course_id
                     'status' => 'Active',
                     'year' => '1st Year',
-                    // 'profile' => 'path/to/profile-image.jpg',
-                    // 'school_id' => 'SCHOOL001',
-                    // 'two_by_two' => 'path/to/two-by-two-image.jpg',
+                    'profile' => 'path/to/profile-image.jpg',
+                   
                 ],
                 (object) [
-                    'id' => 2,
-                    'id_number' => '2021-0002',
+                    'id_number' => 20210002, // Changed to an integer
                     'first_name' => 'Jane',
-                    'last_name' => 'Doe',
                     'middle_name' => 'Smith',
+                    'last_name' => 'Doe',
                     'sex' => 'Female',
-                    'contact_number' => '987-654-3210',
+                    'contact_number' => '09231234567',
                     'street_address' => '456 Elm Street',
                     'city' => 'Another City',
                     'country' => 'Another Country',
@@ -56,17 +53,15 @@ class StudentExport implements FromView
                     'status' => 'Inactive',
                     'year' => '2nd Year',
                     'profile' => 'path/to/another-profile-image.jpg',
-                    // 'school_id' => 'SCHOOL002',
-                    // 'two_by_two' => 'path/to/another-two-by-two-image.jpg',
+                  
                 ],
                 (object) [
-                    'id' => 3,
-                    'id_number' => '2021-0003',
+                    'id_number' => 20210003, // Changed to an integer
                     'first_name' => 'Alice',
-                    'last_name' => 'Johnson',
                     'middle_name' => 'Brown',
+                    'last_name' => 'Johnson',
                     'sex' => 'Female',
-                    'contact_number' => '555-123-4567',
+                    'contact_number' => '09231234567',
                     'street_address' => '789 Oak Street',
                     'city' => 'Yet Another City',
                     'country' => 'Yet Another Country',
@@ -75,11 +70,11 @@ class StudentExport implements FromView
                     'course_id' => 3, // Replace with the appropriate course_id
                     'status' => 'Active',
                     'year' => '3rd Year',
-                    // 'profile' => 'path/to/alice-profile-image.jpg',
-                    // 'school_id' => 'SCHOOL003',
-                    // 'two_by_two' => 'path/to/alice-two-by-two-image.jpg',
+                    'profile' => 'path/to/alice-profile-image.jpg',
+                   
                 ],
             ];
+            
             
      
                     
