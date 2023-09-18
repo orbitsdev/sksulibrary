@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\FileUpload;
 use App\Filament\Resources\CourseResource;
+use App\Imports\CourseForUpdateImport;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -34,6 +35,20 @@ class ManageCourses extends ManageRecords
             })->icon('heroicon-o-save')->form([
                 FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
             ]),
+
+            Actions\Action::make('Import To Update')->button()->action(function (array $data): void {
+
+                $file  = Storage::disk('public')->path($data['file']);
+               
+                Excel::import(new CourseForUpdateImport, $file);
+
+                if (Storage::disk('public')->exists($data['file'])) {
+
+                    Storage::disk('public')->delete($data['file']);
+                }
+            })->icon('heroicon-o-save')->form([
+                FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
+            ])->label('Import To Update'),
 
             Actions\Action::make('Export')->button()->action(function(array $data) {
               

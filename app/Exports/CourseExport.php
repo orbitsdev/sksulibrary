@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Campus;
 use App\Models\Course;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
@@ -33,7 +34,8 @@ class CourseExport implements FromView {
 
         }
         return view('exports.courses', [
-            'items' => $courseData
+            'items' => $courseData,
+            'campuses' => Campus::all(),
         ]);
     }
 }

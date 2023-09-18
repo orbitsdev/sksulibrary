@@ -6,7 +6,8 @@ use App\Models\Campus;
 use App\Models\Course;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-class CourseImport implements ToModel, WithHeadingRow
+
+class CourseForUpdateImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -15,9 +16,7 @@ class CourseImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {   
-       
-    
-        $name = Course::where('name', $row['course_name'])->first();
+        $course = Course::where('id', $row['course_id'])->first();
         $campusExist = Campus::find($row['campus_id']); 
         
         
@@ -27,14 +26,15 @@ class CourseImport implements ToModel, WithHeadingRow
         }
 
 
-        if($name){
-        }else{
-            return new Course([
+        if($course){
+            $course->update([
                 'name'=> $row['course_name'],
                 'campus_id'=> $campus,
             ]);
+           
+        }else{
+
 
         }
-
     }
 }

@@ -60,6 +60,7 @@ class CampusResource extends Resource
                 // ->wrap()
                 // ,
                 TextColumn::make('courses_count')->counts('courses')->label('Total Course')->color('primary'),
+                TextColumn::make('id')->searchable()->label('Campus ID'),
             ])
             ->filters([
                 //
