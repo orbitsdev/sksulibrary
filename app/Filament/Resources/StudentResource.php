@@ -126,6 +126,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                                         $query->where('campus_id', $get('campus_id'));
                                     })->pluck('name','id');
                                 })
+                                
                                 ->searchable()
                                 ->columnSpan(4)
                                 ->required()

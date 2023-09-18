@@ -9,7 +9,7 @@ use Filament\Widgets\BarChartWidget;
 
 class AttenDanceChart extends BarChartWidget
 {
-    protected static ?string $heading = 'Login Per Day';
+    protected static ?string $heading = 'Monthly Report Daily Visitors by Course';
 
     protected static ?int $sort = 3;
 
@@ -45,17 +45,6 @@ class AttenDanceChart extends BarChartWidget
             ];
         }
 
-        // return [
-           
-        //     'datasets' => [
-        //         [
-        //             'backgroundColor' => '#0CE461',
-        //             'label' => 'Student Who Go In Library Per Day',
-        //             'data' => DayRecord::withCount('daylogins')->get()->pluck('daylogins_count')->toArray(),
-        //         ],
-        //     ],
-        //     'labels' =>  DayRecord::query() ->pluck('created_at')->map(function ($date) { return Carbon::parse($date)->format(' F j');}),
-         
-        // ];
+       
     
 }

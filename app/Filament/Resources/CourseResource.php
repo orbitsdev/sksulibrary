@@ -42,6 +42,8 @@ class CourseResource extends Resource
         return $form
             ->schema([
                 Select::make('campus_id')
+                     ->searchable()
+                     ->preload()
                     ->relationship('campus', 'name')->label('What Campus')
                     ->required()
                     ->columnSpan(2)
