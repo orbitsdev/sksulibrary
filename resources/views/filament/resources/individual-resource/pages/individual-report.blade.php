@@ -33,7 +33,7 @@
       
 
       
-<div class="print-container-student-details dark:bg-gray-800 bg-white w-full ">
+<div class="print-container-student-details  bg-white w-full ">
     <div class="flex justify-center p-6">
       <div class="mr-10">
         <img src="{{ asset('images/logo.png') }}" alt="" style="width: 60px; height: 60px">
