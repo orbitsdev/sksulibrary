@@ -23,9 +23,38 @@
             }
         }
     </style>
- {{ $this->form }}
+ {{-- {{ $this->form }}
  {{$from}}
- {{$to}}
+ {{$to}} --}}
+
+ <div class="grid grid-cols-3 gap-x-6">
+
+    <div class="">
+        <label for="monthInput" class="block text-md font-medium text-gray-700 mb-1">Month</label>
+        <input type="month" wire:model="month" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600">
+    </div>
+    
+    <div class="">
+        <label for="courseSelect" class="block text-md font-medium text-gray-700 mb-1">Course</label>
+        <select id="courseSelect" wire:model="course_selected" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600">
+            <option value="all"> All</option>
+           @foreach($courses as $course)
+           <option value="{{$course->id}}"> {{$course->name}}</option>
+
+           @endforeach
+            
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+    {{$course_selected}}
+        
+    
+
+{{-- <input type="month" wire:model="month" class="  rounded focus:border-green-600 focus:ring-green-600 "> --}}
+
+
+ </div>
     <div class=" flex justify-end w-full b  ">
         <x-button rose spinner="exportToExcel" wire:click="exportToExcel" style="background: #03A340" icon="newspaper" class="mr-4">Export</x-button>
         <x-button rose spinner="print" wire:click="print" style="background: #03A340" icon="printer">Print</x-button>
