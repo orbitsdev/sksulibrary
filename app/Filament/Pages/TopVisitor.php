@@ -2,13 +2,15 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Campus;
+use App\Exports\TopVisitorExport;
 use Closure;
 use Filament\Forms;
+use App\Models\Campus;
 use App\Models\Course;
 use App\Models\Student;
 use Filament\Pages\Page;
 use Filament\Forms\Components\Grid;
+use Maatwebsite\Excel\Facades\Excel;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DateTimePicker;
 
@@ -27,13 +29,14 @@ class TopVisitor extends Page implements Forms\Contracts\HasForms
     public $year_selected;
     public $courses = [];
     public $campuses = [];
+    public $top =10;
     public function mount()
     {
 
         $this->month = now()->format('Y-m');
-        $this->initializeStudents();
         $this->courses = Course::all();
         $this->campuses = Campus::all();
+        $this->initializeStudents();
     }
     
     public function updatedMonth()
@@ -41,6 +44,14 @@ class TopVisitor extends Page implements Forms\Contracts\HasForms
         $this->initializeStudents();
     }
     
+    public function exportToExcel(){
+        return Excel::download(new TopVisitorExport($this->students), $this->month.'-TOP-VISITORS.xlsx');
+    }
+    public function print()
+    {
+        $this->dispatchBrowserEvent('printTopVisitors');
+    }
+
     public function updatedCampusSelected()
     {
      ; // Reset the month to the current month
@@ -51,6 +62,10 @@ class TopVisitor extends Page implements Forms\Contracts\HasForms
     
     public function updatedCourseSelected()
     {
+        $this->initializeStudents();
+    }
+
+    public function updatedTop(){
         $this->initializeStudents();
     }
     
@@ -67,8 +82,13 @@ class TopVisitor extends Page implements Forms\Contracts\HasForms
             $query->whereYear('created_at', $dateInfo['year'])
                 ->whereMonth('created_at', $dateInfo['month']);
         }])
+        ->withCount(['logins' => function ($query) use ($dateInfo) {
+            $query->whereYear('created_at', $dateInfo['year'])
+                ->whereMonth('created_at', $dateInfo['month']);
+        }])
+       
         ->orderByDesc('logins_count')
-        ->take(10);
+        ->take($this->top);
     
         if ($this->course_selected && $this->course_selected !== 'all') {
             $query->whereHas('course', function ($query) {

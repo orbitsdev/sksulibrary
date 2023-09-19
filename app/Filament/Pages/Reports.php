@@ -81,6 +81,7 @@ class Reports extends Page implements Tables\Contracts\HasTable
 
 
     }
+    
     public function print()
     {
         $this->dispatchBrowserEvent('printTable', ['newName' => 'dasd']);
