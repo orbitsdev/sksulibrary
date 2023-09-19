@@ -46,8 +46,20 @@
             <!-- Add more options as needed -->
         </select>
     </div>
+    <div class="">
+        <label for="campuses" class="block text-md font-medium text-gray-700 mb-1">Campus</label>
+        <select id="campuses" wire:model="campus_selected" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600">
+            <option value="all"> All</option>
+           @foreach($campuses as $campus)
+           <option value="{{$campus->id}}"> {{$campus->name}}</option>
 
-    {{$course_selected}}
+           @endforeach
+            
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+
+
         
     
 

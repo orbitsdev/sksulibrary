@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Campus;
 use Closure;
 use Filament\Forms;
 use App\Models\Course;
@@ -18,87 +19,84 @@ class TopVisitor extends Page implements Forms\Contracts\HasForms
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.top-visitor';
-
     public $students = [];
     public $month;
     public $to;
     public $course_selected;
-    public $year_selected;
     public $campus_selected;
-
+    public $year_selected;
     public $courses = [];
     public $campuses = [];
-
-    public function mount(){
-
+    public function mount()
+    {
 
         $this->month = now()->format('Y-m');
-        $this->students = Student::whereHas('logins', function ($query) {
-            $query->whereYear('created_at', now()->year)
-                  ->whereMonth('created_at', now()->month); // Filter for the current month and year
+        $this->initializeStudents();
+        $this->courses = Course::all();
+        $this->campuses = Campus::all();
+    }
+    
+    public function updatedMonth()
+    {
+        $this->initializeStudents();
+    }
+    
+    public function updatedCampusSelected()
+    {
+     ; // Reset the month to the current month
+        $this->initializeStudents();
+        // Fetch and update available course options based on the selected campus
+        $this->updateCourseOptions();
+    }
+    
+    public function updatedCourseSelected()
+    {
+        $this->initializeStudents();
+    }
+    
+    protected function initializeStudents()
+    {   
+       
+        $dateInfo = date_parse_from_format('Y-m', $this->month);
+    
+        $query = Student::whereHas('logins', function ($query) use ($dateInfo) {
+            $query->whereYear('created_at', $dateInfo['year'])
+                ->whereMonth('created_at', $dateInfo['month']);
         })
-        ->withCount(['logins' => function ($query) {
-            $query->whereYear('created_at', now()->year)
-                  ->whereMonth('created_at', now()->month); // Filter for the current month and year
+        ->withCount(['logins' => function ($query) use ($dateInfo) {
+            $query->whereYear('created_at', $dateInfo['year'])
+                ->whereMonth('created_at', $dateInfo['month']);
         }])
         ->orderByDesc('logins_count')
-        ->take(10) // Get the top 10 students
-        ->get();
-        
-        
-        $this->courses = Course::all();
-
-        
-        
-    }
-
-    public function updatedmonth(){
-
-       // This line is fine for getting the current month and year
+        ->take(10);
     
-       $dateInfo = date_parse_from_format('Y-m', $this->month);
-
-       $this->students = Student::whereHas('logins', function ($query) use ($dateInfo) {
-           $query->whereYear('created_at', $dateInfo['year'])
-                 ->whereMonth('created_at', $dateInfo['month']); // Filter for the specified month and year
-       })
-       ->withCount(['logins' => function ($query) use ($dateInfo) {
-           $query->whereYear('created_at', $dateInfo['year'])
-                 ->whereMonth('created_at', $dateInfo['month']); // Filter for the specified month and year
-       }])
-       ->orderByDesc('logins_count')
-       ->take(10) // Get the top 10 students
-       ->get();
-      
-       
-       
-      
+        if ($this->course_selected && $this->course_selected !== 'all') {
+            $query->whereHas('course', function ($query) {
+                $query->where('id', $this->course_selected);
+            });
+        }
+    
+        if ($this->campus_selected && $this->campus_selected !== 'all') {
+            $query->whereHas('campus', function ($query) {
+                $query->where('id', $this->campus_selected);
+            });
+        }
+    
+        $this->students = $query->get();
     }
-    public function updatedCourseSelected(){
-
-      
-        $dateInfo = date_parse_from_format('Y-m', $this->month);
-
-       $this->students = Student::whereHas('logins', function ($query) use ($dateInfo) {
-           $query->whereYear('created_at', $dateInfo['year'])
-                 ->whereMonth('created_at', $dateInfo['month']); // Filter for the specified month and year
-       })
-       ->when($this->course_selected != 'all',   function ($query){
-        $query->whereHas('course', function($query){
-            $query->where('id', $this->course_selected);
-        });
-       })
-       ->withCount(['logins' => function ($query) use ($dateInfo) {
-           $query->whereYear('created_at', $dateInfo['year'])
-                 ->whereMonth('created_at', $dateInfo['month']); // Filter for the specified month and year
-       }])
-       ->orderByDesc('logins_count')
-       ->take(10) // Get the top 10 students
-       ->get();
-      
-       
-       
-      
+    
+    protected function updateCourseOptions()
+    {
+        // Fetch and update available course options based on the selected campus
+        if ($this->campus_selected && $this->campus_selected !== 'all') {
+            $this->courses = Course::where('campus_id', $this->campus_selected)->get();
+        } else {
+            // If "All Campuses" or no campus is selected, show all courses
+            $this->courses = Course::all();
+        }
+    
+        // Reset the course selection to "all" when campus changes
+        $this->course_selected = 'all';
     }
 
     public function fileterQuery(){

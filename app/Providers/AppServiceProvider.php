@@ -96,11 +96,11 @@ class AppServiceProvider extends ServiceProvider
                                 ->activeIcon('heroicon-s-document-text')
                                  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
                                   ->url(route('filament.pages.reports')),
-                                // NavigationItem::make('Highest Library Visits')
-                                //  ->icon('heroicon-o-presentation-chart-bar')
-                                // ->activeIcon('heroicon-s-presentation-chart-bar')
-                                //  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.top-visitor'))
-                                //   ->url(route('filament.pages.top-visitor')),
+                                NavigationItem::make('Top Visitors')
+                                 ->icon('heroicon-o-presentation-chart-bar')
+                                ->activeIcon('heroicon-s-presentation-chart-bar')
+                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.top-visitor'))
+                                  ->url(route('filament.pages.top-visitor')),
                             // NavigationItem::make('Individual Reports')
                             // ->icon('heroicon-o-document-report')
                             // ->activeIcon('heroicon-s-document-report')
