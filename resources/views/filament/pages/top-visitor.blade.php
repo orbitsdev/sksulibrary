@@ -27,7 +27,7 @@
  {{$from}}
  {{$to}} --}}
 
- <div class="grid grid-cols-3 gap-x-6 gap-y-2">
+ <div class="grid grid-cols-3 gap-x-6 gap-y-4">
 
      
     <div class="">
@@ -61,7 +61,7 @@
     </div>
 
     <div class="">
-        <label for="monthInput" class="block text-md font-medium text-gray-700 mb-1">List Of Top Visitors (Default 10)</label>
+        <label for="monthInput" class="block text-md font-medium text-gray-700 mb-1">List of Top visitors (Default 10)</label>
         <input type="number" wire:model="top" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-600 focus:ring-green-600">
     
     </div>
