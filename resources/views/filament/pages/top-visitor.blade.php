@@ -27,7 +27,7 @@
  {{$from}}
  {{$to}} --}}
 
- <div class="grid grid-cols-3 gap-x-6 ">
+ <div class="grid grid-cols-3 gap-x-6 gap-y-4">
 
      
     <div class="">
