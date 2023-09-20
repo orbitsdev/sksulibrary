@@ -17,7 +17,7 @@ class CourseImport implements ToModel, WithHeadingRow
     {   
        
     
-        $name = Course::where('name', $row['course_name'])->first();
+        $course = Course::where('id', $row['course_id'])->first();
         $campusExist = Campus::find($row['campus_id']); 
         
         
@@ -27,7 +27,14 @@ class CourseImport implements ToModel, WithHeadingRow
         }
 
 
-        if($name){
+        if($course){
+            $course->update([
+                'name'=> $row['course_name'],
+                'campus_id'=> $campus,
+            ]);
+
+            $course->save();
+
         }else{
             return new Course([
                 'name'=> $row['course_name'],

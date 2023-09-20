@@ -25,6 +25,8 @@ class CampusResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-library';
     protected static ?string $activeNavigationIcon = 'heroicon-s-library';
+    protected static ?string $navigationLabel = 'Campus';
+
 
 
 

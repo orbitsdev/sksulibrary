@@ -23,15 +23,18 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_number' => $this->faker->unique()->numberBetween(1000000000, 9999999999),
+            'id_number' => $this->faker->unique()->numberBetween(1000, 2000),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'middle_name' => $this->faker->lastName(),
             'sex' => 'Male',
-            'contact_number'=>$this->faker->phoneNumber(),
-            'street_address' => $this->faker->streetAddress(),
-            'city' => $this->faker->city(),
+            'contact_number'=>$this->faker->phoneNumber(11),
             'country'=> $this->faker->country(),
+            'region'=> $this->faker->country(),
+            'province'=> $this->faker->city(),
+            'city' => $this->faker->city(),
+            'barangay'=> $this->faker->city(),
+            'street_address' => $this->faker->streetAddress(),
             'state'=>$this->faker->state(),
             'postal_code'=>$this->faker->postcode(),
             'campus_id'=> Campus::inRandomOrder()->first()->id,

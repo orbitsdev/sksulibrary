@@ -193,7 +193,7 @@
 
                 <div class="flex">
                     {{-- <x-button flat label="Cancel" x-on:click="close" /> --}}
-                    <x-button class="bg-green-700 ok transition-all" spinner="showConfirmation" primary label="Confirm" 
+                    <x-button class="bg-green-700 ok transition-all outline-none  ring-0 focus:ring-0 " spinner="showConfirmation" primary label="Confirm" 
                        wire:click="showConfirmation" 
                         
                         />

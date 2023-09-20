@@ -37,28 +37,24 @@ class ListStudents extends ListRecords
             })->icon('heroicon-o-save')->form([
                 FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
             ])
-            ->modalSubheading("When importing accounts, ensure data accuracy. Verify member names exist in the database (e.g., campus, department, course, section). Names are case-sensitive, so check capitalization and spelling.
-
-            Attempting to assign names that don't exist won't save and may cause errors during import.
-            
-            Questions or need help? Contact us; we're here to assist!")
+            ->modalSubheading("Please ensure data accuracy by verifying that member names exist in the database, including campus, department, course, and section names. Remember that names are case-sensitive, so double-check capitalization and spelling. Attempting to assign names that do not exist in the database won't reflect or save in the import!")
             ,
-            Actions\Action::make('ImportUpdate')->button()->action(function (array $data): void {
+            // Actions\Action::make('ImportUpdate')->button()->action(function (array $data): void {
 
-                $file  = Storage::disk('public')->path($data['file']);
+            //     $file  = Storage::disk('public')->path($data['file']);
                
-                Excel::import(new StudentForUpdateImport, $file);
+            //     Excel::import(new StudentForUpdateImport, $file);
 
-                if (Storage::disk('public')->exists($data['file'])) {
+            //     if (Storage::disk('public')->exists($data['file'])) {
 
-                    Storage::disk('public')->delete($data['file']);
-                }
-            })->icon('heroicon-o-save')->form([
-                FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
-            ])
-            ->modalSubheading("When updating accounts, ensure data accuracy. Confirm member names exist in the database (e.g., campus, department, course, section). Remember, names are case-sensitive. Modifying non-existeng data won't reflect in the record. Questions or need assistance? Contact us; we're here to help!")            
-            ->label('Import to Updates')
-            ,
+            //         Storage::disk('public')->delete($data['file']);
+            //     }
+            // })->icon('heroicon-o-save')->form([
+            //     FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
+            // ])
+            // ->modalSubheading("When updating accounts, ensure data accuracy. Confirm member names exist in the database (e.g., campus, department, course, section). Remember, names are case-sensitive. Modifying non-existeng data won't reflect in the record. Questions or need assistance? Contact us; we're here to help!")            
+            // ->label('Import to Updates')
+            // ,
             Actions\Action::make('Export')->button()->action(function(array $data) {
               
                 

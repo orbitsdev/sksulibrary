@@ -22,7 +22,7 @@ class ManageCourses extends ManageRecords
         return [
 
 
-            Actions\Action::make('Import ')->button()->action(function (array $data): void {
+            Actions\Action::make('Import')->button()->action(function (array $data): void {
 
                 $file  = Storage::disk('public')->path($data['file']);
                
@@ -34,21 +34,24 @@ class ManageCourses extends ManageRecords
                 }
             })->icon('heroicon-o-save')->form([
                 FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
-            ]),
+            ])
+            ->modalSubheading("Please note that the course ID is used as the primary identifier. If the course ID exists, the data will be updated. If the ID is null or does not exist, the system will use the name as the basis and automatically create a new record. ")            
 
-            Actions\Action::make('Import To Update')->button()->action(function (array $data): void {
+            ,
 
-                $file  = Storage::disk('public')->path($data['file']);
+            // Actions\Action::make('Import To Update')->button()->action(function (array $data): void {
+
+            //     $file  = Storage::disk('public')->path($data['file']);
                
-                Excel::import(new CourseForUpdateImport, $file);
+            //     Excel::import(new CourseForUpdateImport, $file);
 
-                if (Storage::disk('public')->exists($data['file'])) {
+            //     if (Storage::disk('public')->exists($data['file'])) {
 
-                    Storage::disk('public')->delete($data['file']);
-                }
-            })->icon('heroicon-o-save')->form([
-                FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
-            ])->label('Import To Update'),
+            //         Storage::disk('public')->delete($data['file']);
+            //     }
+            // })->icon('heroicon-o-save')->form([
+            //     FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
+            // ])->label('Import To Update'),
 
             Actions\Action::make('Export')->button()->action(function(array $data) {
               

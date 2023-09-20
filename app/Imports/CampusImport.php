@@ -18,9 +18,13 @@ class CampusImport implements ToModel ,WithHeadingRow
 
         
 
-        $campus = Campus::where('name', $row['campus_name'])->first();
+        $campus = Campus::where('id', $row['campus_id'])->first();
 
         if($campus){
+            $campus->update([
+                'name'=> $row['campus_name']
+            ]);
+            $campus->save();
 
         }else{
             return new Campus([

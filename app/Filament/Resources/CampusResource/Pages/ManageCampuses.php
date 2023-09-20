@@ -32,23 +32,23 @@ class ManageCampuses extends ManageRecords
             })->icon('heroicon-o-save')->form([
                 FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
             ])
-            ->modalSubheading("Note that an existing name won't be created.")            
+            ->modalSubheading("Please note that the campus ID is used as the primary identifier. If the campus ID exists, the data will be updated. If the ID is null or does not exist, the system will use the name as the basis and automatically create a new record. ")            
             ,
-            Actions\Action::make('Import Update ')->button()->action(function (array $data): void {
+            // Actions\Action::make('Import Update ')->button()->action(function (array $data): void {
 
-                $file  = Storage::disk('public')->path($data['file']);
+            //     $file  = Storage::disk('public')->path($data['file']);
                
-                Excel::import(new CampusForUpdateImport, $file);
+            //     Excel::import(new CampusForUpdateImport, $file);
 
-                if (Storage::disk('public')->exists($data['file'])) {
+            //     if (Storage::disk('public')->exists($data['file'])) {
 
-                    Storage::disk('public')->delete($data['file']);
-                }
-            })->icon('heroicon-o-save')->form([
-                FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
-            ])
-            ->modalSubheading("When updating campuses, make sure data is accurate. Double-check names in the database and be mindful of case sensitivity. Changes to non-existent data won't be recorded. If you have questions or need help, reach out to us; we're here for you!")            
-            ->label('Import to Updates'),
+            //         Storage::disk('public')->delete($data['file']);
+            //     }
+            // })->icon('heroicon-o-save')->form([
+            //     FileUpload::make('file')->acceptedFileTypes(['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/csv', 'text/csv', 'text/plain'])->disk('public')->directory('imports')
+            // ])
+            // ->modalSubheading("When updating campuses, make sure data is accurate. Double-check names in the database and be mindful of case sensitivity. Changes to non-existent data won't be recorded. If you have questions or need help, reach out to us; we're here for you!")            
+            // ->label('Import to Updates'),
 
             Actions\Action::make('Download Reference')->button()->action(function(){        
                 return Excel::download(new CampusExport, 'campuses.xlsx');

@@ -9,14 +9,16 @@
         "awcodes/filament-table-repeater": "^1.2",
         "filament/filament": "^2.0",
         "filament/tables": "^2.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.7",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^3.2",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.11",
         "maatwebsite/excel": "^3.1",
-        "wireui/wireui": "^1.17"
+        "milon/barcode": "^10.0",
+        "wireui/wireui": "^1.17",
+        "woenel/prpcmblmts": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

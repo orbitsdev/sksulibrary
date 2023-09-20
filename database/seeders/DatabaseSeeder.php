@@ -8,6 +8,10 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\CampusSeeder;
 use Database\Seeders\CourseSeeder;
 use Database\Seeders\StudentSeeder;
+use Database\Seeders\PhilippineCitiesTableSeeder;
+use Database\Seeders\PhilippineRegionsTableSeeder;
+use Database\Seeders\PhilippineBarangaysTableSeeder;
+use Database\Seeders\PhilippineProvincesTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +25,11 @@ class DatabaseSeeder extends Seeder
              UserSeeder::class,
             CourseSeeder::class,
             CampusSeeder::class,
-            StudentSeeder::class,
+            // StudentSeeder::class,
+            PhilippineRegionsTableSeeder::class,
+            PhilippineProvincesTableSeeder::class,
+            PhilippineCitiesTableSeeder::class,
+            PhilippineBarangaysTableSeeder::class,
         ]);
 
 

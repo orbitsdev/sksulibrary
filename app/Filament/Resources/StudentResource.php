@@ -2,19 +2,25 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Filament\Forms;
+use App\Models\City;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\State;
 use App\Models\Campus;
 use App\Models\Course;
+use App\Models\Country;
 use App\Models\Student;
 use Filament\Resources\Form;
 use Ramsey\Uuid\Guid\Fields;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Http;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\BulkAction;
@@ -37,10 +43,14 @@ use App\Filament\Resources\StudentResource\RelationManagers;
 class StudentResource extends Resource
 {
 
+   
+
+    public $collections = [];
     public static function getGloballySearchableAttributes(): array
 {
     return ['first_name', 'last_name', 'id_number', ];
 }
+
 
 public static function getGlobalSearchResultDetails(Model $record): array
 {
@@ -77,7 +87,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true)->numeric(),
+                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true)->numeric()->label('Id Number'),
                                 // TextInput::make('barcode')->columnSpan(8)->required(),
                              
                             ]),
@@ -100,11 +110,126 @@ public static function getGlobalSearchResultDetails(Model $record): array
                         Grid::make(12)
                         ->schema([
 
-                            TextInput::make('contact_number')->label('Phone number')->columnSpan(6)->tel()->required(),
-                            TextInput::make('street_address')->label('Street')->columnSpan(6)->label('Street Address')->required(),
-                            TextInput::make('country')->columnSpan(4)->required(),
-                            TextInput::make('city')->columnSpan(4)->required(),
-                            TextInput::make('postal_code')->columnSpan(4)->required(),
+                            TextInput::make('contact_number')->label('Phone number')
+                            ->columnSpan(6)
+                            ->required()
+                            // ->prefix('+63')
+                            ->minLength(11)
+                            ->maxLength(11)
+                            ->numeric()
+                            ->mask(fn (TextInput\Mask $mask) => $mask
+                                ->numeric())
+                            ,
+                           
+                            Select::make('country')
+                            ->columnSpan(6)
+                            ->required()
+                            ->options([
+                                'Philippines' =>'Philippines'
+                            ])
+                            ->disablePlaceholderSelection()
+                            ->default('Philippines')
+                            ->reactive()
+                            ->afterStateUpdated(function (Closure $get,Closure $set, $state,)  {
+                              
+                            }),
+                           
+                            Select::make('region')
+                            ->columnSpan(4)
+                            ->required()
+                            ->options(DB::table('philippine_regions')->pluck('region_description', 'region_code'))
+                            ->default('12')
+                            ->reactive()
+                            ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
+                                // dd($state);
+                            })
+                            ->searchable()
+                            ->preload(),
+                            Select::make('province')
+                            ->columnSpan(4)
+                            ->required()
+                            ->options(function (Closure $get,Closure $set, $state){
+                               return DB::table('philippine_provinces')->where('region_code', $get('region'))->pluck('province_description', 'province_code');
+                            })
+                         
+                            ->reactive()
+                            ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
+                                // dd($state);
+                            })
+                            ->searchable()
+                            ->preload(),
+                            Select::make('city')
+                            ->columnSpan(4)
+                            ->required()
+                            ->options(function (Closure $get,Closure $set, $state){
+                               return DB::table('philippine_cities')->where('province_code', $get('province'))->pluck('city_municipality_description', 'city_municipality_code');
+                            })
+                            ->reactive()
+                            ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
+                                // dd($state);
+                            })
+                            ->searchable()
+                            ->preload(),
+                            Select::make('barangay')
+                            ->columnSpan(4)
+                            ->required()
+                            ->options(function (Closure $get,Closure $set, $state){
+                               return DB::table('philippine_barangays')->where('city_municipality_code', $get('city'))->pluck('barangay_description', 'barangay_code');
+                            })
+                            ->label('Barangay')
+                            ->reactive()
+                            ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
+                                // dd($state);
+                            })
+                            ->searchable()
+                            ->preload()
+                            
+                            ,
+                            TextInput::make('street_address')->label('Street')->columnSpan(4)->label('Street Address')->required(),
+                            // Select::make('country')
+                            // ->options([
+                            //     'Philippines' =>'Philippines'
+                            // ])
+                            // ->default(function(){
+                            //     return 'Philippines';
+                            // })
+                            // ->columnSpan(4)
+                            // ->required(),
+                            // Select::make('city')
+                            // ->columnSpan(4)
+                            // ->required()
+                            // ->options(function(Closure $get,Closure $set, $state){
+                            //    return City::pluck('name', 'id')->map(function ($name) {
+                            //     return ucfirst($name);
+                            // });
+                            // })
+                            // ->reactive()
+                            // ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
+                            //     // dd($state);
+                            // })
+                            // ->preload(),
+                           
+                            // Select::make('city')
+                            // ->columnSpan(4)
+                            // ->required()
+                            // ->options(function(Closure $get,Closure $set, $state){
+                            //    return City::when($get('province'), function ($query) use ($get) {
+                            //     $query->where('state_id', (int)$get('province'));
+                            // })->pluck('name', 'id')->map(function ($name) {
+                            //     return ucfirst($name);
+                            // });
+                            // })
+                            // ->reactive()
+                            // ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
+                            //     // dd($state);
+                            // })
+                            // ->preload(),
+                           
+                            // TextInput::make('city')->columnSpan(4)->required(),
+                            TextInput::make('postal_code')->columnSpan(4)->required()
+                            ->mask(fn (TextInput\Mask $mask) => $mask
+                            ->numeric())
+                        ,
                         
 
                           
@@ -190,7 +315,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                 TextColumn::make('last_name')->label('Last Name')->searchable(),
                 TextColumn::make('course.campus.name')->searchable()->label('Campus'),
                 TextColumn::make('course.name')->searchable()->label('Course'),
-                TextColumn::make('year')->searchable()->label('YEar'),
+                TextColumn::make('year')->searchable()->label('Year'),
               
 
             ])

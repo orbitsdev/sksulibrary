@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Teller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TellerController;
 use App\Http\Controllers\OfficerController;
@@ -28,6 +29,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 });
+
+
+// Route::get('/testapi', function(){
+//     $response = Http::get('https://countriesnow.space/api/v0.1/countries/');
+//     return $response;
+// });
 
 
 

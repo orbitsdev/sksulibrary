@@ -15,8 +15,8 @@
             <th>Year</th>
             <th>Campus Id</th>
             <th>Course Id</th>
-            <th>Course Reference</th>
-            <th>Campus Reference</th>
+            {{-- <th>Course Reference</th>
+            <th>Campus Reference</th> --}}
         </tr>
     </thead>
     <tbody>
@@ -35,13 +35,13 @@
             <td align="left" width="40">{{ $item?->year }}</td>
             <td align="left" width="40">{{ empty($item->course) ? '' : $item->course->id }}</td>
             <td align="left" width="40">{{ empty($item->course) || empty($item->course->campus) ? '' : $item->course->campus->id }}</td>
-            <td align="left" width="40">
+            {{-- <td align="left" width="40">
                 @if (empty($item->course) || empty($item->course->campus))
                     {{ '' }}
                 @else
                     {{ $item->course->campus->name }}
                 @endif
-            </td>
+            </td> --}}
             
 
             

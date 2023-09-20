@@ -12,8 +12,8 @@
         @foreach ($items as $item)
         <tr>
             <td align="left" width="50">{{ $item->name ?? '' }}</td>
-            <td align="left" width="50">{{ $item->campus->id ?? '' }}</td>
             <td align="left" width="50">{{ $item->id ?? '' }}</td>
+            <td align="left" width="50">{{ $item->campus->id ?? '' }}</td>
             {{-- <td align="left" width="50">{{ $item->name ?? '' }} = {{ $item->id ?? '' }}</td>
             <td align="left" width="50">
                 @if (!empty($item->campus))
