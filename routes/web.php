@@ -3,7 +3,6 @@
 use App\Models\Teller;
 use Milon\Barcode\DNS1D;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -35,28 +34,31 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     
     Route::get('/download-barcode/{idNumber}', function($idNumber){
-      // Generate the barcode data
+        // Storage::disk('public')->put('/temp/test.png',base64_decode(DNS1D::getBarcodePNG(str($idNumber), 'S25+')));     
+    // Generate the barcode image
+    // STORE IMAGE
+    // DOWLOAD IMAGE USINNG ASTORAGE
+    // $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
 
-      try {
-        $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
+    // // Create a response with the image data
+    // $response = new Response($barcodeData);
 
-        // Save the barcode image temporarily to the public disk
-        $filePath = 'temp/test.png';
-        Storage::disk('public')->put($filePath, base64_decode($barcodeData));
-    
-        // Create a response to trigger the download using the Storage::download() method
-        $response = Storage::disk('public')->download($filePath, 'barcode.png');
-    
-        // Delete the file after it has been downloaded
-        Storage::disk('public')->delete($filePath);
-          //dsad
-        return $response;
-    } catch (\Exception $e) {
-        // Log the error or return a custom error response
-        Log::error($e);
-        return response('An error occurred', 500);
-    }
-     
+    // // Set the content type and disposition headers for download
+    // $response->header('Content-Type', 'image/png');
+    // $response->header('Content-Disposition', 'attachment; filename="barcode.png"');
+
+    // return $response;
+   
+    // dd($response);
+        // return $response;
+ $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
+
+    // Save the barcode image temporarily to the public disk
+    $filePath = 'temp/test.png';
+    Storage::disk('public')->put($filePath, base64_decode($barcodeData));
+
+    // Create a response to trigger the download using the Storage::download() method
+    return Storage::disk('public')->download($filePath, 'barcode.png');
    
 
     })->name('barcode.download');
