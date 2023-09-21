@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Teller;
+use App\Models\Student;
 use Milon\Barcode\DNS1D;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
@@ -34,31 +35,28 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     
     Route::get('/download-barcode/{idNumber}', function($idNumber){
-        // Storage::disk('public')->put('/temp/test.png',base64_decode(DNS1D::getBarcodePNG(str($idNumber), 'S25+')));     
-    // Generate the barcode image
-    // STORE IMAGE
-    // DOWLOAD IMAGE USINNG ASTORAGE
-    // $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
-
-    // // Create a response with the image data
-    // $response = new Response($barcodeData);
-
-    // // Set the content type and disposition headers for download
-    // $response->header('Content-Type', 'image/png');
-    // $response->header('Content-Disposition', 'attachment; filename="barcode.png"');
-
-    // return $response;
-   
-    // dd($response);
-        // return $response;
- $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
-
-    // Save the barcode image temporarily to the public disk
-    $filePath = 'temp/test.png';
-    Storage::disk('public')->put($filePath, base64_decode($barcodeData));
-
-    // Create a response to trigger the download using the Storage::download() method
-    return Storage::disk('public')->download($filePath, 'barcode.png');
+        $student = Student::first();
+      
+        if ($student) {
+            // Generate the barcode data
+            $barcodeData = DNS1D::getBarcodePNG(strval($student->id_number), 'S25+');
+        
+            // Generate a filename based on student information
+            $filename = "{$student->last_name}-{$student->first_name}-{$student->id_number}.png";
+        
+            // Define the path where the barcode image will be saved temporarily
+            $filePath = 'temp/' . $filename;
+        
+            // Save the barcode image temporarily to the public disk
+            Storage::disk('public')->put($filePath, base64_decode($barcodeData));
+        
+            // Create a response to trigger the download using the Storage::download() method
+            return Storage::disk('public')->download($filePath, $filename);
+        }
+        
+        // If the student is not found, you might want to return a response indicating that.
+        return response('Student not found', 404);
+        
    
 
     })->name('barcode.download');
