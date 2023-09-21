@@ -26,6 +26,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
@@ -137,8 +138,9 @@ public static function getGlobalSearchResultDetails(Model $record): array
                             Select::make('region')
                             ->columnSpan(4)
                             ->required()
-                            ->options(DB::table('philippine_regions')->pluck('region_description', 'region_code'))
-                            ->default('12')
+                            // ->options(DB::table('philippine_regions')->pluck('region_description', 'region_code'))
+                            ->options(DB::table('philippine_regions')->pluck('region_description', 'region_description'))
+                            ->default('REGION XII (SOCCSKSARGEN)')
                             ->reactive()
                             ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
                                 // dd($state);
@@ -149,7 +151,14 @@ public static function getGlobalSearchResultDetails(Model $record): array
                             ->columnSpan(4)
                             ->required()
                             ->options(function (Closure $get,Closure $set, $state){
-                               return DB::table('philippine_provinces')->where('region_code', $get('region'))->pluck('province_description', 'province_code');
+                                $region_code = DB::table('philippine_regions')->where('region_description',$get('region'))->first();
+                                if($region_code){
+
+                                    return DB::table('philippine_provinces')->where('region_code', $region_code->region_code)->pluck('province_description', 'province_description');
+                                }
+
+                                return [];
+                            //    return DB::table('philippine_provinces')->where('region_code', $get('region'))->pluck('province_description', 'province_code');
                             })
                          
                             ->reactive()
@@ -162,7 +171,13 @@ public static function getGlobalSearchResultDetails(Model $record): array
                             ->columnSpan(4)
                             ->required()
                             ->options(function (Closure $get,Closure $set, $state){
-                               return DB::table('philippine_cities')->where('province_code', $get('province'))->pluck('city_municipality_description', 'city_municipality_code');
+                            //    return DB::table('philippine_cities')->where('province_code', $get('province'))->pluck('city_municipality_description', 'city_municipality_code');
+                            $province_code = DB::table('philippine_provinces')->where('province_description',$get('province'))->first();
+                            if($province_code){
+
+                                return DB::table('philippine_cities')->where('province_code',$province_code->province_code)->pluck('city_municipality_description', 'city_municipality_description');
+                            } 
+                            return [];
                             })
                             ->reactive()
                             ->afterStateUpdated(function (Closure $get,Closure $set, $state) {
@@ -174,7 +189,14 @@ public static function getGlobalSearchResultDetails(Model $record): array
                             ->columnSpan(4)
                             ->required()
                             ->options(function (Closure $get,Closure $set, $state){
-                               return DB::table('philippine_barangays')->where('city_municipality_code', $get('city'))->pluck('barangay_description', 'barangay_code');
+                            //    return DB::table('philippine_barangays')->where('city_municipality_code', $get('city'))->pluck('barangay_description', 'barangay_code');
+                            $city = DB::table('philippine_cities')->where('city_municipality_description',$get('city'))->first();
+                                if($city){
+
+                                    return DB::table('philippine_barangays')->where('city_municipality_code',$city->city_municipality_code)->pluck('barangay_description', 'barangay_description');
+                                }
+
+                                return [];
                             })
                             ->label('Barangay')
                             ->reactive()
@@ -264,6 +286,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                                     // '5th Year' => '5th Year',
                                 ])
                                 ->required()->columnSpan(4)->default('1st Year'),
+                             
 
                                 FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->label('Image'),
                                 // FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id'),
@@ -316,6 +339,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                 TextColumn::make('course.campus.name')->searchable()->label('Campus'),
                 TextColumn::make('course.name')->searchable()->label('Course'),
                 TextColumn::make('year')->searchable()->label('Year'),
+                ViewColumn::make('a')->view('tables.columns.bar-code'),
               
 
             ])

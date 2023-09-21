@@ -47,26 +47,12 @@
   <div>
     
  
-    
-    
-   
-    
-    
-    
-    {{-- @if($student->profile)
-    {{$student->profile}}
-    @endif
-    @if($student->school_id)
-    {{$student->school_id}}
-    @endif
-    @if($student->two_by_two)
-    {{$student->two_by_two}}
-    @endif --}}
-
   </div>
-  
 
+
+  
   <div>
+  
     <div class=" mt-4">
       <div class="mx-auto max-w-3xl  ">
         <div class="w-full text-center ">
@@ -131,6 +117,10 @@
               </div>
              
             </div>
+            <div>
+             <img src="data:image/png;base64,{{DNS1D::getBarcodePNG(str($student->id_number), 'S25+')}}" alt="barcode" />
+            
+            </div>
           </div>
     
           <div class="sm:ml-40 sm:pl-6">
@@ -146,15 +136,24 @@
                       Contact Number
                     </p>
                     <p class=" text-sm ">
-                      {{$student->contact_number}}
+                      +63 {{ number_format($student->contact_number ?? 0, 0, '.', ' ') }}
+
                     </p>
                   </div>
                   <div class="mt-2">
                     <p class="font-medium ">
-                      Street
+                      Region
                     </p>
                     <p class=" text-sm ">
-                      {{$student->street_address}}
+                      {{$student->region ??''}}
+                    </p>
+                  </div>
+                  <div class="mt-2">
+                    <p class="font-medium ">
+                      Province
+                    </p>
+                    <p class=" text-sm ">
+                      {{$student->province ?? ''}}
                     </p>
                   </div>
                   <div class="mt-2">
@@ -162,7 +161,7 @@
                       City
                     </p>
                     <p class=" text-sm ">
-                      {{$student->city}}
+                      {{$student->city ?? ''}}
                     </p>
                   </div>
                   <div class="mt-2">
@@ -174,6 +173,24 @@
                     </p>
                   </div>
 
+                  <div class="mt-2">
+                    <p class="font-medium ">
+                      Barangay
+                    </p>
+                    <p class=" text-sm ">
+                      {{$student->barangay ?? ''}}
+                    </p>
+                  </div>
+                  <div class="mt-2">
+                    <p class="font-medium ">
+                      Street
+                    </p>
+                    <p class=" text-sm ">
+                      {{$student->street_address ?? ''}}
+                    </p>
+                  </div>
+               
+             
                   
                 </div>
               </div>
