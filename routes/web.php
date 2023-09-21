@@ -41,11 +41,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
 
         // Save the barcode image temporarily to the public disk
-        $filePath = 'temp/barcode.png';
+        $filePath = 'temp/test.png';
         Storage::disk('public')->put($filePath, base64_decode($barcodeData));
     
         // Create a response to trigger the download using the Storage::download() method
-   
         $response = Storage::disk('public')->download($filePath, 'barcode.png');
     
         // Delete the file after it has been downloaded
