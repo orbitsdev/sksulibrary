@@ -34,31 +34,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     
     Route::get('/download-barcode/{idNumber}', function($idNumber){
-        // Storage::disk('public')->put('/temp/test.png',base64_decode(DNS1D::getBarcodePNG(str($idNumber), 'S25+')));     
-    // Generate the barcode image
-    // STORE IMAGE
-    // DOWLOAD IMAGE USINNG ASTORAGE
-    // $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
+      // Generate the barcode data
+      $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
 
-    // // Create a response with the image data
-    // $response = new Response($barcodeData);
-
-    // // Set the content type and disposition headers for download
-    // $response->header('Content-Type', 'image/png');
-    // $response->header('Content-Disposition', 'attachment; filename="barcode.png"');
-
-    // return $response;
-   
-    // dd($response);
-        // return $response;
-        $barcodeData = DNS1D::getBarcodePNG(str($idNumber), 'S25+');
-
-        // Save the barcode image temporarily to the public disk
-        $filePath = 'temp/test.png';
-        Storage::disk('public')->put($filePath, base64_decode($barcodeData));
-    
-        // Create a response to trigger the download using the Storage::download() method
-        return Storage::disk('public')->download($filePath, 'barcode.png');
+      // Save the barcode image temporarily to the public disk
+      $filePath = 'temp/test.png';
+      Storage::disk('public')->put($filePath, base64_decode($barcodeData));
+  
+      // Create a response to trigger the download using the Storage::download() method
+      $response = Storage::disk('public')->download($filePath, 'barcode.png');
+  
+      // Delete the file after it has been downloaded
+      Storage::disk('public')->delete($filePath);
+  
+      return $response;
    
 
     })->name('barcode.download');
