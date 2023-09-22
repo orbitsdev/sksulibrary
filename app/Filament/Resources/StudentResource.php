@@ -75,7 +75,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
     
     public static function getEloquentQuery(): Builder
 {
-    return parent::getEloquentQuery()->orderBy('created_at', 'desc');
+    return parent::getEloquentQuery()->orderBy('id_number', 'asc');
 }
 
     public static function form(Form $form): Form
@@ -98,6 +98,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                         Grid::make(12)
                             ->schema([
                                 TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required(),
+                                
                                 TextInput::make('first_name')->label('First Name')->columnSpan(3)->required(),
                                 TextInput::make('middle_name')->label('Middle Name')->columnSpan(3)->required(),
                                 Select::make('sex')->columnSpan(3)->options(['male'=> 'Male', 'female'=> 'Female'])->default('male')
@@ -339,7 +340,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                 TextColumn::make('course.campus.name')->searchable()->label('Campus'),
                 TextColumn::make('course.name')->searchable()->label('Course'),
                 TextColumn::make('year')->searchable()->label('Year'),
-                ViewColumn::make('a')->view('tables.columns.bar-code'),
+                ViewColumn::make('')->view('tables.columns.bar-code'),
               
 
             ])

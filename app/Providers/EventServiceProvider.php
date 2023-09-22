@@ -3,9 +3,13 @@
 namespace App\Providers;
 
 use App\Models\Campus;
+use App\Models\DayLogin;
+use App\Models\DayRecord;
 use App\Models\Queque;
 use App\Models\Student;
 use App\Observers\CampusObserver;
+use App\Observers\DayRecordObserver;
+use App\Observers\LoginObserver;
 use App\Observers\QuequeObserver;
 use App\Observers\StudentObserver;
 use Illuminate\Support\Facades\Event;
@@ -34,6 +38,8 @@ class EventServiceProvider extends ServiceProvider
         Queque::observe(QuequeObserver::class);
         Campus::observe(CampusObserver::class);
         Student::observe(StudentObserver::class);
+        DayRecord::observe(DayRecordObserver::class);
+        DayLogin::observe(LoginObserver::class);
     }
 
     /**

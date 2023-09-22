@@ -140,8 +140,9 @@
   }
  
   .modal-c{
-    background: #166534 !important;
-    color: white !important;
+    background: white !important;
+    /* color:  #166534!important; */
+    color:  #030712!important;
 
   }
 
@@ -163,7 +164,7 @@
   height: 8px;
   position: absolute;
   top: 68%;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 1));
+  background: linear-gradient(to right, transparent, #166534);
   transform: translateY(-50%);
 }
 .mm::after {
@@ -172,7 +173,7 @@
   height: 8px;
   position: absolute;
   top: 68%;
-  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 1));
+  background: linear-gradient(to left, transparent, #166534);
   transform: translateY(-50%);
 }
 
