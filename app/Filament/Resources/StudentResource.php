@@ -88,7 +88,12 @@ public static function getGlobalSearchResultDetails(Model $record): array
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true)->numeric()->label('Id Number'),
+                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true)
+                                ->numeric()
+                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                    ->numeric())
+                                
+                                ->label('Id Number'),
                                 // TextInput::make('barcode')->columnSpan(8)->required(),
                              
                             ]),
@@ -97,10 +102,24 @@ public static function getGlobalSearchResultDetails(Model $record): array
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required(),
+                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required()
+                                ->mask(function (TextInput\Mask $mask) {
+                                    $mask->pattern('[A-Za-z]+');
+                                })
                                 
-                                TextInput::make('first_name')->label('First Name')->columnSpan(3)->required(),
-                                TextInput::make('middle_name')->label('Middle Name')->columnSpan(3)->required(),
+                                ,
+                                
+                                
+                                TextInput::make('first_name')->label('First Name')->columnSpan(3)->required()
+                                ->mask(function (TextInput\Mask $mask) {
+                                    $mask->pattern('[A-Za-z]+');
+                                })
+                                ,
+                                TextInput::make('middle_name')->label('Middle Name')->columnSpan(3)->required()
+                                ->mask(function (TextInput\Mask $mask) {
+                                    $mask->pattern('[A-Za-z]+');
+                                })
+                                ,
                                 Select::make('sex')->columnSpan(3)->options(['male'=> 'Male', 'female'=> 'Female'])->default('male')
                                 ->required()
                                 ,
