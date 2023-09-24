@@ -359,7 +359,7 @@ public static function getGlobalSearchResultDetails(Model $record): array
                 TextColumn::make('course.campus.name')->searchable()->label('Campus'),
                 TextColumn::make('course.name')->searchable()->label('Course'),
                 TextColumn::make('year')->searchable()->label('Year'),
-                ViewColumn::make('')->view('tables.columns.bar-code'),
+                ViewColumn::make('QRCODE')->view('tables.columns.bar-code'),
               
 
             ])
