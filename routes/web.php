@@ -3,6 +3,7 @@
 use App\Models\Teller;
 use App\Models\Student;
 use Milon\Barcode\DNS1D;
+use Milon\Barcode\DNS2D;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -35,21 +36,55 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     
     Route::get('/download-barcode/{idNumber}', function($idNumber){
-        $student = Student::first();
+        // $student = Student::first();
       
+        // if ($student) {
+        //     // Generate the barcode data
+        //     $barcodeData = DNS1D::getBarcodePNG(strval($student->id_number), 'S25+');
+        //     // $barcodeData =    DNS2D::getBarcodePNG(strval($student->id_number), 'QRCODE');
+         
+        
+        //     // Generate a filename based on student information
+        //     $lastName = $student->last_name ?? 'UnknownLastName';
+        //     $firstName = $student->first_name ?? 'UnknownFirstName';
+        //     // $filename = "{$student->last_name}-{$student->first_name}-{$student->id_number}.png";
+        //     // $filename = ucfirst($lastName) . '-' . ucfirst($firstName) . '-' . $student->id_number . '.png';
+        //     $filename = strtoupper($lastName . '-' . $firstName . '-' . $student->id_number . '.png');
+        
+        //     // Define the path where the barcode image will be saved temporarily
+        //     $filePath = 'temp/' . $filename;
+        
+        //     // Save the barcode image temporarily to the public disk
+        //     Storage::disk('public')->put($filePath, base64_decode($barcodeData));
+        
+        //     // Create a response to trigger the download using the Storage::download() method
+        //     return Storage::disk('public')->download($filePath, $filename);
+        // }
+        
+        // // If the student is not found, you might want to return a response indicating that.
+        // return response('Student not found', 404);
+
+
+        $student = Student::where('id_number', $idNumber)->first();
+    
         if ($student) {
-            // Generate the barcode data
-            $barcodeData = DNS1D::getBarcodePNG(strval($student->id_number), 'S25+');
-        
+            // Create an instance of DNS2D
+            $qrCode = new DNS2D();
+            
+            // Generate the QR code data
+            $qrCodeData = $qrCode->getBarcodePNG(strval($student->id_number), 'QRCODE');
+            
             // Generate a filename based on student information
-            $filename = "{$student->last_name}-{$student->first_name}-{$student->id_number}.png";
-        
-            // Define the path where the barcode image will be saved temporarily
+            $lastName = $student->last_name ?? 'UnknownLastName';
+            $firstName = $student->first_name ?? 'UnknownFirstName';
+            $filename = strtoupper($lastName . '-' . $firstName . '-' . $student->id_number . '.png');
+            
+            // Define the path where the QR code image will be saved temporarily
             $filePath = 'temp/' . $filename;
-        
-            // Save the barcode image temporarily to the public disk
-            Storage::disk('public')->put($filePath, base64_decode($barcodeData));
-        
+            
+            // Save the QR code image temporarily to the public disk
+            Storage::disk('public')->put($filePath, base64_decode($qrCodeData));
+            
             // Create a response to trigger the download using the Storage::download() method
             return Storage::disk('public')->download($filePath, $filename);
         }
