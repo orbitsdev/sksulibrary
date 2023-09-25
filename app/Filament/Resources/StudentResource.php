@@ -102,24 +102,14 @@ public static function getGlobalSearchResultDetails(Model $record): array
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required()
-                                ->mask(function (TextInput\Mask $mask) {
-                                    $mask->pattern('[A-Za-z]+');
-                                })
-                                
-                                ,
+                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required(),
+                              
                                 
                                 
-                                TextInput::make('first_name')->label('First Name')->columnSpan(3)->required()
-                                ->mask(function (TextInput\Mask $mask) {
-                                    $mask->pattern('[A-Za-z]+');
-                                })
-                                ,
-                                TextInput::make('middle_name')->label('Middle Name')->columnSpan(3)->required()
-                                ->mask(function (TextInput\Mask $mask) {
-                                    $mask->pattern('[A-Za-z]+');
-                                })
-                                ,
+                                TextInput::make('first_name')->label('First Name')->columnSpan(3)->required(),
+                                
+                                TextInput::make('middle_name')->label('Middle Name')->columnSpan(3)->required(),
+                               
                                 Select::make('sex')->columnSpan(3)->options(['male'=> 'Male', 'female'=> 'Female'])->default('male')
                                 ->required()
                                 ,
