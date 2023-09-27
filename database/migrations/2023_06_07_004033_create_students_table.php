@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('barangay')->nullable();
             $table->text('street_address')->nullable();
+            $table->text('home_address')->nullable();
             $table->text('state')->nullable();
             $table->text('postal_code')->nullable();
             $table->foreignId('campus_id')->nullable();

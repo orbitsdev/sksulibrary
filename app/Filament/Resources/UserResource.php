@@ -34,6 +34,8 @@ class UserResource extends Resource
     protected static ?string $activeNavigationIcon = 'heroicon-s-user';
     protected static ?int $navigationSort = 0;
     protected static ?string $navigationLabel = 'Accounts';
+   
+
 
 
     public $name;
