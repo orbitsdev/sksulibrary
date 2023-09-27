@@ -34,15 +34,18 @@ class UniqueStudentName implements ValidationRule
         ->where('last_name', $this->last_name)
         ->where('first_name', $this->first_name)
         // ->orWhere('id_number', $this->id_number)
-        // ->where('id_number', $value)
+        //  ->where('id_number', $value)
         ->first();
+
+        
 
 
 
         
         if ($existingRecord) {
-            
-            $fail('A similar record already exists. Are you sure you want to create it forcefully');
+            $firstname = $existingRecord->first_name ?? '';
+            $lastname = $existingRecord->last_name ?? '';
+            $fail('A similar record already exists ('.$firstname.' '.$lastname.')');
         }
         
     }

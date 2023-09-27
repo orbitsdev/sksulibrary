@@ -26,8 +26,19 @@
             
             </td>
             <td align="left" width="50">
-                {{ !empty($student) && !empty($student->course) && !empty($item->course->campus) ? $item->course->campus->name : 'No Campus Assigned' }}
 
+                @if($item->course)
+                @if($item->course->campus) 
+                    {{
+                         $item->course->campus->name 
+                    }}
+                @else
+
+                No Campus Assigned
+
+                @endif
+
+                @endif
             </td>
             <td align="left" width="50">
                 {{count($item->logins)}}

@@ -91,21 +91,24 @@ class StudentResource extends Resource
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('id_number')->columnSpan(4)->required()->unique(ignoreRecord: true)
+                                TextInput::make('id_number')->columnSpan(4)->required()
                                     ->numeric()
                                     ->mask(fn (TextInput\Mask $mask) => $mask
                                         ->numeric())
                                     ->label('Id Number')
                                     ->maxLength(10)
-                                    ->rules([
-                                        function (Closure $get, Closure $set, $state) {
-                                            return new UniqueStudentId($state);
-                                        },
-                                    ])
-                                    ->reactive()
-                                    ->afterStateUpdated(function (HasForms $livewire, TextInput $component) {
-                                        $livewire->validateOnly($component->getStatePath());
-                                    }),
+                                    // ->rules([
+                                    //     function (Closure $get, Closure $set, $state) {
+                                    //         return new UniqueStudentId($state);
+                                    //     },
+                                    // ])
+                                    // ->reactive()
+                                    // ->afterStateUpdated(function (HasForms $livewire, TextInput $component) {
+                                    //     $livewire->validateOnly($component->getStatePath());
+                                    // })
+                                    ->unique(ignoreRecord: true)
+                                    ,
+                                    
 
                                 // TextInput::make('barcode')->columnSpan(8)->required(),
 
@@ -115,29 +118,26 @@ class StudentResource extends Resource
                     ->schema([
                         Grid::make(12)
                             ->schema([
-                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required()
-                                    ->rules([
-                                        function (Closure $get, Closure $set, $state) {
-                                            return new UniqueStudentName( $get('first_name'), $state);
-                                        },
-                                    ])
-                                    ->reactive()
-                                    ->afterStateUpdated(function (HasForms $livewire, TextInput $component) {
-                                        $livewire->validateOnly($component->getStatePath());
-                                    }),
+                                TextInput::make('last_name')->label('Last Name')->columnSpan(3)->required(),
+                                   
+                                    // ->reactive()
+                                    // ->afterStateUpdated(function (HasForms $livewire, TextInput $component) {
+                                    //     $livewire->validateOnly($component->getStatePath());
+                                    // })
+                                    
 
 
 
                                 TextInput::make('first_name')->label('First Name')->columnSpan(3)->required()
-                                ->rules([
-                                    function (Closure $get, Closure $set, $state) {
-                                        return new UniqueStudentName($state, $get('last_name'));
-                                    },
-                                ])
-                                ->reactive()
-                                ->afterStateUpdated(function (HasForms $livewire, TextInput $component) {
-                                    $livewire->validateOnly($component->getStatePath());
-                                })
+                                // ->rules([
+                                //     function (Closure $get, Closure $set, $state) {
+                                //         return new UniqueStudentName($state, $get('last_name'));
+                                //     },
+                                // ])
+                                // ->reactive()
+                                // ->afterStateUpdated(function (HasForms $livewire, TextInput $component) {
+                                //     $livewire->validateOnly($component->getStatePath());
+                                // })
                                 
                                 ,
 
@@ -184,14 +184,13 @@ class StudentResource extends Resource
                                     ->reactive()
                                     ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
 
-
-
                                         $set('province', null);
                                         $set('city', null);
                                         $set('barangay', null);
                                     })
                                     ->searchable()
                                     ->preload(),
+
                                 Select::make('province')
                                     ->columnSpan(4)
                                     ->required()
@@ -369,7 +368,9 @@ class StudentResource extends Resource
                 //         return Storage::disk('public')->url($record->two_by_two);
                 //     }
                 // })->openUrlInNewTab(),
-                TextColumn::make('id_number')->label('ID Number')->searchable(),
+                TextColumn::make('id_number')->label('ID Number')->searchable()
+                ->copyable()
+                ,
                 // TextColumn::make('first_name')->searchable()->formatStateUsing(function(Student $record){
                 //     return $record?->last_name. ',' . $record?->first_name .' ' . $record?->middle_name;
                 // })
@@ -486,20 +487,24 @@ class StudentResource extends Resource
                     Tables\Actions\DeleteAction::make()->button()->before(function ($action, $record) {
 
 
-                        if (Storage::disk('public')->exists($record->profile) && $record->profile != null) {
+                        if(!empty($record->profile)){
 
-                            Storage::disk('public')->delete($record->profile);
+                            if (Storage::disk('public')->exists($record->profile)) {
+    
+                                Storage::disk('public')->delete($record->profile);
+                            }
                         }
 
-                        if (Storage::disk('public')->exists($record->school_id) && $record->school_id != null) {
 
-                            Storage::disk('public')->delete($record->school_id);
-                        }
+                        // if (Storage::disk('public')->exists($record->school_id) && $record->school_id != null) {
 
-                        if (Storage::disk('public')->exists($record->two_by_two) && $record->two_by_two != null) {
+                        //     Storage::disk('public')->delete($record->school_id);
+                        // }
 
-                            Storage::disk('public')->delete($record->two_by_two);
-                        }
+                        // if (Storage::disk('public')->exists($record->two_by_two) && $record->two_by_two != null) {
+
+                        //     Storage::disk('public')->delete($record->two_by_two);
+                        // }
                     }),
                 ]),
 

@@ -49,10 +49,14 @@ class CourseResource extends Resource
                     ->columnSpan(2)
                  
                     ->createOptionForm([
-                        TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name'),
+                        TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name')
+                        ->unique(ignoreRecord: true),
                     ])
                     ,
-                TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Course Name'),
+                TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Course Name')
+                ->unique(ignoreRecord: true)
+
+                ,
             ]);
     }
 

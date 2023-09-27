@@ -40,7 +40,10 @@ class CampusResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name'),
+                TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name')
+                ->unique(ignoreRecord: true)
+
+                ,
                 Repeater::make('courses')
                 ->relationship()
                 ->schema([

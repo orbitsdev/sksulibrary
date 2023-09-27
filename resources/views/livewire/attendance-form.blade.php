@@ -77,8 +77,20 @@
 
 
     <x-modal.card align="center" z-index="z-50" blur wire:model="isConfirmationShow" show="true">
-        <h1 class="text-xl text-center">Are you sure do you
-            want to proceed?</h1>
+        @if ($student != null && $todayRecord != null)
+        <h1 class="text-xl text-center">Are you sure you want to proceed? @if ($studentLoginRecord = $this->student->logins()->latest()->first())
+            @if ($studentLoginRecord->logout)
+                @if($studentLoginRecord->logout->status == 'Logged out')
+                        In
+                @else   
+                        Out
+                @endif
+            @endif
+    @else
+        In
+    @endif
+            @endif
+</h1>
 
         <x-slot name="footer">
             <div class="flex justify-end gap-x-4">
@@ -106,7 +118,7 @@
             <div class="modal-c rounded-md px-6 py-2 relative">
 
                 <p class="uppercase text-3xl text-green-900 text-center tracking-tight pb-10"> 
-                    {{ now()->timezone('Asia/Manila')->format('F d, Y') }}
+                    {{ now()->timezone('Asia/Manila')->format('F d, Y ( h:i A )') }}
                 </p>
 
                 <div class="relative">
@@ -188,6 +200,15 @@
                             </P>
                             <P class="mt-2 text-xl ">
                                 {{ $student?->course?->name }}
+                            </P>
+
+                        </div>
+                        <div class="flex items-center text-green-900 justify-between  ">
+                            <P class="mt-2 text-md   capitalize"">
+                                Campus
+                            </P>
+                            <P class="mt-2 text-xl ">
+                                {{ $student?->course?->campus->name }}
                             </P>
 
                         </div>

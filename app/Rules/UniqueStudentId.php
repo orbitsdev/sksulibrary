@@ -26,11 +26,17 @@ class UniqueStudentId implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $existingRecord = DB::table('students')->where('id_number', $this->id_number)->first();
+        $query = DB::table('students')->where('id_number', $this->id_number);
 
+        // If a record ID is provided (indicating an update), exclude it from the query.
+        if ($this->id_number !== null) {
+            $query->where('id', '!=', $this->id_number);
+        }
+
+        $existingRecord = $query->first();
 
         if ($existingRecord) {
-            $fail('A similar id already exists');
+            $fail('A similar ID NUMBER already exists');
         }
     }
 }

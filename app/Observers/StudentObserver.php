@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Student;
+use Illuminate\Support\Facades\Storage;
 
 class StudentObserver
 {
@@ -32,10 +33,24 @@ class StudentObserver
             if ($login->logout) {
                 $login->logout->delete();
             }
+
+            
         
             // Delete the login record
             $login->delete();
         });
+
+        if(!empty($student->profile)){
+
+            if (Storage::disk('public')->exists($student->profile)) {
+
+                Storage::disk('public')->delete($student->profile);
+            }
+        }
+
+       
+
+
     }
 
     /**
