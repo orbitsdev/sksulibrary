@@ -21,6 +21,14 @@ class AttenDanceChart extends BarChartWidget
         $this->filter = now()->format('m');
     }
     protected static ?array $options = [
+        'scales' => [
+            'y' => [
+                'beginAtZero' => true, // Start the Y-axis at zero
+                'ticks' => [
+                    'precision' => 0, // Set the number of decimal places to 0
+                ],
+            ],
+        ],
         'plugins' => [
             'legend' => [
                 'display' => true, // Display the legend
