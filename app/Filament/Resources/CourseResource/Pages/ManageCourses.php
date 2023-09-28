@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 class ManageCourses extends ManageRecords
 {
     protected static string $resource = CourseResource::class;
+    
 
     protected function getActions(): array
     {
@@ -64,7 +65,9 @@ class ManageCourses extends ManageRecords
             ->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
             ->modalSubheading('Donwload Excel as Report or Reference. Existing name wont be created again')
             ->modalButton('Yes'),
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->disableCreateAnother()
+            ,
         ];
     }
 }

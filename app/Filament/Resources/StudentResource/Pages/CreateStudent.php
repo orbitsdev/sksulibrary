@@ -17,6 +17,7 @@ class CreateStudent extends CreateRecord
 
     use WireActions;
     protected static string $resource = StudentResource::class;
+    protected static bool $canCreateAnother = false;
 
     public $created_user;
 

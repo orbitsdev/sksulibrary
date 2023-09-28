@@ -197,6 +197,14 @@
                                                 {{ $student->street_address ?? '' }}
                                             </p>
                                         </div>
+                                        <div class="mt-2">
+                                            <p class="font-medium ">
+                                                Home Address
+                                            </p>
+                                            <p class=" text-sm ">
+                                                {{ $student->home_address ?? '' }}
+                                            </p>
+                                        </div>
 
 
 

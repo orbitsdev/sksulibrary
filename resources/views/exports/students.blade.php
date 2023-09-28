@@ -8,6 +8,7 @@
             <th>Sex</th>
             <th>Phone Number</th>
             <th>Street Address</th>
+            <th>Home Address</th>
             <th>City</th>
             <th>Country</th>
             <th>Postal Code</th>
@@ -29,6 +30,7 @@
             <td align="left" width="40">{{ $item?->sex }}</td>
             <td align="left" width="40">{{ $item?->contact_number }}</td>
             <td align="left" width="40">{{ $item?->street_address }}</td>
+            <td align="left" width="40">{{ $item?->home_address }}</td>
             <td align="left" width="40">{{ $item?->city }}</td>
             <td align="left" width="40">{{ $item?->country }}</td>
             <td align="left" width="40">{{ $item?->postal_code }}</td>
