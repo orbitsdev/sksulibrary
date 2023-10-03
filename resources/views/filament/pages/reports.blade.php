@@ -85,7 +85,7 @@
                         </td>
                         @if (!empty($item->logout) && $item->logout->status == 'Did Not Logout')
                             <td class="whitespace-normal px-3 py-2 text-center text-xs important" style="color: #DC2626">No Logout</td>
-                            <td class="whitespace-normal px-3 py-2 text-center text-xs important" style="color: #DC2626">-</td>
+                            
                         @else
                             <td class="whitespace-normal px-3 py-2 text-center text-xs">
                                 @if (!empty($item->logout))
@@ -105,10 +105,12 @@
                                     }}
                                 @endif
                             </td> --}}
+                            @endif
                             <td class="whitespace-normal px-3 py-2 text-center text-xs">
+                                
                                 {{ !empty($item->student) && !empty($item->student->course) && !empty($item->student->course->campus) ? $item->student->course->campus->name : 'No Campus Assigned' }}
                             </td>
-                        @endif
+                            {{-- <td class="whitespace-normal px-3 py-2 text-center text-xs important" style="color: #DC2626">-</td> --}}
                     </tr>
                 @empty
                     <div class="text-center flex justify-center w-full" style="padding: 20px 20px 50px 20px">

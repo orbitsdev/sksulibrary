@@ -87,6 +87,7 @@ class AttendanceForm extends Component
                         $this->todayRecord   = DayRecord::create();
                         $this->showStudentDetails();
                         
+                        
                         // $this->createDayLoginRecordWithLogout();
                         
                     }
@@ -146,6 +147,7 @@ class AttendanceForm extends Component
         $newLogoutRecord = $newLoginRecord->logout()->create(['status'=> 'Not Logout']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
         $this->clearInformation();
+        $this->succesNotification();
         // $this->isSuccess = true;
     }
 
@@ -155,12 +157,16 @@ class AttendanceForm extends Component
         // $this->student = Student::where('id_number', $this->barcode)->first();
         // $this->isSuccess = true;
         $this->clearInformation();
+        $this->succesNotification();
+
     }
 
     public function createLogoutRecord($studentLoginRecord){
         $newLogoutRecord = $studentLoginRecord->logout()->create(['status'=> 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
         $this->clearInformation();
+        $this->succesNotification();
+
 
     }
 
@@ -239,7 +245,12 @@ class AttendanceForm extends Component
         $this->todayRecord = null;
     }
 
-    
+    public function succesNotification(){
+        $this->dialog()->success(
+            $title = 'Saved',
+           
+        );
+    }
 
 
 

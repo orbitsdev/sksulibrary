@@ -4,10 +4,11 @@ namespace App\Filament\Resources\IndividualResource\Pages;
 
 use Closure;
 use Filament\Forms;
+use App\Models\Course;
 use App\Models\Student;
 use App\Models\DayLogin;
-use App\Models\DayRecord;
 
+use App\Models\DayRecord;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Grid;
@@ -142,7 +143,14 @@ public function mount(): void {
                     
                 // })->searchable(),
                 Select::make('name')
-                ->options(Student::whereHas('logins')->select(DB::raw("CONCAT(first_name, ' ', last_name) AS full_name"), 'id')->pluck('full_name', 'id')->toArray())
+                ->options(function (Closure $get, Closure $set, $state) {
+                    return Student::when($get('courseSelected') != 'all' && !empty($get('courseSelected')), function ($query) use ($get) {
+                        $query->whereHas('course', function ($query) use ($get) {
+                            $query->where('id', $get('courseSelected'));
+                        });
+                    })->whereHas('logins')->select(DB::raw("CONCAT(first_name, ' ', last_name) AS full_name"), 'id')->pluck('full_name', 'id')->toArray();
+                })
+                
                 ->columnSpan(2)
                 ->searchable()
                 ->label('Full name')
@@ -156,11 +164,12 @@ public function mount(): void {
                     if(!empty($get('daySelected'))){
                        
                         $this->logins = Daylogin::orderBy('created_at', 'desc')->where('day_record_id', $get('daySelected'))
-                        ->when($get('selectedStatus') != 'all', function ($query) use ($get) {
-                            $query->whereHas('logout', function ($query) use ($get) {
-                                $query->where('status', $get('selectedStatus'));
-                            });
-                        })
+                        // ->when($get('selectedStatus') != 'all', function ($query) use ($get) {
+                        //     $query->whereHas('logout', function ($query) use ($get) {
+                        //         $query->where('status', $get('selectedStatus'));
+                        //     });
+                        // })
+
                         ->where('student_id', $this->student->id)
                         ->get();
                     }
@@ -186,7 +195,12 @@ public function mount(): void {
                 // })->searchable(),
 
                 // Select::make('courseSelected')->options(collect(Course::query()->pluck('name', 'id'))->prepend('All','all')->toArray())->searchable()->columnSpan(2)->label('Student course')->reactive()->disablePlaceholderSelection()->afterStateUpdated(function (Closure $get, Closure $set, $state) {
-                //     dd($state);
+                    
+                //     if(!empty($this->student) && !empty($this->student->course)){
+                //         dd('student');
+                //     }else{
+
+                //     }
                   
                 // }),
                 // Select::make('yearSelected')->options([
@@ -203,75 +217,117 @@ public function mount(): void {
                 //     dd($state);
                 // })->default('all')->disablePlaceholderSelection(),
 
-                Select::make('selectedStatus')->options([
-                    'all'=> 'All',
-                    'Logged out'=> 'Logged out',
-                    'Did Not Logout'=> 'Did Not Logout',
-                    'Not Logout'=> 'Currently Inside'
-                ])->columnSpan(2)->label('Record status')->reactive()->default('all')
-                ->disablePlaceholderSelection()
-                ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+                // Select::make('selectedStatus')->options([
+                //     'all'=> 'All',
+                //     'Logged out'=> 'Logged out',
+                //     'Did Not Logout'=> 'Did Not Logout',
+                //     'Not Logout'=> 'Currently Inside'
+                // ])->columnSpan(2)->label('Record status')->reactive()->default('all')
+                // ->disablePlaceholderSelection()
+                // ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
 
                     
-                    // dd($state);
-                    if(!empty($get('daySelected'))){
+                //     // dd($state);
+                //     if(!empty($get('daySelected'))){
                         
-                        if($get('name')){
-                            $this->student = Student::where('id', $get('name'))->first();
-                            $this->logins = Daylogin::orderBy('created_at', 'desc')->where('day_record_id', $get('daySelected'))
-                            ->when($state != 'all', function ($query) use ($state) {
-                                $query->whereHas('logout', function ($query) use ($state) {
-                                    $query->where('status', $state);
-                                });
-                            })
-                            ->where('student_id', $this->student->id)
+                //         if($get('name')){
+                //             $this->student = Student::where('id', $get('name'))->first();
+                //             $this->logins = Daylogin::orderBy('created_at', 'desc')->where('day_record_id', $get('daySelected'))
+                //             ->when($state != 'all', function ($query) use ($state) {
+                //                 $query->whereHas('logout', function ($query) use ($state) {
+                //                     $query->where('status', $state);
+                //                 });
+                //             })
+                //             ->where('student_id', $this->student->id)
 
-                            ->get();
-                        }
+                //             ->get();
+                //         }
 
-                    }
+                //     }
 
                   
                     
                     
-                }),
+                // }),
 
-                Select::make('selectedPeriod')->options([
-                    'all'=> 'All',
-                    'am'=> 'am',
-                    'pm'=> 'pm',
-                ])->label('Time period')->reactive()->default('all')->disablePlaceholderSelection()
-                ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+                // Select::make('courseSelected')->options(function(){
+                //     return collect(Course::query()->pluck('name', 'id'))->prepend('All','all')->toArray();
+                // })
+                // ->default('all')
+                // ->label('Course Name')
+                // ->columnSpan(2)
+                // ->reactive()->default('all')->disablePlaceholderSelection()
+                // ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
 
-                    if(!empty($get('daySelected'))){
-                        
-                        if($get('name')){
-                            $this->student = Student::where('id', $get('name'))->first();
-                            $this->logins = Daylogin::orderBy('created_at', 'desc')->where('day_record_id', $get('daySelected'))
-                            ->when($get('selectedStatus') != 'all', function ($query) use ($get) {
-                                $query->whereHas('logout', function ($query) use ($get) {
-                                    $query->where('status', $get('selectedStatus'));
-                                });
-                            })
-                            ->when($state != 'all', function ($query) use ($state) {
-                                 
-                                if($state == 'am'){
-                                        $query->whereTime('created_at', '<', '12:00:00');
-                                }
-                              if($state == 'pm'){
-                                        $query->whereTime('created_at', '>=', '12:00:00');
+                //     if (!empty($this->student)) {
+                //         if(!empty($this->student->course)){
 
-                                }
-
-                            })
-                            ->where('student_id', $this->student->id)
-                            ->get();
-                        }
-
-                    }
+                //             if ($this->student->course->id != $state) {
                     
+                //                 $this->student = Student::where('id', $this->student->id)
+                //                     ->whereHas('course', function ($query) use ($state) {
+                //                         $query->where('id', $state);
+                //                     })->first();
+                    
+                //                 $this->logins = DayLogin::orderBy('created_at', 'desc')
+                //                     ->where('day_record_id', $get('daySelected'))
+                //                     ->when($state != 'all', function ($query) use ($state) {
+                //                         $query->whereHas('logout', function ($query) use ($state) {
+                //                             $query->where('status', $state);
+                //                         });
+                //                     })
+                //                     ->where('student_id', $this->student->id)
+                //                     ->get();
+                //             }
+                //         }
+                //     }
+
+                // })
+                // ,
+
+                Select::make('selectedPeriod')
+                ->options([
+                    'all' => 'All',
+                    'am' => 'AM',
+                    'pm' => 'PM',
+                ])
+                ->label('Time period')
+                ->columnSpan(2)
+                ->reactive()
+                ->default('all')
+                ->disablePlaceholderSelection()
+                ->afterStateUpdated(function (Closure $get, Closure $set, $state) {
+                 
+                    if (!empty($get('daySelected'))) {
+                        $this->logins = collect(); // Initialize as an empty collection
             
-                }),
+                        if ($get('name')) {
+
+                            $this->student = Student::find($get('name'));
+                         
+                            $this->logins = DayLogin::orderBy('created_at', 'desc')
+                                ->where('day_record_id', $get('daySelected'))
+                                // ->when($get('selectedStatus') != 'all', function ($query) use ($get) {
+                                //     $query->whereHas('logout', function ($query) use ($get) {
+                                //         $query->where('status', $get('selectedStatus'));
+                                //     });
+                                // })
+                                ->when($state != 'all', function ($query) use ($state) {
+                                    
+                                    if ($state == 'am') {
+                                      
+                                        $query->whereTime('created_at', '<', '12:00:00');
+                                    }
+                                    if ($state == 'pm') {
+                                        $query->whereTime('created_at', '>=', '12:00:00');
+                                    }
+                                })
+                                ->where('student_id', $this->student->id)
+                                ->get();
+                        }
+                    }
+                })
+            
             ]),
            
             // ...

@@ -28,7 +28,7 @@ class StudentFactory extends Factory
             'last_name' => $this->faker->lastName(),
             'middle_name' => $this->faker->lastName(),
             'sex' => 'Male',
-            'contact_number'=>$this->faker->phoneNumber(11),
+            'contact_number'=>$this->faker->phoneNumber(10),
             'country'=> $this->faker->country(),
             'region'=> $this->faker->country(),
             'province'=> $this->faker->city(),

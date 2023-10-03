@@ -13,13 +13,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+                // $schedule->command('inspire')->hourly();
 
-            // $schedule->call(function () {
-            //     DayLogout::where('status', 'not-yet-logout')->uppdate(['status' => 'did-not-logout']);
-            // })->everyMinute();
+                    // $schedule->call(function () {
+                    //     DayLogout::where('status', 'not-yet-logout')->uppdate(['status' => 'did-not-logout']);
+                    // })->everyMinute();
+                    
             $schedule->call(function () {
-                DayLogout::where('status', 'Not Logout')->update(['status' => 'Did Not Logout']);
+                DayLogout::where('status', 'Not Logout')->update(['status' => 'Logged out']);
             })->daily()->at('00:00');
     }
 
