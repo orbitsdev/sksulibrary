@@ -85,22 +85,29 @@ class AppServiceProvider extends ServiceProvider
                             ...StudentResource::getNavigationItems(),
                             ...CourseResource::getNavigationItems(),
                             ...CampusResource::getNavigationItems(),
+                            ...DayRecordResource::getNavigationItems(),
                         ]),
                     NavigationGroup::make('Report')
                         ->items([
-                            ...DayRecordResource::getNavigationItems(),
+                         
                             ...RealtimeResource::getNavigationItems(),
                             ...IndividualResource::getNavigationItems(),
-                                NavigationItem::make('Overall Reports')
+                                NavigationItem::make('Daily Record ')
                                  ->icon('heroicon-o-document-text')
                                 ->activeIcon('heroicon-s-document-text')
                                  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
                                   ->url(route('filament.pages.reports')),
+                                  NavigationItem::make('Daily Visitors')
+                                  ->icon('heroicon-o-user-group')
+                                 ->activeIcon('heroicon-s-user-group')
+                                  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.daily-visitors'))
+                                   ->url(route('filament.pages.daily-visitors')),
                                 NavigationItem::make('Top Visitors')
                                  ->icon('heroicon-o-presentation-chart-bar')
                                 ->activeIcon('heroicon-s-presentation-chart-bar')
                                  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.top-visitor'))
                                   ->url(route('filament.pages.top-visitor')),
+                              
                             // NavigationItem::make('Individual Reports')
                             // ->icon('heroicon-o-document-report')
                             // ->activeIcon('heroicon-s-document-report')

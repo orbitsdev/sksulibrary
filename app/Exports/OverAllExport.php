@@ -18,7 +18,7 @@ class OverAllExport implements FromView
     public function view(): View
     {   
 
-      
+
         return view('exports.overallreport', [
             'collections' => $this->records,
         ]);

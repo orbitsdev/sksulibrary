@@ -10,9 +10,11 @@ use Filament\Resources\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\DayRecordResource;
 use App\Filament\Resources\StudentResource;
+use Illuminate\Database\Eloquent\Collection;
+use App\Filament\Resources\DayRecordResource;
 
 class LoginRecord extends Page implements Tables\Contracts\HasTable
 {
@@ -41,8 +43,10 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
     }
     protected function getTableQuery(): Builder 
     {
-        return DayLogin::query()->where('day_record_id' , $this->dayRecord);
+        return DayLogin::query()->latest()->where('day_record_id' , $this->dayRecord);
     } 
+
+    
 
     protected function getTableActions(): array
 
@@ -52,7 +56,7 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
           Tables\Actions\ActionGroup::make([
 
             Tables\Actions\Action::make('View Profile')->icon('heroicon-o-user')->button()->url(fn ($record): string =>  StudentResource::getUrl('details', $record->student_id)),
-           
+            DeleteAction::make(),
             // ViewAction::make('View Details')
             // ->button()
             // ->icon('heroicon-o-user')
@@ -66,6 +70,20 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
         ];
 
     }
+
+    protected function getTableBulkActions(): array
+    {
+        return [ 
+            Tables\Actions\BulkAction::make('delete')
+                ->label('Delete selected')
+                ->color('danger')
+                ->action(function (Collection $records): void {
+                    $records->each->delete();
+                })
+                ->requiresConfirmation(),
+        ]; 
+    } 
+
     protected function getTableColumns(): array 
 
     {

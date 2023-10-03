@@ -61,9 +61,9 @@
                         <th scope="col" class="px-3 py-2 text-left text-xs font-semibold"
                             style="padding-left: 16px;">Course</th>
                         <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Year</th>
-                        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time In</th>
-                        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time Out</th>
-                        {{-- <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time Spend</th> --}}
+                        {{-- <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Total Record</th> --}}
+                        <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time In</th> 
+                         <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Time Out </th>
                         <th scope="col" class="px-3 py-2 text-center text-xs font-semibold">Campus</th>
                     </tr>
                 </thead>
@@ -83,6 +83,13 @@
                         <td class="whitespace-normal px-3 py-2 text-center text-xs">
                             {{ !empty($item->created_at) ? $item->created_at->format('g:i A') : '' }}
                         </td>
+                        
+                        {{-- <td class="whitespace-normal px-3 py-2 text-center text-xs">
+                            @if($item->student)
+                            {{count($item->student->logins)}}
+                            @endif
+                        </td> --}}
+
                         @if (!empty($item->logout) && $item->logout->status == 'Did Not Logout')
                             <td class="whitespace-normal px-3 py-2 text-center text-xs important" style="color: #DC2626">No Logout</td>
                             
@@ -107,7 +114,6 @@
                             </td> --}}
                             @endif
                             <td class="whitespace-normal px-3 py-2 text-center text-xs">
-                                
                                 {{ !empty($item->student) && !empty($item->student->course) && !empty($item->student->course->campus) ? $item->student->course->campus->name : 'No Campus Assigned' }}
                             </td>
                             {{-- <td class="whitespace-normal px-3 py-2 text-center text-xs important" style="color: #DC2626">-</td> --}}
@@ -134,4 +140,5 @@
             window.print();
         });
     </script>
+    
 </x-filament::page>

@@ -42,7 +42,7 @@ class IndividualReport extends Page implements Forms\Contracts\HasForms
     public function exportToExcel(){
         
         if(!empty($this->student)){
-            $filename = $this->student?->first_name.'-'.$this->student?->last_name;  
+            $filename = $this->student?->first_name.'-'.$this->student?->last_name.'-'.$this->dayData->created_at->format('F-d-Y').'-Report';  
             
         }else{
             
@@ -322,7 +322,7 @@ public function mount(): void {
                                         $query->whereTime('created_at', '>=', '12:00:00');
                                     }
                                 })
-                                ->where('student_id', $this->student->id)
+                                ->where('student_id', $this->student->id)   
                                 ->get();
                         }
                     }
