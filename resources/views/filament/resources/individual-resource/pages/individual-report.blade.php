@@ -89,7 +89,7 @@
             </td>
             <td class="whitespace-normal px-3 py-2 text-center text-xs">
                 @if ($item->logout->status == 'Did Not Logout')
-                    <span style="color: #DC2626">No Logout</span>
+                    <span style="color: #DC2626">Did Not Logout</span>
                 @else
                     @if ($item->logout->status == 'Logged out')
                         {{ $item->logout->updated_at->format('g:i A') }}

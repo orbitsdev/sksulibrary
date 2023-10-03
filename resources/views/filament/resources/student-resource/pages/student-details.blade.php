@@ -177,7 +177,7 @@
                                                 Zip Code
                                             </p>
                                             <p class=" text-sm ">
-                                                {{ $student->postal_code }}
+                                                {{ $student->postal_code ?? '' }}
                                             </p>
                                         </div>
 
@@ -216,7 +216,7 @@
                                             Sex
                                         </p>
                                         <p class=" text-sm ">
-                                            {{ $student->sex }}
+                                            {{ ucfirst($student->sex ?? '')}}
                                         </p>
                                     </div>
                                     <div>
@@ -224,7 +224,7 @@
                                             Status
                                         </p>
                                         <p class=" text-sm ">
-                                            {{ $student->status }}
+                                            {{ $student->status ?? '' }}
                                         </p>
                                     </div>
                                 </div>

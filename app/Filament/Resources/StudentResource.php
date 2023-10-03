@@ -157,8 +157,8 @@ class StudentResource extends Resource
                                     ->columnSpan(6)
                                     ->required()
                                     ->prefix('+63')
-                                    ->minLength(11)
-                                    ->maxLength(11)
+                                    ->minLength(10)
+                                    ->maxLength(10)
                                     ->numeric()
                                     ->mask(fn (TextInput\Mask $mask) => $mask
                                         ->numeric()),
@@ -335,7 +335,7 @@ class StudentResource extends Resource
                                     ->required()->columnSpan(4)->default('1st Year'),
 
 
-                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->label('Image'),
+                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->label('Image')->maxSize(10240),
                                 // FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id'),
                                 // FileUpload::make('two_by_two')->label('2x2 Picture')->columnSpan(12)->disk('public')->directory('users-two_by_two'),
                             ]),

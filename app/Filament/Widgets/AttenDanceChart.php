@@ -17,7 +17,8 @@ class AttenDanceChart extends BarChartWidget
     public ?string $filter = null;
 
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->filter = now()->format('m');
     }
     protected static ?array $options = [
@@ -109,66 +110,66 @@ class AttenDanceChart extends BarChartWidget
     //         'position' => 'top',
     //     ],
     // ];
-       
+
 
     // }
     protected function getData(): array
-    {   
+    {
 
         $selectedMonth = $this->filter;
         $data = DB::table('day_records')
-        ->join('day_logins', 'day_records.id', '=', 'day_logins.day_record_id')
-        ->join('students', 'day_logins.student_id', '=', 'students.id')
-        ->join('courses', 'students.course_id', '=', 'courses.id')
-        ->select(
-            'day_records.created_at as day_date',
-            'courses.name as course_name',
-            DB::raw('COUNT(DISTINCT students.id) as student_count')
-        )
-        ->whereYear('day_records.created_at', '=', Carbon::now()->year)
-        ->whereMonth('day_records.created_at', '=', $selectedMonth) // Filter by the selected month
-        ->groupBy('day_date', 'course_name')
-        ->get();
-    
+            ->join('day_logins', 'day_records.id', '=', 'day_logins.day_record_id')
+            ->join('students', 'day_logins.student_id', '=', 'students.id')
+            ->join('courses', 'students.course_id', '=', 'courses.id')
+            ->select(
+                'day_records.created_at as day_date',
+                'courses.name as course_name',
+                DB::raw('COUNT(DISTINCT students.id) as student_count')
+            )
+            ->whereYear('day_records.created_at', '=', Carbon::now()->year)
+            ->whereMonth('day_records.created_at', '=', $selectedMonth) // Filter by the selected month
+            ->groupBy('day_date', 'course_name')
+            ->get();
+
         $result = [];
         $labels = [];
         $courseColors = [];
-    
+
         foreach ($data as $item) {
             $dayDate = Carbon::parse($item->day_date)->format('Y-m-d');
             $courseName = $item->course_name;
             $studentCount = (int)$item->student_count;
-    
+
             if (!in_array($dayDate, $labels)) {
                 $labels[] = $dayDate;
             }
-    
+
             if (!isset($result[$courseName])) {
                 $result[$courseName] = [];
             }
-    
+
             $result[$courseName][$dayDate] = $studentCount;
-    
+
             if (!array_key_exists($courseName, $courseColors)) {
                 // Assign a distinct color to each course
                 $courseColors[$courseName] = '#' . substr(md5($courseName), 0, 6);
             }
         }
-    
+
         $datasets = [];
         foreach ($result as $courseName => $courseData) {
             $data = [];
             foreach ($labels as $dayDate) {
                 $data[] = $courseData[$dayDate] ?? 0;
             }
-    
+
             $datasets[] = [
                 'backgroundColor' => $courseColors[$courseName],
                 'label' => $courseName,
                 'data' => $data,
             ];
         }
-    
+
         return [
 
             // 'plugins' => [
@@ -202,22 +203,18 @@ class AttenDanceChart extends BarChartWidget
     protected function getFilters(): ?array
     {
         $filters = [];
-        
+
         // Generate options for each month
         for ($month = 1; $month <= 12; $month++) {
             $monthName = Carbon::create(null, $month)->format('F');
             $monthValue = Carbon::create(null, $month)->format('m');
             $filters[$monthValue] = $monthName;
         }
-    
+
         // Set the default filter to the current month
         $currentMonth = now()->format('m');
         $filters[$currentMonth] = Carbon::now()->format('F');
-    
+
         return $filters;
     }
-    
-
-    
-    
 }

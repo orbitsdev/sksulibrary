@@ -23,6 +23,11 @@ class StudentImport implements ToModel,WithHeadingRow
         try{
             DB::beginTransaction();
             $student = Student::where('id_number', $row['id_number'])->first();
+
+            
+            
+
+            
             $campus = null;
             $course = null;
             $campusExist = Campus::find($row['campus_id']);
@@ -56,26 +61,34 @@ class StudentImport implements ToModel,WithHeadingRow
                 ]);
                 $student->save();
             }else{
-    
-                return new Student([
-                'id_number' => $row['id_number'],
-                'first_name' =>$row['first_name'],
-                'last_name' => $row['last_name'],
-                'middle_name' => $row['middle_name'],
-                'sex' => $row['sex'],
-                'contact_number'=>$row['phone_number'],
-                'street_address' => $row['street_address'],
-                'home_address' => $row['home_address'],
-                'city' => $row['city'],
-                'country'=> $row['country'],
-                'postal_code'=>$row['postal_code'],
-                'campus_id'=> $campus,
-                'course_id' => $course,
-                'year'=>$row['year'],
-                'profile'=>null,
-                'school_id'=>null,
-                'two_by_two'=>null,    
-                ]);
+
+                $existingStudent = Student::where([
+                    'first_name' => $row['first_name'],
+                    'last_name' => $row['last_name'],
+                    'middle_name' => $row['middle_name'],
+                ])->first();
+                if(empty($existingStudent)){
+                    return new Student([
+                        'id_number' => $row['id_number'],
+                        'first_name' =>$row['first_name'],
+                        'last_name' => $row['last_name'],
+                        'middle_name' => $row['middle_name'],
+                        'sex' => $row['sex'],
+                        'contact_number'=>$row['phone_number'],
+                        'street_address' => $row['street_address'],
+                        'home_address' => $row['home_address'],
+                        'city' => $row['city'],
+                        'country'=> $row['country'],
+                        'postal_code'=>$row['postal_code'],
+                        'campus_id'=> $campus,
+                        'course_id' => $course,
+                        'year'=>$row['year'],
+                        'profile'=>null,
+                        'school_id'=>null,
+                        'two_by_two'=>null,    
+                        ]);
+                }
+               
             }
             DB::commit(); 
 
