@@ -335,7 +335,7 @@ class StudentResource extends Resource
                                     ->required()->columnSpan(4)->default('1st Year'),
 
 
-                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->label('Image')->maxSize(10240),
+                                FileUpload::make('profile')->label('Profile Picture')->columnSpan(12)->disk('public')->directory('users-profile')->label('Image')->maxSize(20480),
                                 // FileUpload::make('school_id')->label('School Id Picture')->columnSpan(12)->disk('public')->directory('users-school-id'),
                                 // FileUpload::make('two_by_two')->label('2x2 Picture')->columnSpan(12)->disk('public')->directory('users-two_by_two'),
                             ]),
