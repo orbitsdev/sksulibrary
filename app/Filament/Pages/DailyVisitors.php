@@ -10,7 +10,11 @@ use App\Models\Student;
 use App\Models\DayLogin;
 use Filament\Pages\Page;
 use App\Models\DayRecord;
+use App\Exports\TopVisitorExport;
+use App\Exports\DailyVisitorExport;
 use Filament\Forms\Components\Grid;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Filament\Pages\DailyVisitors;
 use Filament\Forms\Components\Select;
 
 class DailyVisitors extends Page
@@ -27,6 +31,13 @@ class DailyVisitors extends Page
     public $dayData;
 
 
+    public function exportToExcel(){
+        // dd($this->dayData);
+        $filename = 'DAILY-VISITORS-' . optional(Dayrecord::find($this->daySelected))->created_at->format('Y-m-d') ?? now()->format('Y-m-d');
+        
+        return Excel::download(new DailyVisitorExport($this->students), $filename.'.xlsx');
+    }
+
     public function print()
     {
         $this->dispatchBrowserEvent('printVisitors');
@@ -39,6 +50,7 @@ class DailyVisitors extends Page
         $day = DayRecord::orderBy('created_at', 'desc')->first();
         if (!empty($day)) {
             $this->daySelected = $day->id;
+            $this->dayData =$day;
             $this->students = Student::whereHas('logins.dayRecord', function ($query) use ($day) {
                 $query->where('id', $day->id);
             })->get();
@@ -77,6 +89,8 @@ class DailyVisitors extends Page
                                         $query->where('campus_id', (int)$get('campusSelected'));
                                     });
                             })->get();
+
+
 
 
 
