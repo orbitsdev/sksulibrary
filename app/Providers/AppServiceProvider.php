@@ -92,11 +92,11 @@ class AppServiceProvider extends ServiceProvider
                             ...DayRecordResource::getNavigationItems(),
                             ...RealtimeResource::getNavigationItems(),
                             ...IndividualResource::getNavigationItems(),
-                                // NavigationItem::make('Daily Record ')
-                                //  ->icon('heroicon-o-document-text')
-                                // ->activeIcon('heroicon-s-document-text')
-                                //  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
-                                //   ->url(route('filament.pages.reports')),
+                                NavigationItem::make('Daily Record ')
+                                 ->icon('heroicon-o-document-text')
+                                ->activeIcon('heroicon-s-document-text')
+                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.reports'))
+                                  ->url(route('filament.pages.reports')),
                                   NavigationItem::make('Over All Visitors')
                                   ->icon('heroicon-o-user-group')
                                  ->activeIcon('heroicon-s-user-group')

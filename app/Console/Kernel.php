@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
                         })->where('status', 'Not Logout')->update(['status' => 'Logged out']);
                         info("Updated  rows");
                     }
-                })->everyMinute();
+                })->daily()->at('00:00');
                 
     }
 
