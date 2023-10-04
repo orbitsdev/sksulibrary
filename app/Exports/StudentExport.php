@@ -40,9 +40,9 @@ class StudentExport implements FromView
                 ],
                 (object) [
                     'id_number' => 20210002, // Changed to an integer
-                    'first_name' => 'Jane',
-                    'middle_name' => 'Smith',
-                    'last_name' => 'Doe',
+                    'first_name' => 'Kath',
+                    'middle_name' => 'Kristine Dumangin',
+                    'last_name' => 'Anjan',
                     'sex' => 'Female',
                     'contact_number' => '09231234567',
                     'street_address' => '456 Elm Street',
@@ -61,7 +61,7 @@ class StudentExport implements FromView
                     'id_number' => 20210003, // Changed to an integer
                     'first_name' => 'Alice',
                     'middle_name' => 'Brown',
-                    'last_name' => 'Johnson',
+                    'last_name' => 'yow',
                     'sex' => 'Female',
                     'contact_number' => '09231234567',
                     'street_address' => '789 Oak Street',
