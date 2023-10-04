@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\DayLogout;
+use App\Models\DayRecord;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,7 +26,11 @@ class Kernel extends ConsoleKernel
                 //     DayLogout::where('status', 'Not Logout')->update(['status' => 'Logged out']);
                 // })->daily()->at('00:00');
                 $schedule->call(function () {
-                    DayLogout::where('status', 'Not Logout')->update(['status' => 'Logged out']);
+                    $dayRecord = DayRecord::latest()->first();
+
+                    DayLogout::whereHas('login', function($query)use($dayRecord){
+                        $query->where('day_record_id', $dayRecord->id);
+                    })->where('status', 'Not Logout')->update(['status' => 'Logged out']);
                     info("Updated  rows");
                 })->everyMinute();
                 
