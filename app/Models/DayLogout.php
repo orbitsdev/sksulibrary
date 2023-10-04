@@ -11,6 +11,6 @@ class DayLogout extends Model
     use HasFactory;
 
     public function login(){
-        return $this->belongsTo(DayLogin::class);
+        return $this->belongsTo(DayLogin::class, 'day_login_id');
     }
 }

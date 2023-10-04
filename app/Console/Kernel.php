@@ -27,11 +27,13 @@ class Kernel extends ConsoleKernel
                 // })->daily()->at('00:00');
                 $schedule->call(function () {
                     $dayRecord = DayRecord::latest()->first();
-
-                    DayLogout::whereHas('login', function($query)use($dayRecord){
-                        $query->where('day_record_id', $dayRecord->id);
-                    })->where('status', 'Not Logout')->update(['status' => 'Logged out']);
-                    info("Updated  rows");
+                    if($dayRecord){
+                        
+                        DayLogout::whereHas('login', function($query) use($dayRecord){
+                            $query->where('day_record_id', $dayRecord->id);
+                        })->where('status', 'Not Logout')->update(['status' => 'Logged out']);
+                        info("Updated  rows");
+                    }
                 })->everyMinute();
                 
     }
