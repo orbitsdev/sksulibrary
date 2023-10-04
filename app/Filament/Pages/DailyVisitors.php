@@ -33,7 +33,7 @@ class DailyVisitors extends Page
 
     public function exportToExcel(){
         // dd($this->dayData);
-        $filename = 'DAILY-VISITORS-' . optional(Dayrecord::find($this->daySelected))->created_at->format('Y-m-d') ?? now()->format('Y-m-d');
+    $filename = 'DAILY-VISITORS-' . optional(Dayrecord::find($this->daySelected))->created_at->format('Y-m-d') ?? now()->format('Y-m-d');
         
         return Excel::download(new DailyVisitorExport($this->students), $filename.'.xlsx');
     }

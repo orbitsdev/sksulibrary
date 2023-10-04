@@ -52,7 +52,10 @@ class Reports extends Page implements Tables\Contracts\HasTable
 
 
     public function exportToExcel(){
-        return Excel::download(new OverAllExport($this->logins), 'overallreport.xlsx');
+
+        $filename = 'DAILY-RECORD-' . optional(Dayrecord::find($this->daySelected))->created_at->format('Y-m-d') ?? now()->format('Y-m-d');
+
+        return Excel::download(new OverAllExport($this->logins), $filename.'.xlsx');
     }
 
     public function mount(): void {
