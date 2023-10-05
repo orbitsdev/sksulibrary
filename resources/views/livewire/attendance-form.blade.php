@@ -1,8 +1,62 @@
 <div class="min-h-screen relative bg-white   ">
-    <div class=" border-green-500  rounded flex items-center justify-center  ">
-        @livewire('test-live-wire')
+
+    {{-- <div class="flex items-center justify-center ">
+        <div class="border-green-500 rounded p-4">
+            @livewire('test-live-wire')
+        </div>
+    </div> --}}
+
+    <div class="flex items-center justify-center">
+
+        <h1 class="text-4xl font-bold text-gray-800  mt-[2%] ">University Learning Resource Center</h1>
     </div>
-    <div class="max-w-[1200px]   mx-auto h-screen">
+
+
+    <div class="flex flex-col items-center justify-center mt-8 text-center min-h-[100px]">
+        @if ($student != null && $todayRecord != null)
+            <div class="max-w-2xl  rounded p-4">
+                <p class="text-xl text-green-700 font-bold">
+                    {{ ucfirst($student?->last_name) ?? '' }} , {{ $student?->middle_name ?? '' }}
+                    {{ $student?->first_name ?? '' }}
+                </p>
+
+                <p class="text-lg text-green-700">
+
+                    {{ $student->year ?? '' }}, {{ $student?->course?->name ?? '' }}
+                </p>
+            </div>
+            <div class=" p-2 bg-green-50 text-green-600  rounded min-w-[120px] ">
+
+                @if ($studentLoginRecord = $this->student->logins()->latest()->first())
+                    @if ($studentLoginRecord->logout)
+                        @if ($studentLoginRecord->logout->status == 'Logged out')
+                            Has Been logged in
+                        @else
+                            Has Been logged out
+                        @endif
+                    @endif
+                @else
+                    Has Been logged in
+                @endif
+
+            </div>
+        @endif
+        @if ($hasError)
+            <div class=" p-2 bg-red-50 text-red-600  rounded min-w-[120px] capitalize ">
+                @if ($errorType == 'not-found')
+                    {{ $errorMessage }}
+                @endif
+                @if ($errorType == 'exception')
+                    {{ $errorMessage }}
+                @endif
+            </div>
+
+        @endif
+    </div>
+
+
+
+    <div class="max-w-[1200px]   mx-auto mt-8">
         <div class=" h-full flex justify-center items-center ">
 
             <section class="grid grid-cols-12 w-[80%] content-center items-stretch shadow-2xl ">
@@ -75,12 +129,12 @@
     </div>
 
 
-
+    {{-- 
     <x-modal.card align="center" z-index="z-50" blur wire:model="isConfirmationShow" show="true">
         @if ($student != null && $todayRecord != null)
         <h1 class="text-xl text-center">Are you sure you want to proceed? @if ($studentLoginRecord = $this->student->logins()->latest()->first())
             @if ($studentLoginRecord->logout)
-                @if($studentLoginRecord->logout->status == 'Logged out')
+                @if ($studentLoginRecord->logout->status == 'Logged out')
                         In
                 @else   
                         Out
@@ -96,7 +150,7 @@
             <div class="flex justify-end gap-x-4">
 
                 <div class="flex">
-                    {{-- <x-button flat label="Cancel" x-on:click="close" /> --}}
+                 
                     <x-button wire:click="processLog" spinner="processLog" icon="check"
                         class="sk-button max-h-14 px-[34px] py-[12px]  w-full justify-center capitalize mr-2 ">
                         Yes
@@ -109,9 +163,9 @@
             </div>
         </x-slot>
 
-    </x-modal.card>
+    </x-modal.card> --}}
 
-
+    {{-- 
     <x-modal.card align="center" blur z-index="z-40" wire:model="isSuccess" max-width="6xl" show="true"
         spacing="">
         @if ($student != null && $todayRecord != null)
@@ -155,7 +209,7 @@
                                 class="bg-[#166534] rounded-full w-[70px] h-[70px] text-white text-3xl p-1 inline-flex items-center justify-center uppercase">
                                 @if ($studentLoginRecord = $this->student->logins()->latest()->first())
                                     @if ($studentLoginRecord->logout)
-                                        @if($studentLoginRecord->logout->status == 'Logged out')
+                                        @if ($studentLoginRecord->logout->status == 'Logged out')
                                                 In
                                         @else   
                                                 Out
@@ -225,19 +279,17 @@
             <div class="flex justify-end gap-x-4">
 
                 <div class="flex">
-                    {{-- <x-button flat label="Cancel" x-on:click="close" /> --}}
                     <x-button class="bg-green-700 ok transition-all outline-none  ring-0 focus:ring-0 "
                         spinner="showConfirmation" primary label="Confirm" wire:click="showConfirmation" />
-                    {{-- <x-button class="bg-green-700 ok transition-all" primary label="DONE" icon="check"
-                        x-on:click="close" /> --}}
+                    
                 </div>
             </div>
         </x-slot>
-    </x-modal.card>
+    </x-modal.card>  --}}
 
 </div>
 
-
+{{-- 
 
 <x-modal.card align="center" blur wire:model="hasError">
 
@@ -263,5 +315,4 @@
         </div>
     </x-slot>
 
-</x-modal.card>
-
+</x-modal.card> --}}

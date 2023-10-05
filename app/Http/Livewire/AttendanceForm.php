@@ -59,7 +59,7 @@ class AttendanceForm extends Component
     public function readBarCode()
     {
 
-
+       
         try{
             DB::beginTransaction();
 
@@ -75,7 +75,7 @@ class AttendanceForm extends Component
                         $this->todayRecord = DayRecord::latest()->first();
 
                         if($this->todayRecord !== null){
-                            $this->showStudentDetails();
+                            $this->callProcess();
                             
 
                           
@@ -85,7 +85,7 @@ class AttendanceForm extends Component
                     }else{
                         
                         $this->todayRecord   = DayRecord::create();
-                        $this->showStudentDetails();
+                        $this->callProcess();
                         
                         
                         // $this->createDayLoginRecordWithLogout();
@@ -94,7 +94,7 @@ class AttendanceForm extends Component
                     
 
                 }else{
-                    $this->showError('Error', "Please register student account first to the admin." ,'not-found' );
+                    $this->showError('Error', "Student account not found! Please register to admin" ,'not-found' );
                 }
             }else{
                 $this->showError('Error', "Please enter id number",'not-found' );
@@ -131,8 +131,14 @@ class AttendanceForm extends Component
         $this->errorType = $type;
         $this->errorMessage = $message;
         $this->errorHeader = $header;
+
+        // sleep(3);
+
+        // $this->hasError = false;
+
     }
 
+    
     
     public function showSuccess($header = 'Saved', $body = "Data was successfully saved", ){
 
@@ -145,9 +151,10 @@ class AttendanceForm extends Component
     public function createDayLoginRecordWithLogout() {
         $newLoginRecord = $this->todayRecord->daylogins()->create([ 'student_id' => $this->student->id, ]);
         $newLogoutRecord = $newLoginRecord->logout()->create(['status'=> 'Not Logout']);
+        
         // $this->student = Student::where('id_number', $this->barcode)->first();
-        $this->clearInformation();
-        $this->succesNotification();
+        // $this->clearInformation();
+        // $this->succesNotification();
         // $this->isSuccess = true;
     }
 
@@ -156,16 +163,16 @@ class AttendanceForm extends Component
         $logoutRecord->update(['status' => 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
         // $this->isSuccess = true;
-        $this->clearInformation();
-        $this->succesNotification();
+        // $this->clearInformation();
+        // $this->succesNotification();
 
     }
 
     public function createLogoutRecord($studentLoginRecord){
         $newLogoutRecord = $studentLoginRecord->logout()->create(['status'=> 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
-        $this->clearInformation();
-        $this->succesNotification();
+        // $this->clearInformation();
+        // $this->succesNotification();
 
 
     }
@@ -175,16 +182,25 @@ class AttendanceForm extends Component
         $this->readBarCode();
     }
 
-    
+    public function clearError(){
+        if($this->hasError ==true){
+            $this->hasError = false;
+        }
+    }
 
 
     public function showStudentDetails(){
         $this->isSuccess =true;
     }
+    public function callProcess(){
+        $this->clearError();
+        // $this->isSuccess =true;
+        $this->processLog();
+    }
 
 
     public function processLog(){
-      
+        
           $nowDate = now()->startOfDay();
         $activeRecord = $this->todayRecord->created_at->startOfDay();
 
@@ -223,6 +239,8 @@ class AttendanceForm extends Component
                                 $this->createDayLoginRecordWithLogout();
                             
                             }
+
+                            
     }
 
 

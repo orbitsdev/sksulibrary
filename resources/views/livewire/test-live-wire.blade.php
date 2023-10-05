@@ -1,6 +1,6 @@
 <div wire:poll.1s>
 
-<p class="text-4xl   font-sans  font-bold text-gray-900  inline-block pt-6 px-6">
+<p class="text-2xl   font-sans  font-bold text-gray-800 inline-block px-6">
 
     {{now()->format('h:i A F d, l')}}
 </p>
