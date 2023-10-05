@@ -92,7 +92,7 @@ class StudentResource extends Resource
                         Grid::make(12)
                             ->schema([
                                 TextInput::make('id_number')->columnSpan(4)->required()
-                                    ->numeric()
+                                    // ->numeric()
                                     // ->mask(fn (TextInput\Mask $mask) => $mask
                                     //     ->numeric())
                                     ->label('Id Number')
