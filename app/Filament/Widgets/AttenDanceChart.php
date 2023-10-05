@@ -138,7 +138,7 @@ class AttenDanceChart extends BarChartWidget
         foreach ($data as $item) {
             $dayDate = Carbon::parse($item->day_date)->format('Y-m-d');
             $courseName = $item->course_name;
-            $studentCount = (int)$item->student_count;
+            $studentCount = $item->student_count;
 
             if (!in_array($dayDate, $labels)) {
                 $labels[] = $dayDate;

@@ -93,10 +93,10 @@ class StudentResource extends Resource
                             ->schema([
                                 TextInput::make('id_number')->columnSpan(4)->required()
                                     ->numeric()
-                                    ->mask(fn (TextInput\Mask $mask) => $mask
-                                        ->numeric())
+                                    // ->mask(fn (TextInput\Mask $mask) => $mask
+                                    //     ->numeric())
                                     ->label('Id Number')
-                                    ->maxLength(10)
+                                    ->maxLength(255)
                                     // ->rules([
                                     //     function (Closure $get, Closure $set, $state) {
                                     //         return new UniqueStudentId($state);

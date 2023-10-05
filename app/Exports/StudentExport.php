@@ -20,7 +20,7 @@ class StudentExport implements FromView
         } else{
             $students = [
                 (object) [
-                    'id_number' => 20210001, // Changed to an integer
+                    'id_number' => 'aBcDeFgHiJkLmNoPqRs1T2U3V4W5X6Y7Z2', // Changed to an integer
                     'first_name' => 'John',
                     'middle_name' => 'Smith',
                     'last_name' => 'Doe',
@@ -39,7 +39,7 @@ class StudentExport implements FromView
                    
                 ],
                 (object) [
-                    'id_number' => 20210002, // Changed to an integer
+                    'id_number' => 'aBcDeFgHiJkLmNoPqRs1T2U3V4W5X6Y7Z3', // Changed to an integer
                     'first_name' => 'Kath',
                     'middle_name' => 'Kristine Dumangin',
                     'last_name' => 'Anjan',
@@ -58,7 +58,7 @@ class StudentExport implements FromView
                   
                 ],
                 (object) [
-                    'id_number' => 20210003, // Changed to an integer
+                    'id_number' => 'aBcDeFgHiJkLmNoPqRs1T2U3V4W5X6Y7Z4', // Changed to an integer
                     'first_name' => 'Alice',
                     'middle_name' => 'Brown',
                     'last_name' => 'yow',

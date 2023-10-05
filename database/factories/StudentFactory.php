@@ -23,7 +23,7 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_number' => $this->faker->unique()->numberBetween(1000, 2000),
+            'id_number' => $this->faker->unique()->regexify('[A-Za-z0-9]{20}'),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'middle_name' => $this->faker->lastName(),

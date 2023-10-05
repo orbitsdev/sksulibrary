@@ -19,7 +19,7 @@ class StudentDetails extends Page
 
     public function mount($id){
     
-        $this->student = Student::where('id', (int)$id)->first();
+        $this->student = Student::where('id',$id)->first();
        
     }
 

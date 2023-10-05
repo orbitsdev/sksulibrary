@@ -72,7 +72,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             $qrCode = new DNS2D();
             
             // Generate the QR code data
-            $qrCodeData = $qrCode->getBarcodePNG(strval($student->id_number), 'QRCODE');
+            $qrCodeData = $qrCode->getBarcodePNG($student->id_number, 'QRCODE');
+            // $qrCodeData = $qrCode->getBarcodePNG(strval($student->id_number), 'QRCODE');
             
             // Generate a filename based on student information
             $lastName = $student->last_name ?? 'UnknownLastName';
