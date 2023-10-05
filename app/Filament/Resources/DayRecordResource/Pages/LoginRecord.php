@@ -92,6 +92,7 @@ class LoginRecord extends Page implements Tables\Contracts\HasTable
           TextColumn::make('student')->label('Student Name')->formatStateUsing(function($record){
             return $record->student->first_name . ' ' . $record->student->last_name;
           }),
+          TextColumn::make('student.year')->label('Year'),
           TextColumn::make('student.id_number')->label('ID Number')->searchable(),
           TextColumn::make('student.course.name')->label('Course')->searchable(),
           TextColumn::make('student.campus.name')->label('Campus')->searchable(),
