@@ -40,12 +40,13 @@
     <title>Document</title>
 
     <style>
-        body{
+        body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         p {
             padding: 0;
             margin: 0;
@@ -59,23 +60,30 @@
             border: 1px solid #000;
             border-radius: 8px;
             box-sizing: border-box;
+           
+        }
+        .card p{
+            font-size: 12px;
         }
 
         .card-header {
             display: flex;
             justify-content: center;
             align-items: center;
+            background: red;
         }
 
         .republic,
         .province {
-            font-size: 12px;
+           
         }
-        .sultan-kudarat{
-            font-size: 12px;
+
+        .sultan-kudarat {
+           
         }
+
         .access {
-            font-size: 12px;
+           
             font-weight: bold;
         }
 
@@ -89,41 +97,77 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border-top-left-radius: 8px; /* Border radius for top-left corner */
-             border-bottom-left-radius: 8px; 
+            border-top-left-radius: 8px;
+            /* Border radius for top-left corner */
+            border-bottom-left-radius: 8px;
         }
 
         .card-side-content-text p {
-            font-size: 12px;
+           
             font-weight: bold;
             border-radius: 20px;
-       
-            margin: 0; /* Adjust margin for better spacing */
-            padding: 5px; /* Adjust padding for better spacing */
+
+            margin: 0;
+            /* Adjust margin for better spacing */
+            padding: 5px;
+            /* Adjust padding for better spacing */
         }
 
-        .university{
-            font-size: 12px;
+        .university {
+           
+            background: pink;
         }
 
-        .image-container{
+
+
+        .bar-code {
+            padding: 8px 12px;
+            background: orange;
+           
+            display: flex;
+            justify-content: space-around;
+
+
+        }
+
+        .image-container {
             width: 60px;
             height: 60px;
             border-radius: 8px;
             border: 2px solid #94a3b8;
             border-style: dashed;
-            
+            background: violet;
+
         }
 
-        .bar-code{
-            font-size: 12px;
-            display:flex; 
-            justify-content:center; 
-            align-items: flex-end;
+        .bar-code-information {
+            background: skyblue;
+            padding-left: 4px;
+
         }
 
-        .signature-line{
+        .bar-code p {
+           
+        }
+
+
+        .signature-line {
+            width: 100%;
             border: 1px solid black;
+        }
+
+
+        /* .bar-code-information p{
+            text-align: center;
+           
+        }  */
+
+        .bar-code-owner {
+            font-weight: bold;
+        }
+
+        .qr{
+           
         }
     </style>
 </head>
@@ -167,24 +211,33 @@
                     Learning, Resource Center (ULRC) CARD ACCESS CAMPUS</p>
             </div>
 
-             <div class="bar-code" >
-                <div class="image-container" >
+            <div class="bar-code">
+                <div class="image-container">
                     <!-- Content or image can be added here -->
                 </div>
-                <div>
-                    <p>Kristine Kate Magsaysay</p>
+                <div class="bar-code-information">
+                    <p class="bar-code-owner">Kristine Kate Magsaysay</p>
                     <p>Bachelor of Science and Computer Science</p>
                     <p>ID NO.: 20-0634 </p>
-                    <div class="signature" style="display: flex; justify-content:space-between; align-items: center">
-                        <p>Signature</p>
-                        <div  class="signature-line" style="flex:2; background:red; boder-bottom:2px solid black"> </div>
+                    <div class="signature"
+                        style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <p>Signature:</p>
+                        <div class="signature-line" style=" border-bottom: 1px solid black;"></div>
                     </div>
-                </div>
-                
-             <div>
 
+
+                </div>
+
+                <div>
+
+                </div>
+            </div>
+            <div class="qr">
+                <p> This is NONE TRANFERRABLE</p>
+            </div>
         </div>
     </div>
+
 </body>
 
 </html>
