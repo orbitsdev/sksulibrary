@@ -23,7 +23,9 @@ class ListStudents extends ListRecords
     {
         return [
             
-           
+            Actions\Action::make('generate-id-layout')->button()->action(function (array $data): void {
+
+            })->label('Generate Printable ID '),
             Actions\Action::make('Import')->button()->action(function (array $data): void {
 
                 $file  = Storage::disk('public')->path($data['file']);

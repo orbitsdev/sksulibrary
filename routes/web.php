@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\User;
 use App\Models\Teller;
 use App\Models\Student;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
 use Illuminate\Http\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -97,6 +99,32 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     })->name('barcode.download');
 });
+
+Route::get('/generate-id', function(){
+    $students = Student::get();
+    $data = [
+        'title' => 'Welcome to ItSolutionStuff.com',
+        'date' => date('m/d/Y'),
+        'students' => $students
+    ];
+    
+    $pdf = Pdf::loadView('PDF.id-layout', $data);
+    return $pdf->download('invoice.pdf');
+
+});
+
+
+Route::get('/generate-view', function(){
+    $students = Student::get();
+    $data = [
+        'title' => 'Welcome to ItSolutionStuff.com',
+        'date' => date('m/d/Y'),
+        'students' => $students
+    ];
+    return view('PDF.id-layout-view', $data);
+
+});
+
 
 
 
