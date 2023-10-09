@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Quote;
+use App\Models\IdData;
 use App\Models\Student;
 use Livewire\Component;
 use App\Models\DayLogin;
@@ -86,12 +87,16 @@ class AttendanceForm extends Component
                 // $this->todayRecord = $this->getLatestDayRecord();
              
                 if($this->student !== null){
-                    
+                         
 
                         $this->todayRecord = DayRecord::latest()->first();
 
                         if($this->todayRecord !== null){
-                            $this->callProcess();
+                            $this->checkValidity();
+
+                            if (!$this->hasError) {
+                                $this->callProcess();
+                            }
                             
 
                           
@@ -101,7 +106,9 @@ class AttendanceForm extends Component
                     }else{
                         
                         $this->todayRecord   = DayRecord::create();
-                        $this->callProcess();
+                        if (!$this->hasError) {
+                            $this->callProcess();
+                        }
                         
                         
                         // $this->createDayLoginRecordWithLogout();
@@ -180,6 +187,7 @@ class AttendanceForm extends Component
 
 
     public function updateLogoutRecordStatus($logoutRecord){
+    
         $logoutRecord->update(['status' => 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
         $this->isSuccess = true;
@@ -190,6 +198,7 @@ class AttendanceForm extends Component
     }
 
     public function createLogoutRecord($studentLoginRecord){
+
         $newLogoutRecord = $studentLoginRecord->logout()->create(['status'=> 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
         // $this->clearInformation();
@@ -199,6 +208,58 @@ class AttendanceForm extends Component
 
 
     }
+    public function checkValidity()
+    {
+        // Fetch the first IdData record
+        $dataId = IdData::first();
+
+       
+    
+        // Check if both student and dataId have valid years
+        if (!empty($this->student->valid_from) && !empty($this->student->valid_until) && !empty($dataId->valid_from) && !empty($dataId->valid_until)) {
+          
+            // Parse dates using Carbon
+            
+       // Parse dates using Carbon
+$studentValidFrom = Carbon::createFromFormat('Y', $this->student->valid_from)->year;
+$studentValidUntil = Carbon::createFromFormat('Y', $this->student->valid_until)->year;
+$dataIdValidFrom = Carbon::createFromFormat('Y', $dataId->valid_from)->year;
+$dataIdValidUntil = Carbon::createFromFormat('Y', $dataId->valid_until)->year;
+// dump('Student Valid From: ' . $studentValidFrom);
+// dump('Student Valid Until: ' . $studentValidUntil);
+// dump('DataID Valid From: ' . $dataIdValidFrom);
+// dump('DataID Valid Until: ' . $dataIdValidUntil);
+            
+    
+            // Check if the student is valid based on ID data
+            if ($studentValidUntil >= $dataIdValidFrom && $studentValidFrom <= $dataIdValidUntil) {
+                $data = [
+                   $studentValidFrom,
+                    $studentValidUntil,
+                    $dataIdValidFrom,
+                    $dataIdValidUntil
+
+                    
+                ];
+
+
+                // Student is valid based on ID data
+                // Your code here
+            } else {
+             
+
+                // Student is not valid based on ID data
+                $this->showError('Error', 'Your Card Was Expired', 'expired');
+                
+            }
+        } else {
+            
+            $this->showError('Error', 'No Validation Assigned','expired');
+            
+        }
+    }
+    
+
 
     public function closeSuccessAfter3Seconds(){
         $this->emit('triggerClose');

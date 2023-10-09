@@ -47,9 +47,13 @@ class CampusResource extends Resource
                 Repeater::make('courses')
                 ->relationship()
                 ->schema([
-                    TextInput::make('name')->required()->label('Course Name')->required(),
-                    TextInput::make('sub_name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name')
-                    ->unique(ignoreRecord: true),
+                    TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Course Name')
+                    ->unique(ignoreRecord: true)
+                    ->helperText('e.x Bachelor of Secondary Education')
+                    ,
+                    TextInput::make('sub_name')->maxLength(255)->columnSpan(2)->required()->label('Abbreviation Name')
+                    ->unique(ignoreRecord: true)
+                    ->helperText('e.x (BSED)')
                 ])
                 ->columnSpanFull(),
 

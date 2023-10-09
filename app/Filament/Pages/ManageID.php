@@ -61,7 +61,6 @@ class ManageID extends Page implements HasForms
         return [
 
            TextInput::make('director_name')->required()
-      
            ->maxLength(50)
            ,
 
@@ -70,6 +69,8 @@ class ManageID extends Page implements HasForms
            ,
            
            TextInput::make('valid_from')
+           ->label('Valid From')
+
            ->required()
            ->minLength(4)
            ->maxLength(4)
@@ -78,6 +79,8 @@ class ManageID extends Page implements HasForms
            ,
 
            TextInput::make('valid_until')
+           ->label('Valid Until')
+
            ->required()
            ->minLength(4)
            ->maxLength(4)

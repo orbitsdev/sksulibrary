@@ -7,7 +7,7 @@
     }
 
 #show_bg_2 {
-    background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
+    background-image: linear-gradient(to bottom, hsla(51, 77%, 58%, 0.52), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
 
 background-size: cover;
 color: white;
@@ -118,21 +118,24 @@ padding: 20px;
         </div>
 
         @else
-        <div class="h-[220px] bg-red-400"></div>
+        <div class="h-[200px]"></div>
     @endif
     
 </x-modal.card>
 
+
+
 <x-modal.card align="center" blur wire:model="hasError">
     
-
-
 
     @if ($errorType == 'not-found')
         <x-error-content :image="'not-found.png'" :message="$errorMessage" />
     @endif
     @if ($errorType == 'exception')
         <x-error-content :image="'error.png'" :message="$errorMessage" />
+    @endif
+    @if ($errorType == 'expired')
+        <x-error-content :image="'expired.png'" :message="$errorMessage" />
     @endif
 
 

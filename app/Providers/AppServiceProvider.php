@@ -87,7 +87,7 @@ class AppServiceProvider extends ServiceProvider
                             ...StudentResource::getNavigationItems(),
                             ...CourseResource::getNavigationItems(),
                             ...CampusResource::getNavigationItems(),
-                            NavigationItem::make('Manage ID Information')
+                            NavigationItem::make('ID Settings')
                             ->icon('heroicon-o-user-circle')
                            ->activeIcon('heroicon-s-user-circle')
                             ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.manage-i-d'))

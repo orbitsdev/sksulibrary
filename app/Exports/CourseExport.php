@@ -30,7 +30,7 @@ class CourseExport implements FromView {
                 (object) [
                     'name' => 'Bachelor of Science in Information System',
                     'sub_name' => 'BSIS',
-                    'campus_id' => 2, // Replace with the appropriate campus_id
+                    'campus_id' => 3, // Replace with the appropriate campus_id
                 ],
                 // Add more default courses as objects as needed
             ];

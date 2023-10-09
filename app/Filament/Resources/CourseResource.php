@@ -55,10 +55,13 @@ class CourseResource extends Resource
                         ->unique(ignoreRecord: true),
                     ])
                     ,
-                TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Course Name')
-                ->unique(ignoreRecord: true),
-                TextInput::make('sub_name')->maxLength(255)->columnSpan(2)->required()->label('Prefix Name')
-                ->unique(ignoreRecord: true)
+                    TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Course Name')
+                    ->unique(ignoreRecord: true)
+                    ->helperText('e.x Bachelor of Secondary Education')
+                    ,
+                    TextInput::make('sub_name')->maxLength(255)->columnSpan(2)->required()->label('Abbreviation Name')
+                    ->unique(ignoreRecord: true)
+                    ->helperText('e.x (BSED)')
 
                 ,
             ]);

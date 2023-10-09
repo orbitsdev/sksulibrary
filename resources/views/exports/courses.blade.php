@@ -2,7 +2,7 @@
     <thead>
         <tr style="background-color: #D6EEEE">
             <th style="background-color: #D6EEEE" >Course Name</th>
-            <th style="background-color: #D6EEEE" >Prefix </th>
+            <th style="background-color: #D6EEEE" >Abbreviation </th>
             <th style="background-color: #D6EEEE" >Course Id</th>
             <th style="background-color: #D6EEEE" >Campus Id</th>
             {{-- <th style="background-color: #D6EEEE" >Course Reference (BASIS FOR COURSE NAME)</th>

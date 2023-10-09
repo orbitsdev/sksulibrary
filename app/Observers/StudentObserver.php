@@ -36,6 +36,8 @@ class StudentObserver
         Storage::disk('public')->put($filePath, base64_decode($qrCodeData));
     }
 
+    
+
     /**
      * Handle the Student "updated" event.
      */
