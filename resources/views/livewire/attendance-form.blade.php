@@ -68,36 +68,7 @@ padding: 20px;
 <div>
     <!-- Your Livewire component content -->
 
-    @if ($student != null && $todayRecord != null)
-    <div class="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[1000]">
-        <div class="absolute w-full h-full bg-gray-900 opacity-[30%]"></div>
-        <div class="max-w-xl bg-white w-2/3 p-8 rounded shadow-lg z-10 relative">
-            <button wire:click="clearInformation" class="absolute top-2 right-2 text-[#B8B8B8]">
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <p class="text-[#36784D] uppercase text-2xl leading-none text-center">SKSU LIBRARY SYSTEM</p>
-            <p class="mt-8 text-3xl font-bold text-center">DOE, SMITH JOHN, MAKATAGIL MAGBANUA </p>
-            <p class="mt-2 text-[#918f8f] text-lg text-center">1st Year SECONDARY TEACHER</p>
-            @if ($studentLoginRecord = $this->student->logins()->latest()->first())
-                @if ($studentLoginRecord->logout)
-                    @if ($studentLoginRecord->logout->status == 'Logged out')
-                        <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
-                    @else
-                        <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
-                    @endif
-                @endif
-            @else
-                <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
-            @endif
-           
-        </div>
-    </div>
-@endif
-
+   
     <script>
         document.addEventListener('livewire:load', function () {
             Livewire.on('closeSuccessModalAfterDelay', function () {
@@ -112,6 +83,45 @@ padding: 20px;
 
 
  
+<x-modal.card align="center" blur z-index="z-40" wire:model="isSuccess" sm show="true"
+        spacing="">
+        @if ($student != null && $todayRecord != null)
+        <div class=" p-8 rounded  z-10 relative">
+            {{-- <button wire:click="clearInformation" class="absolute top-2 right-2 text-[#B8B8B8]">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button> --}}
+            <p class="text-[#36784D] uppercase text-2xl leading-none text-center">SKSU LIBRARY SYSTEM</p>
+            <p class="mt-8 text-3xl font-bold text-center">
+                {{ ucfirst($student?->last_name) ?? '' }} , {{ $student?->middle_name ?? '' }}
+                    {{ $student?->first_name ?? '' }}    
+            </p>
+            <p class="mt-2 text-[#918f8f] text-lg text-center">
+                {{ $student->year ?? '' }}, {{ $student?->course?->name ?? '' }}
+
+            </p>
+            @if ($studentLoginRecord = $this->student->logins()->latest()->first())
+                @if ($studentLoginRecord->logout)
+                    @if ($studentLoginRecord->logout->status == 'Logged out')
+                        <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
+                    @else
+                        <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
+                    @endif
+                @endif
+            @else
+                <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
+            @endif
+           
+        </div>
+
+        @else
+        <div class="h-[220px] bg-red-400"></div>
+    @endif
+    
+</x-modal.card>
 
 <x-modal.card align="center" blur wire:model="hasError">
     

@@ -33,6 +33,7 @@ use Filament\Tables\Columns\ViewColumn;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
@@ -40,6 +41,7 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\TernaryFilter;
+use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StudentResource\RelationManagers;
@@ -556,6 +558,29 @@ class StudentResource extends Resource
 
             ])
             ->bulkActions([
+
+            
+                Tables\Actions\BulkAction::make('generate-selected')
+                ->icon('heroicon-o-identification')
+
+                ->label('Generate ID')
+                
+                ->action(function (Collection $records) {
+                  
+
+                    $studentIds =$records->pluck('id')->toArray();
+                    if(!empty($studentIds)){
+    
+                        $url = route('generate-view', ['records' => implode(',', $studentIds)]);
+                        return redirect()->to($url);
+                    }else{
+                        Notification::make() 
+                        ->title('No Record Found')
+                        ->danger()
+                        ->send(); 
+                    }
+                })
+                ,
 
                 Tables\Actions\DeleteBulkAction::make(),
             ]);

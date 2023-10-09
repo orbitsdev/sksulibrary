@@ -24,23 +24,6 @@ class ListStudents extends ListRecords
     protected function getActions(): array
     {
         return [
-            
-            Actions\Action::make('generate-id-layout')->button()->action(function(){
-
-                $studentIds = Student::pluck('id')->toArray();
-                if(!empty($studentIds)){
-
-                    $url = route('generate-view', ['records' => implode(',', $studentIds)]);
-                    return redirect()->to($url);
-                }else{
-                    Notification::make() 
-                    ->title('No Record Found')
-                    ->danger()
-                    ->send(); 
-                }
-            })
-           
-            ->label('Print Generated ID '),
             Actions\Action::make('Import')->button()->action(function (array $data): void {
 
                 $file  = Storage::disk('public')->path($data['file']);
@@ -56,6 +39,25 @@ class ListStudents extends ListRecords
             ])
             ->modalSubheading("Please ensure data accuracy by verifying that member names exist in the database, including campus, department, course, and section names. Remember that names are case-sensitive, so double-check capitalization and spelling. Attempting to assign names that do not exist in the database won't reflect or save in the import!")
             ,
+            Actions\Action::make('generate-id-layout')->button()
+            ->icon('heroicon-o-identification')
+            ->action(function(){
+
+                $studentIds = Student::pluck('id')->toArray();
+                if(!empty($studentIds)){
+
+                    $url = route('generate-view', ['records' => implode(',', $studentIds)]);
+                    return redirect()->to($url);
+                }else{
+                    Notification::make() 
+                    ->title('No Record Found')
+                    ->danger()
+                    ->send(); 
+                }
+            })
+           
+            ->label('Print Generated ID '),
+           
             // Actions\Action::make('ImportUpdate')->button()->action(function (array $data): void {
 
             //     $file  = Storage::disk('public')->path($data['file']);

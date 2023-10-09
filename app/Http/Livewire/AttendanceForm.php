@@ -283,8 +283,8 @@ class AttendanceForm extends Component
 
     public function clearInformation(){
 
-        $this->isConfirmationShow = false;
         $this->isSuccess = false;
+        $this->isConfirmationShow = false;
         $this->barcode = null;
         $this->student = null;
         $this->todayRecord = null;

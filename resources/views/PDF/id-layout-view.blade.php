@@ -43,22 +43,8 @@
 </head>
 
 <style>
+ 
 
-@media print {
-    html{
-        padding: 10px;
-    }
-    
-
-    .gb {
-        /* Your print-specific styles here */
-        page-break-inside: avoid; /* Avoid slicing content across pages */
-    }
-
-    .gbs{
-        display: none;
-    }
-}
     html,
     body {
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -394,15 +380,80 @@
         page-break-inside: avoid;
 
     }
-    .gbs{
-        margin: 20px;
+    
+    .gbs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .g-button{
-        text-decoration: none;
-        background: green;
-        color: white;
-        margin: 20px;
+
+    .button-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .g-button,
+    .k-button {
+        font-size: 18px;
         padding: 8px 12px;
+        border: none;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .g-button {
+        background-color: #36784D;
+        margin-right: 10px;
+    }
+
+    .g-button:hover {
+        background-color: #3c975c;
+    }
+
+    .k-button {
+        background-color: #36784D;
+        display: flex;
+        align-items: center;
+    }
+
+    .k-button:hover {
+        background-color: #3c975c;
+    }
+
+    .k-button svg {
+        margin-right: 8px;
+    }
+
+    .instruction {
+        font-size: 18px;
+        font-weight: bold;
+        color: #666;
+        margin-left: 10px;
+    }
+    .k{
+        margin-right: 4px;
+    }
+
+    @media print {
+        html {
+            padding: 10px !important;
+        }
+
+        .gb {
+            /* Your print-specific styles here */
+            page-break-inside: avoid !important; /* Avoid slicing content across pages */
+        }
+
+        .gbs {
+            display: none !important;
+        }
     }
 </style>
 
@@ -423,8 +474,19 @@
     <a href="{{ $url }}" class="g-button">GENERATE PDF</a>
     @endif --}}
     <div class="gbs">
-
-        <a href="{{route('filament.resources.students.index')}}" class="g-button">BACK</a>
+        <div class="button-container">
+            <button onclick="window.print()" class="k-button k">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="print-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+                PRINT
+            </button>
+            <p class="instruction">Ctrl + P to print</p>
+        </div>
+        <div class="button-container">
+            <a href="{{ route('filament.resources.students.index') }}" class="g-button">BACK</a>
+          
+        </div>
     </div>
 
     <div class="layout">
