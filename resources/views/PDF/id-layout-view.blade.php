@@ -481,7 +481,7 @@
                 </svg>
                 PRINT
             </button>
-            <p class="instruction">Ctrl + P to print</p>
+            <p class="instruction">or Ctrl + P to print</p>
         </div>
         <div class="button-container">
             <a href="{{ route('filament.resources.students.index') }}" class="g-button">BACK</a>
