@@ -77,6 +77,8 @@ class AppServiceProvider extends ServiceProvider
                                 ->activeIcon('heroicon-s-home')
                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.dashboard'))
                                 ->url(route('filament.pages.dashboard')),
+
+                            
                         ]),
 
                     NavigationGroup::make('Management')
@@ -85,6 +87,11 @@ class AppServiceProvider extends ServiceProvider
                             ...StudentResource::getNavigationItems(),
                             ...CourseResource::getNavigationItems(),
                             ...CampusResource::getNavigationItems(),
+                            NavigationItem::make('Manage ID Information')
+                            ->icon('heroicon-o-user-circle')
+                           ->activeIcon('heroicon-s-user-circle')
+                            ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.manage-i-d'))
+                             ->url(route('filament.pages.manage-i-d')),
                           
                         ]),
                     NavigationGroup::make('Report')
@@ -107,14 +114,15 @@ class AppServiceProvider extends ServiceProvider
                                 ->activeIcon('heroicon-s-presentation-chart-bar')
                                  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.top-visitor'))
                                   ->url(route('filament.pages.top-visitor')),
+                                  
+                                  // NavigationItem::make('Individual Reports')
+                                  // ->icon('heroicon-o-document-report')
+                                  // ->activeIcon('heroicon-s-document-report')
+                                  // ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.students.individualReport'))
+                                  // ->url(route('filament.resources.students.individualReport')),
+                                ]),
                               
-                            // NavigationItem::make('Individual Reports')
-                            // ->icon('heroicon-o-document-report')
-                            // ->activeIcon('heroicon-s-document-report')
-                            // ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.students.individualReport'))
-                            // ->url(route('filament.resources.students.individualReport')),
-                        ]),
-                        // NavigationGroup::make('QUEUES')
+                                // NavigationGroup::make('QUEUES')
                         // ->items([
                         //     ...TellerResource::getNavigationItems(),
                         //     ...QuequeResource::getNavigationItems(),
@@ -124,7 +132,11 @@ class AppServiceProvider extends ServiceProvider
                     // ->items([
                     //     ...QuoteResource::getNavigationItems(),
                     // ]),
+
+                    
                 ]);
+
+                
         });
     }
 }

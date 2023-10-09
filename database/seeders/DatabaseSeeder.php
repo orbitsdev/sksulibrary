@@ -12,6 +12,7 @@ use Database\Seeders\PhilippineCitiesTableSeeder;
 use Database\Seeders\PhilippineRegionsTableSeeder;
 use Database\Seeders\PhilippineBarangaysTableSeeder;
 use Database\Seeders\PhilippineProvincesTableSeeder;
+use Database\Seeders\IdDataSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,13 +24,15 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            CourseSeeder::class,
             CampusSeeder::class,
+            CourseSeeder::class,
             // StudentSeeder::class,
+            IdDataSeeder::class,
             PhilippineRegionsTableSeeder::class,
             PhilippineProvincesTableSeeder::class,
             PhilippineCitiesTableSeeder::class,
             PhilippineBarangaysTableSeeder::class,
+            
         ]);
 
 

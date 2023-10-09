@@ -341,6 +341,52 @@ class StudentResource extends Resource
                             ]),
 
                     ]),
+
+                    Fieldset::make('For ID Information')
+                    ->schema([
+
+                        Grid::make(12)
+                        ->schema([  
+                            TextInput::make('guardian')->label('First Name')->columnSpan(3),
+                                
+                            TextInput::make('guardian_contact_number')->label('Guardian Phone number')
+                            ->columnSpan(3)
+                           
+                            ->prefix('+63')
+                            ->minLength(10)
+                            ->maxLength(10)
+                            ->numeric()
+                            ->mask(fn (TextInput\Mask $mask) => $mask
+                                ->numeric()),
+
+                                TextInput::make('valid_from')
+                                ->required()
+                                ->columnSpan(3)
+                                ->default(now()->year)
+                                ->minLength(4)
+                                ->maxLength(4)
+                                ->helperText(function(){
+                                    return 'Format should be Year ('.now()->year.')';
+                                })
+                                ->mask(fn (TextInput\Mask $mask) => $mask->pattern('0000'))
+                                ,
+                                
+                                TextInput::make('valid_until')
+                                ->default(now()->addYear()->year)
+                                ->columnSpan(3)
+                                ->required()
+                                ->minLength(4)
+                                ->maxLength(4)
+                                
+                                ->helperText(function(){
+                                    return 'Format should be Year ('.now()->addYear()->year.')';
+                                })
+                                ->mask(fn (TextInput\Mask $mask) => $mask->pattern('0000'))
+                     
+                                ,
+                              
+                        ]),
+                    ])
             ]);
     }
 

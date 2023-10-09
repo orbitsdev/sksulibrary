@@ -18,6 +18,7 @@
         "livewire/livewire": "^2.11",
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^10.0",
+        "spatie/browsershot": "^3.58",
         "wireui/wireui": "^1.17",
         "woenel/prpcmblmts": "^1.0"
     },

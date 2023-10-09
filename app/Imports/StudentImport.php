@@ -57,7 +57,11 @@ class StudentImport implements ToModel,WithHeadingRow
                 'year'=>$row['year'],
                 'profile'=>null,
                 'school_id'=>null,
-                'two_by_two'=>null,   
+                'two_by_two'=>null,
+                'guardian'=> $row['guardian'],   
+                'guardian_contact_number'=> $row['guardian_phone_number'],   
+                'valid_from'=>$row['valid_from'],
+                'valid_until'=>$row['valid_until']
                 ]);
                 $student->save();
             }else{
@@ -86,6 +90,10 @@ class StudentImport implements ToModel,WithHeadingRow
                         'profile'=>null,
                         'school_id'=>null,
                         'two_by_two'=>null,    
+                        'guardian'=> $row['guardian'],   
+                        'guardian_contact_number'=> $row['guardian_phone_number'],
+                        'valid_from'=>$row['valid_from'],
+                        'valid_until'=>$row['valid_until']
                         ]);
                 }
                

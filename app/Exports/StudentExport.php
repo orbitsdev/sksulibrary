@@ -25,7 +25,7 @@ class StudentExport implements FromView
                     'middle_name' => 'Smith',
                     'last_name' => 'Doe',
                     'sex' => 'Male',
-                    'contact_number' => '09231234567',
+                    'contact_number' => '9231234567',
                     'street_address' => '123 Main Street',
                     'home_address' => '123 Main Street',
                     'city' => 'Example City',
@@ -36,6 +36,11 @@ class StudentExport implements FromView
                     'status' => 'Active',
                     'year' => '1st Year',
                     'profile' => 'path/to/profile-image.jpg',
+                    'guardian'=> 'Guardian 1',   
+                    'guardian_contact_number'=> '9231234567',   
+                    'valid_from'=>now()->year,
+                    'valid_until'=>now()->addYear()->year,
+                    
                    
                 ],
                 (object) [
@@ -44,7 +49,7 @@ class StudentExport implements FromView
                     'middle_name' => 'Kristine Dumangin',
                     'last_name' => 'Anjan',
                     'sex' => 'Female',
-                    'contact_number' => '09231234567',
+                    'contact_number' => '9231234567',
                     'street_address' => '456 Elm Street',
                     'home_address' => '456 Elm Street',
                     'city' => 'Another City',
@@ -55,6 +60,10 @@ class StudentExport implements FromView
                     'status' => 'Inactive',
                     'year' => '2nd Year',
                     'profile' => 'path/to/another-profile-image.jpg',
+                    'guardian'=> 'Guardian 2',   
+                    'guardian_contact_number'=> '9231234567',
+                    'valid_from'=>now()->year,
+                    'valid_until'=>now()->addYear()->year,
                   
                 ],
                 (object) [
@@ -63,7 +72,7 @@ class StudentExport implements FromView
                     'middle_name' => 'Brown',
                     'last_name' => 'yow',
                     'sex' => 'Female',
-                    'contact_number' => '09231234567',
+                    'contact_number' => '9231234567',
                     'street_address' => '789 Oak Street',
                     'home_address' => '789 Oak Street',
                     'city' => 'Yet Another City',
@@ -74,6 +83,10 @@ class StudentExport implements FromView
                     'status' => 'Active',
                     'year' => '3rd Year',
                     'profile' => 'path/to/alice-profile-image.jpg',
+                    'guardian'=> 'Guardian 3',   
+                    'guardian_contact_number'=> '9231234567',
+                    'valid_from'=>now()->year,
+                    'valid_until'=>now()->addYear()->year,
                    
                 ],
             ];

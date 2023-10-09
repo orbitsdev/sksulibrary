@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Campus;
 use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,9 @@ class CourseFactory extends Factory
     public function definition(): array
     {
         return [
+            'campus_id'=> Campus::inRandomOrder()->first()->id,
             'name'=> $this->faker->name(),
+            'sub-name'=> $this->faker->name(),
         ];
     }
 }

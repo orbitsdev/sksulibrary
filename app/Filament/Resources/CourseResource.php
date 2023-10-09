@@ -51,9 +51,13 @@ class CourseResource extends Resource
                     ->createOptionForm([
                         TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name')
                         ->unique(ignoreRecord: true),
+                        TextInput::make('sub_name')->maxLength(255)->columnSpan(2)->required()->label('Campus Name')
+                        ->unique(ignoreRecord: true),
                     ])
                     ,
                 TextInput::make('name')->maxLength(255)->columnSpan(2)->required()->label('Course Name')
+                ->unique(ignoreRecord: true),
+                TextInput::make('sub_name')->maxLength(255)->columnSpan(2)->required()->label('Prefix Name')
                 ->unique(ignoreRecord: true)
 
                 ,
@@ -65,6 +69,7 @@ class CourseResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->label('Course Name'),
+                TextColumn::make('sub_name')->searchable()->label('Prefix'),
                 TextColumn::make('id')->searchable()->label('Course ID'),
                 TextColumn::make('campus.name')->searchable()->label('Campus Name'),
             ])

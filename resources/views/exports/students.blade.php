@@ -16,6 +16,10 @@
             <th>Year</th>
             <th>Campus Id</th>
             <th>Course Id</th>
+            <th>Guardian</th>
+            <th>Guardian Phone Number</th>
+            <th>Valid From</th>
+            <th>Valid Until</th>
             {{-- <th>Course Reference</th>
             <th>Campus Reference</th> --}}
         </tr>
@@ -37,6 +41,10 @@
             <td align="left" width="40">{{ $item?->year }}</td>
             <td align="left" width="40">{{ empty($item->course) ? '' : $item->course->id }}</td>
             <td align="left" width="40">{{ empty($item->course) || empty($item->course->campus) ? '' : $item->course->campus->id }}</td>
+            <td align="left" width="40">{{ $item?->guardian?? '' }}</td>
+            <td align="left" width="40">{{ $item?->guardian_contact_number?? '' }}</td>
+            <td align="left" width="40">{{ $item?->valid_from?? now()->year }}</td>
+            <td align="left" width="40">{{ $item?->valid_until?? now()->addYear()->year}}</td>
             {{-- <td align="left" width="40">
                 @if (empty($item->course) || empty($item->course->campus))
                     {{ '' }}

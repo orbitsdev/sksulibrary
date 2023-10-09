@@ -32,6 +32,15 @@ return new class extends Migration
             $table->foreignId('course_id')->nullable();
             $table->text('barcode')->nullable();
             $table->text('status')->nullable();
+
+            // id informatiion
+
+
+            
+            $table->string('guardian')->nullable();
+            $table->string('guardian_contact_number')->nullable();
+            $table->integer('valid_from')->nullable();
+            $table->integer('valid_until')->nullable();
             $table->string('year')->nullable();
             $table->text('profile')->nullable();
             $table->text('school_id')->nullable();

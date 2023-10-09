@@ -9,9 +9,12 @@ use Illuminate\Http\Response;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TellerController;
 use App\Http\Controllers\OfficerController;
+use App\Models\IdData;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,97 +39,102 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    
-    Route::get('/download-barcode/{idNumber}', function($idNumber){
+
+    Route::get('/download-barcode/{idNumber}', function ($idNumber) {
         // $student = Student::first();
-      
+
         // if ($student) {
         //     // Generate the barcode data
         //     $barcodeData = DNS1D::getBarcodePNG(strval($student->id_number), 'S25+');
         //     // $barcodeData =    DNS2D::getBarcodePNG(strval($student->id_number), 'QRCODE');
-         
-        
+
+
         //     // Generate a filename based on student information
         //     $lastName = $student->last_name ?? 'UnknownLastName';
         //     $firstName = $student->first_name ?? 'UnknownFirstName';
         //     // $filename = "{$student->last_name}-{$student->first_name}-{$student->id_number}.png";
         //     // $filename = ucfirst($lastName) . '-' . ucfirst($firstName) . '-' . $student->id_number . '.png';
         //     $filename = strtoupper($lastName . '-' . $firstName . '-' . $student->id_number . '.png');
-        
+
         //     // Define the path where the barcode image will be saved temporarily
         //     $filePath = 'temp/' . $filename;
-        
+
         //     // Save the barcode image temporarily to the public disk
         //     Storage::disk('public')->put($filePath, base64_decode($barcodeData));
-        
+
         //     // Create a response to trigger the download using the Storage::download() method
         //     return Storage::disk('public')->download($filePath, $filename);
         // }
-        
+
         // // If the student is not found, you might want to return a response indicating that.
         // return response('Student not found', 404);
 
 
         $student = Student::where('id_number', $idNumber)->first();
-    
+
         if ($student) {
             // Create an instance of DNS2D
             $qrCode = new DNS2D();
-            
+
             // Generate the QR code data
             $qrCodeData = $qrCode->getBarcodePNG($student->id_number, 'QRCODE');
             // $qrCodeData = $qrCode->getBarcodePNG(strval($student->id_number), 'QRCODE');
-            
+
             // Generate a filename based on student information
             $lastName = $student->last_name ?? 'UnknownLastName';
             $firstName = $student->first_name ?? 'UnknownFirstName';
             $filename = strtoupper($lastName . '-' . $firstName . '-' . $student->id_number . '.png');
-            
+
             // Define the path where the QR code image will be saved temporarily
             $filePath = 'temp/' . $filename;
-            
+
             // Save the QR code image temporarily to the public disk
             Storage::disk('public')->put($filePath, base64_decode($qrCodeData));
-            
+
             // Create a response to trigger the download using the Storage::download() method
             return Storage::disk('public')->download($filePath, $filename);
         }
-        
+
         // If the student is not found, you might want to return a response indicating that.
         return response('Student not found', 404);
-        
-   
-
     })->name('barcode.download');
 });
 
-Route::get('/generate-id', function(){
-    $students = Student::get();
+Route::get('/generate-id', function (Request $request) {
+
+    $studentIds = $request->query('records');
+    
+    $studentIds = explode(',', $studentIds);
+    $students = Student::whereIn('id', $studentIds)->get();
+    $id_data = IdData::first();
     $data = [
         'title' => 'Welcome to ItSolutionStuff.com',
         'date' => date('m/d/Y'),
-        'students' => $students
+        'students' => $students,
+        'id_data' => $id_data,
     ];
+
     
     $pdf = Pdf::loadView('PDF.id-layout', $data);
-    return $pdf->download('invoice.pdf');
+    $filename = now()->year.'-'.now()->month;
+    return $pdf->download($filename.'.pdf');
+})->name('generate-student-id');
 
-});
 
-
-Route::get('/generate-view', function(){
-    $students = Student::get();
+Route::get('/generate-view', function (Request $request) {
+    $studentIds = $request->query('records');
+    $studentIds = explode(',', $studentIds);
+    $students = Student::whereIn('id', $studentIds)->get();
+    $id_data = IdData::first();
+ 
     $data = [
         'title' => 'Welcome to ItSolutionStuff.com',
         'date' => date('m/d/Y'),
-        'students' => $students
+        'students' => $students,
+        'id_data' => $id_data,
     ];
     return view('PDF.id-layout-view', $data);
-
-});
-
-
-
+})->name('generate-view');
 
 
 // Route::get('/testapi', function(){
@@ -139,36 +147,29 @@ Route::get('/generate-view', function(){
 // Route::get('/queque', function(){
 //     return view('queque.index');
 // })->name('queque.index');
-Route::get('/queque/monitor', function(){
+Route::get('/queque/monitor', function () {
     return view('queque.monitor');
 })->name('queque.monitor');
 
-Route::prefix('teller')->name('teller.')->group(function(){
+Route::prefix('teller')->name('teller.')->group(function () {
 
-    Route::get('/login', [TellerController::class,'index'])->name('index');
-    Route::post('/login', [TellerController::class,'login'])->name('login');
-    Route::get('/queque', function(){
-        
+    Route::get('/login', [TellerController::class, 'index'])->name('index');
+    Route::post('/login', [TellerController::class, 'login'])->name('login');
+    Route::get('/queque', function () {
 
-        
-        if (session()->has('teller_id')) 
-        {
+
+
+        if (session()->has('teller_id')) {
             $teller = Teller::find(session()->get('teller_id'));
-            if($teller){
+            if ($teller) {
                 return view('teller.queque',);
-
-            }else{
-            session()->forget('teller_id');
-               return redirect()->route('teller.login');
+            } else {
+                session()->forget('teller_id');
+                return redirect()->route('teller.login');
             }
             // return redirect()->route('dashboard');
         } else {
             return redirect()->route('teller.login');
         }
     })->name('queque');
-    
-
 });
-
-
-

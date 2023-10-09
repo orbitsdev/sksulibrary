@@ -2,15 +2,17 @@
 
 namespace App\Filament\Resources\StudentResource\Pages;
 
+use App\Models\Student;
 use Filament\Pages\Actions;
 use App\Exports\StudentExport;
 use App\Imports\StudentImport;
 use Filament\Pages\Actions\Action;
-use Maatwebsite\Excel\Facades\Excel;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Filament\Tables\Actions\Position;
 use App\Imports\StudentForUpdateImport;
 use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\StudentResource;
@@ -23,9 +25,22 @@ class ListStudents extends ListRecords
     {
         return [
             
-            Actions\Action::make('generate-id-layout')->button()->action(function (array $data): void {
+            Actions\Action::make('generate-id-layout')->button()->action(function(){
 
-            })->label('Generate Printable ID '),
+                $studentIds = Student::pluck('id')->toArray();
+                if(!empty($studentIds)){
+
+                    $url = route('generate-view', ['records' => implode(',', $studentIds)]);
+                    return redirect()->to($url);
+                }else{
+                    Notification::make() 
+                    ->title('No Record Found')
+                    ->danger()
+                    ->send(); 
+                }
+            })
+           
+            ->label('Print Generated ID '),
             Actions\Action::make('Import')->button()->action(function (array $data): void {
 
                 $file  = Storage::disk('public')->path($data['file']);
@@ -65,7 +80,7 @@ class ListStudents extends ListRecords
 
             })->icon('heroicon-o-document-download')->requiresConfirmation()->modalHeading('Export to Excel')
             ->modalSubheading('Donwload Excel as Report or Reference')
-            ->modalButton('Yes')
+        ->modalButton('Yes')
             ->label('Download Reference')
             ,
             
