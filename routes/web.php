@@ -173,3 +173,8 @@ Route::prefix('teller')->name('teller.')->group(function () {
         }
     })->name('queque');
 });
+
+
+Route::get('/v2', function(){
+    return view('v2');
+});

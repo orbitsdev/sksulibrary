@@ -32,7 +32,23 @@ class AttendanceForm extends Component
     public $isConfirmationShow = false;
     protected $listeners = ['test'=> 'test'];
    
+
+
+
     
+
+    public function someAction()
+    {
+        // Your logic here...
+
+        // Trigger the event to show the success modal
+   
+
+        // Close the modal after 3 seconds
+        $this->dispatchBrowserEvent('closeSuccessModalAfterDelay');
+    }
+
+
     
     public function test(){
         $this->dispatchBrowserEvent('name-updated', ['newName' => 'newName']);
@@ -132,6 +148,9 @@ class AttendanceForm extends Component
         $this->errorMessage = $message;
         $this->errorHeader = $header;
 
+
+        $this->emit('closeSuccessModalAfterDelay');
+
         // sleep(3);
 
         // $this->hasError = false;
@@ -154,16 +173,18 @@ class AttendanceForm extends Component
         
         // $this->student = Student::where('id_number', $this->barcode)->first();
         // $this->clearInformation();
+        $this->closeSuccessAfter3Seconds();
         // $this->succesNotification();
-        // $this->isSuccess = true;
+        $this->isSuccess = true;
     }
 
 
     public function updateLogoutRecordStatus($logoutRecord){
         $logoutRecord->update(['status' => 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
-        // $this->isSuccess = true;
+        $this->isSuccess = true;
         // $this->clearInformation();
+        $this->closeSuccessAfter3Seconds();
         // $this->succesNotification();
 
     }
@@ -172,9 +193,15 @@ class AttendanceForm extends Component
         $newLogoutRecord = $studentLoginRecord->logout()->create(['status'=> 'Logged out']);
         // $this->student = Student::where('id_number', $this->barcode)->first();
         // $this->clearInformation();
+        $this->closeSuccessAfter3Seconds();
+        $this->isSuccess = true;
         // $this->succesNotification();
 
 
+    }
+
+    public function closeSuccessAfter3Seconds(){
+        $this->emit('triggerClose');
     }
 
     public function readBarCodeManually(): void

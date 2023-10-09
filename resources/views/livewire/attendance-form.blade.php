@@ -1,11 +1,178 @@
+<div>
+
+
+<style>
+    .v2card{
+        font-family: 'Inter', sans-serif;
+    }
+
+#show_bg_2 {
+    background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
+
+background-size: cover;
+color: white;
+padding: 20px;
+}
+    </style>
+<div class="v2card flex items-center justify-center h-screen  " id="show_bg_2">
+
+    <div class="max-w-[800px] mx-auto bg-[#FEFEFE] shadow-xl m-2 rounded-lg  relative text-center py-8 px-12">  
+        
+      
+
+        <img src="{{ asset('images/sksulogo.png') }}" alt="sksu-logo.png"
+        class="w-24 h-24 mx-auto -mt-12 absolute inset-x-0 top-0">
+
+        <p class="text-[#AAAAAA] uppercase text-xl leading-none mt-8 tracking-widest font-light">SKSU LIBRARY SYSTEM</p>
+
+        <p class="capitalize text-[#36784D] font-medium text-[28px] leading-none mt-4 tracking-tight">University Learning Resource Center</p>
+
+        <div class="mx-auto w-3/4 rounded-full  bg-[#D9D9D9] h-1 mt-5"></div>
+      
+
+        <div class="mt-6 max-auto flex items-center  justify-center">
+            <div class="bg-[#f6f6f6] p-2">
+                <img src="{{asset('images/qr-transparent.png')}}" alt="" class="w-24 h-24">
+
+            </div>
+            <div class="ml-4  py-2 px-4">
+                <input wire:model.debounce.700ms="barcode" autofocus type="text" class="rounded-full border-2  focus:border-[#36784D]  focus:ring-[#36784D] border-[#36784D] placeholder-[#A7A7A7] w-full placeholder-sm text-green-900" placeholder="ID Number" >
+                <div class="flex items-center justify-between mt-2.5">
+                    <p class="text-[#A7A7A7] text-sm p-0 mr-3 " >
+                        Auto-Trigger: Active by default, Click to Take Control
+                    </p>
+                    <x-toggle sm wire:model="isManualInputBarCode" class="swithlabel " />
+                </div>
+            </div>
+
+          
+        </div>
+        <div x-data="{ isOpen: @entangle('isManualInputBarCode') }"
+     x-show="isOpen"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="h-0"
+     x-transition:enter-end="h-auto"
+     x-transition:leave="transition ease-in duration-300"
+     x-transition:leave-start="h-auto"
+     x-transition:leave-end="h-0"
+     class="mt-6 flex justify-end overflow-hidden">
+    <x-button wire:click="readBarCodeManually" spinner="readBarCodeManually"
+              class="sk-button max-h-14 px-[34px] py-[12px] w-full justify-center rounded-full capitalize">
+        Read Bar Code
+    </x-button>
+</div>
+
+    </div>
+</div>
+
+<div>
+    <!-- Your Livewire component content -->
+
+    @if ($student != null && $todayRecord != null)
+    <div class="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[1000]">
+        <div class="absolute w-full h-full bg-gray-900 opacity-[30%]"></div>
+        <div class="max-w-xl bg-white w-2/3 p-8 rounded shadow-lg z-10 relative">
+            <button wire:click="clearInformation" class="absolute top-2 right-2 text-[#B8B8B8]">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <p class="text-[#36784D] uppercase text-2xl leading-none text-center">SKSU LIBRARY SYSTEM</p>
+            <p class="mt-8 text-3xl font-bold text-center">DOE, SMITH JOHN, MAKATAGIL MAGBANUA </p>
+            <p class="mt-2 text-[#918f8f] text-lg text-center">1st Year SECONDARY TEACHER</p>
+            @if ($studentLoginRecord = $this->student->logins()->latest()->first())
+                @if ($studentLoginRecord->logout)
+                    @if ($studentLoginRecord->logout->status == 'Logged out')
+                        <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
+                    @else
+                        <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
+                    @endif
+                @endif
+            @else
+                <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
+            @endif
+           
+        </div>
+    </div>
+@endif
+
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('closeSuccessModalAfterDelay', function () {
+                setTimeout(function () {
+                    window.livewire.emit('closeSuccessModal');
+                    document.querySelector('[wire\\:model="barcode"]').focus(); // Emit Livewire event to close the modal
+                }, 300); // 3000 milliseconds = 3 seconds
+            });
+        });
+    </script>
+</div>
+
+
+ 
+
+<x-modal.card align="center" blur wire:model="hasError">
+    
+
+
+
+    @if ($errorType == 'not-found')
+        <x-error-content :image="'not-found.png'" :message="$errorMessage" />
+    @endif
+    @if ($errorType == 'exception')
+        <x-error-content :image="'error.png'" :message="$errorMessage" />
+    @endif
+
+
+    <x-slot name="footer">
+        <div class="flex justify-end gap-x-4">
+
+
+            <div class="flex">
+
+                <x-button positive label="I Understand" x-on:click="close" />
+            </div>
+        </div>
+    </x-slot>
+
+</x-modal.card>
+<script>
+    document.addEventListener('livewire:load', function () {
+        window.closeSuccessModal = function () {
+            @this.set('hasError', false);
+        }
+
+        Livewire.on('closeSuccessModalAfterDelay', function () {
+            setTimeout(function () {
+                closeSuccessModal();
+            }, 2000); // 3000 milliseconds = 3 seconds
+        });
+        Livewire.on('triggerClose', function () {
+            setTimeout(function () {
+                @this.call('clearInformation'); 
+            }, 3000); // 3000 milliseconds = 3 seconds
+        });
+    });
+</script>
+</div>
+
+
+     
+
+{{-- //end start update --}}
+
+
+{{-- <div class="flex items-center justify-center ">
+    <div class="border-green-500 rounded p-4">
+        @livewire('test-live-wire')
+    </div>
+</div> --}}
+{{-- 
 <div class="min-h-screen relative bg-white   ">
 
-    {{-- <div class="flex items-center justify-center ">
-        <div class="border-green-500 rounded p-4">
-            @livewire('test-live-wire')
-        </div>
-    </div> --}}
-
+    
     <div class="flex items-center justify-center">
 
         <h1 class="text-4xl font-bold text-gray-800  mt-[2%] ">University Learning Resource Center</h1>
@@ -105,7 +272,6 @@
                                 Read Bar Code
                             </x-button>
                         @else
-                            {{-- <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" class="w-full h-24 " fill="#6b7280" viewBox="0 0 122.88 82.185" enable-background="new 0 0 122.88 82.185" xml:space="preserve"><g><path d="M7.059,0H115.82h0.002v0.011c1.948,0.002,3.713,0.798,4.987,2.08c1.268,1.279,2.057,3.045,2.057,4.989h0.014v0.006h-0.014 v72.132c0,1.63-1.322,2.955-2.955,2.955v0.011H2.968C1.329,82.185,0,80.856,0,79.219c0-0.091,0.004-0.182,0.014-0.27V7.086H0V7.084 h0.014c0-1.948,0.789-3.717,2.059-4.994c1.272-1.281,3.034-2.077,4.98-2.08V0H7.059L7.059,0z M15.817,13.767h75.302v10.975H15.817 V13.767L15.817,13.767z M95.736,13.767h11.326v10.975H95.736V13.767L95.736,13.767z M15.817,68.418v-6.234 c3.335-1.482,13.547-4.233,14.028-8.317c0.108-0.921-2.064-4.504-2.563-6.188c-0.626-1-0.964-1.354-0.948-2.587 c0.009-0.694,0.021-1.377,0.118-2.044c0.129-0.853,0.102-0.877,0.549-1.564c0.462-0.712,0.265-3.315,0.265-4.297 c0-9.773,17.125-9.776,17.125,0c0,1.236-0.286,3.506,0.388,4.479c0.324,0.472,0.268,0.528,0.376,1.106 c0.143,0.755,0.154,1.53,0.166,2.32c0.016,1.233-0.32,1.587-0.945,2.587c-0.608,1.769-2.917,5.116-2.719,6.118 c0.735,3.729,10.205,6.233,13.187,7.561v7.062H15.817L15.817,68.418z M60.859,34.385h46.203v6.08H60.859V34.385L60.859,34.385z M61.93,61.769h45.133v6.08H61.93V61.769L61.93,61.769z M81.475,48.077h25.588v6.079H81.475V48.077L81.475,48.077z M61.93,48.077 h14.32v6.079H61.93V48.077L61.93,48.077z M115.82,5.932H7.059H7.052V5.921c-0.297,0-0.578,0.132-0.785,0.34 C6.055,6.477,5.923,6.767,5.923,7.084h0.012v0.002H5.923v69.167h111.034V7.086h-0.012V7.08h0.012c0-0.313-0.132-0.604-0.343-0.816 c-0.209-0.211-0.49-0.343-0.792-0.343v0.011H115.82L115.82,5.932z"/></g></svg> --}}
                         @endif
 
                     </div>
@@ -113,12 +279,7 @@
 
 
 
-                    {{-- <div class="pt-[44px] flex  justify-end flex-col ">
-                        <a href="/admin"
-                            class="tex-sm text-slate-500 hover:text-green-700 ">Admin?</a>
-                        <p class="text-slate-500 text-sm "> Unauthorized personnel are not permitted access to this area
-                        </p>
-                    </div> --}}
+                 
                 </div>
                 <div class="p-10  sksu-primary col-span-6 flex items-center justify-center min-h-[560px]">
                     <img src="{{ asset('/images/sksulogo.png') }}" alt="" class="w-[300px] h-[300px]">
@@ -126,8 +287,10 @@
             </section>
 
         </div>
-    </div>
+    </div> --}}
 
+
+   
 
     {{-- 
     <x-modal.card align="center" z-index="z-50" blur wire:model="isConfirmationShow" show="true">
@@ -287,32 +450,8 @@
         </x-slot>
     </x-modal.card>  --}}
 
-</div>
-
-{{-- 
-
-<x-modal.card align="center" blur wire:model="hasError">
+{{-- </div> --}}
+ {{-- //end before update --}}
 
 
-
-
-    @if ($errorType == 'not-found')
-        <x-error-content :image="'not-found.png'" :message="$errorMessage" />
-    @endif
-    @if ($errorType == 'exception')
-        <x-error-content :image="'error.png'" :message="$errorMessage" />
-    @endif
-
-
-    <x-slot name="footer">
-        <div class="flex justify-end gap-x-4">
-
-
-            <div class="flex">
-
-                <x-button positive label="I Understand" x-on:click="close" />
-            </div>
-        </div>
-    </x-slot>
-
-</x-modal.card> --}}
+ 

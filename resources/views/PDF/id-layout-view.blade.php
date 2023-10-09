@@ -398,6 +398,7 @@
         margin: 20px;
     }
     .g-button{
+        text-decoration: none;
         background: green;
         color: white;
         margin: 20px;
