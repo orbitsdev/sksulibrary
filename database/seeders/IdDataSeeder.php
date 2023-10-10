@@ -18,6 +18,8 @@ class IdDataSeeder extends Seeder
             'title' => 'Director, Library Service & Museum',
             'valid_from' => now()->year,
             'valid_until' => now()->addYear()->year,
+            'valid_until' => now()->addYear()->year,
+            'use'=> true,
         ]);
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('valid_until')->nullable();
             $table->text('logo')->nullable();
             $table->text('bg')->nullable();
+            $table->boolean('use')->default(false);
             $table->timestamps();
         });
     }

@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Models\Campus;
 use App\Models\DayLogin;
 use App\Models\DayRecord;
+use App\Models\IdData;
 use App\Models\Queque;
 use App\Models\Student;
 use App\Observers\CampusObserver;
 use App\Observers\DayRecordObserver;
+use App\Observers\IdDataObserver;
 use App\Observers\LoginObserver;
 use App\Observers\QuequeObserver;
 use App\Observers\StudentObserver;
@@ -40,6 +42,7 @@ class EventServiceProvider extends ServiceProvider
         Student::observe(StudentObserver::class);
         DayRecord::observe(DayRecordObserver::class);
         DayLogin::observe(LoginObserver::class);
+        IdData::observe(IdDataObserver::class);
     }
 
     /**

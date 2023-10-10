@@ -59,7 +59,13 @@
         width: 384px;
         height: 288px;
         border: 1px solid gray;
-        background: #D8EDDE;
+        @isset($id_data->bg)
+            background-image: url('{{ Storage::disk('public')->url($id_data->bg) }}');
+            background-size: cover;
+        @else
+            background: #D8EDDE;
+        @endisset
+
     }
 
     .card-content {
@@ -90,6 +96,7 @@
     .image-box img {
         width: 50px;
         height: 50px;
+        border-radius: 50%;
     }
 
     .qr-container img {
@@ -97,6 +104,7 @@
         height: 40px;
         background: white;
     }
+
     .qr-container{
 
     }
@@ -514,7 +522,12 @@
                             <p class="province">Province of Sultan Kudarat</p>
                         </div>
                         <div class="image-box box-2">
+                            @if(!empty($id_data->logo))
+                            <img src="{{ Storage::disk('public')->url($id_data->logo) }}" alt="sksu-logo">
+                            @else
+                            
                             <img src="{{ asset('images/sksulogo.png') }}" alt="sksu-logo">
+                            @endif
                         </div>
                     </div>
 

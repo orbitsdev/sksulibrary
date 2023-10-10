@@ -17,6 +17,7 @@ use Filament\Navigation\NavigationBuilder;
 use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\RealtimeResource;
 use App\Filament\Resources\DayRecordResource;
+use App\Filament\Resources\IdDataResource;
 use App\Filament\Resources\IndividualResource;
 use App\Filament\Resources\QuequeResource;
 use App\Filament\Resources\SalesReportResource;
@@ -87,11 +88,12 @@ class AppServiceProvider extends ServiceProvider
                             ...StudentResource::getNavigationItems(),
                             ...CourseResource::getNavigationItems(),
                             ...CampusResource::getNavigationItems(),
-                            NavigationItem::make('ID Settings')
-                            ->icon('heroicon-o-user-circle')
-                           ->activeIcon('heroicon-s-user-circle')
-                            ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.manage-i-d'))
-                             ->url(route('filament.pages.manage-i-d')),
+                            ...IdDataResource::getNavigationItems(),
+                        //     NavigationItem::make('ID Settings')
+                        //     ->icon('heroicon-o-user-circle')
+                        //    ->activeIcon('heroicon-s-user-circle')
+                        //     ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.manage-i-d'))
+                        //      ->url(route('filament.pages.manage-i-d')),
                           
                         ]),
                     NavigationGroup::make('Report')
