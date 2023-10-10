@@ -7,7 +7,7 @@
     }
 
 #show_bg_2 {
-    background-image: linear-gradient(to bottom, hsla(51, 77%, 58%, 0.52), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
+    background-image: linear-gradient(to bottom, hsla(72, 20%, 95%, 0.973), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
 
 background-size: cover;
 color: white;

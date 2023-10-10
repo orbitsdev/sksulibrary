@@ -7,7 +7,10 @@ use App\Models\IdData;
 use Filament\Pages\Page;
 use WireUi\Traits\Actions;
 use Filament\Resources\Form;
+use Livewire\WithFileUploads;
+use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
@@ -18,6 +21,7 @@ class ManageID extends Page implements HasForms
 {
     use InteractsWithForms;
     use Actions;
+    use WithFileUploads;
     
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -44,8 +48,8 @@ class ManageID extends Page implements HasForms
                 'title' => 'Director, Library Service & Museum',
                 'valid_from' => now()->year,
                 'valid_until' => now()->addYear()->year,
-                'logo' => 'sksulogo.png',
-                'bg' => null,
+                // 'logo' => 'sksulogo.png',
+                // 'bg' => null,
                
             ]);
         }
@@ -55,8 +59,8 @@ class ManageID extends Page implements HasForms
             'title_name' => $this->id_data->title,
             'valid_from' =>$this->id_data->valid_from,
             'valid_until' =>$this->id_data->valid_until,
-            'logo' => $this->id_data->logo,
-            'bg' => $this->id_data->bg,
+            // 'logo' => $this->id_data->logo,
+            // 'bg' => $this->id_data->bg,
         ]);
         
 
@@ -95,6 +99,10 @@ class ManageID extends Page implements HasForms
            ->helperText('Format should be Year (2022)')
            ->mask(fn (TextInput\Mask $mask) => $mask->pattern('0000'))
            ,
+
+        //    FileUpload::make('logo')->columnSpanFull()->disk('public')->directory('id-data')->label('Upload Logo')->image(),
+        //    FileUpload::make('bg')->columnSpanFull()->disk('public')->directory('id-data')->label('Upload Id Background')->image(),
+
         
            
          
@@ -102,21 +110,29 @@ class ManageID extends Page implements HasForms
         ];
     } 
 
+    
     public function submit(): void
-    {   
-       
-        
+    {       
+
+        // $data = [
+        //     $this->logo,
+        //     $this->bg,
+        // ];
+          
             $id_data = IdData::first();
+            
 
             if(!empty($id_data)){
+                $this->uploadLogo();
                 $id_data->update([
                     'director' =>$this->director_name,
                     'title' => $this->title_name,
                     'valid_from' => $this->valid_from,
                     'valid_until' => $this->valid_until,
-                    'logo' => $this->logo,
-                    'bg' => $this->bg,
+                    // 'logo' => $this->logo,
+                    // 'bg' => $this->bg,
                 ]);
+
             }else{
 
               
@@ -124,8 +140,8 @@ class ManageID extends Page implements HasForms
                     'director' =>$this->director_name,
                     'valid_from' => $this->valid_from,
                     'valid_until' => $this->valid_until,
-                    'logo' => $this->logo,
-                    'bg' => $this->bg,
+                    // 'logo' => $this->logo,
+                    // 'bg' => $this->bg,
                 ]);
 
                 
@@ -141,12 +157,42 @@ class ManageID extends Page implements HasForms
 
     function uploadLogo(){
         if(!empty($this->logo)){
-
-            foreach($this->logo as $imagefile){
-                $receipt_image_path = $imagefile->storeAs('iddata',$imagefile->getClientOriginalName());
+            foreach ($this->logo as $uploadedFile) {
+                // Get the original name of the file
+                $originalName = $uploadedFile->getClientOriginalName();
+    
+                // Move the file to the public folder
+                $pathInPublic = 'public/' . $originalName; // You can customize the destination path
+    
+                // Use Storage facade to move the file
+                Storage::put($pathInPublic, file_get_contents($uploadedFile));
+    
+                // Now you can get the public URL of the file
+                $publicUrl = Storage::url($pathInPublic);
+    
+                // Do whatever you need with the public URL or path
+                // ...
+    
+                // Optionally, you can delete the file from the original storage location
+                Storage::delete($uploadedFile->hashName());
             }
-        }
+            
+            // $this->logo->store('photos');
+            // foreach($this->bg as $imagefile){
+              
+            //     $receipt_image_path = $imagefile->storeAs('iddata',$imagefile->getClientOriginalName());
+          
+        //     // Get just filename
+        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);            
+        //    // Get just ext
+        //     $extension = $this->logo->file('cover_image')->getClientOriginalExtension();
+        //     //Filename to store
+        //     $fileNameToStore = $filename.'_'.time().'.'.$extension;                       
+        //   // Upload Image
+        //     $path = $this->logo->file('cover_image')->    storeAs('public/cover_images', $fileNameToStore);
+        
     }
+}
 
     function uploadBg(){
         if(!empty($this->bg)){
