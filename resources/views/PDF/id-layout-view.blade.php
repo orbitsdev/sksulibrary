@@ -93,8 +93,8 @@
     }
 
     .qr-container img {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         background: white;
     }
     .qr-container{
