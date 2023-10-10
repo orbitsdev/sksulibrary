@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('valid_from')->nullable();
             $table->string('valid_until')->nullable();
+            $table->text('logo')->nullable();
+            $table->text('bg')->nullable();
             $table->timestamps();
         });
     }

@@ -10,6 +10,7 @@ use Filament\Resources\Form;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class ManageID extends Page implements HasForms
@@ -29,6 +30,8 @@ class ManageID extends Page implements HasForms
     public $title_name;
     public $valid_from;
     public $valid_until;
+    public $logo;
+    public $bg;
 
 
     public function mount(){
@@ -41,6 +44,9 @@ class ManageID extends Page implements HasForms
                 'title' => 'Director, Library Service & Museum',
                 'valid_from' => now()->year,
                 'valid_until' => now()->addYear()->year,
+                'logo' => 'sksulogo.png',
+                'bg' => null,
+               
             ]);
         }
 
@@ -49,6 +55,8 @@ class ManageID extends Page implements HasForms
             'title_name' => $this->id_data->title,
             'valid_from' =>$this->id_data->valid_from,
             'valid_until' =>$this->id_data->valid_until,
+            'logo' => $this->id_data->logo,
+            'bg' => $this->id_data->bg,
         ]);
         
 
@@ -86,16 +94,18 @@ class ManageID extends Page implements HasForms
            ->maxLength(4)
            ->helperText('Format should be Year (2022)')
            ->mask(fn (TextInput\Mask $mask) => $mask->pattern('0000'))
-
            ,
+        
+           
          
          
         ];
     } 
 
     public function submit(): void
-    {
-
+    {   
+       
+        
             $id_data = IdData::first();
 
             if(!empty($id_data)){
@@ -104,13 +114,21 @@ class ManageID extends Page implements HasForms
                     'title' => $this->title_name,
                     'valid_from' => $this->valid_from,
                     'valid_until' => $this->valid_until,
+                    'logo' => $this->logo,
+                    'bg' => $this->bg,
                 ]);
             }else{
+
+              
                 $this->id_data =  IdData::create([
                     'director' =>$this->director_name,
                     'valid_from' => $this->valid_from,
                     'valid_until' => $this->valid_until,
+                    'logo' => $this->logo,
+                    'bg' => $this->bg,
                 ]);
+
+                
             }
 
             Notification::make() 
@@ -120,4 +138,25 @@ class ManageID extends Page implements HasForms
             
       
     }
+
+    function uploadLogo(){
+        if(!empty($this->logo)){
+
+            foreach($this->logo as $imagefile){
+                $receipt_image_path = $imagefile->storeAs('iddata',$imagefile->getClientOriginalName());
+            }
+        }
+    }
+
+    function uploadBg(){
+        if(!empty($this->bg)){
+            foreach($this->bg as $imagefile){
+                $receipt_image_path = $imagefile->storeAs('iddata',$imagefile->getClientOriginalName());
+            }
+        }
+       
+    }
+    
+    
+
 }
