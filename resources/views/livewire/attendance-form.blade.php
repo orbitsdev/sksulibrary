@@ -66,19 +66,7 @@ padding: 20px;
 </div>
 
 <div>
-    <!-- Your Livewire component content -->
-
-   
-    <script>
-        document.addEventListener('livewire:load', function () {
-            Livewire.on('closeSuccessModalAfterDelay', function () {
-                setTimeout(function () {
-                    window.livewire.emit('closeSuccessModal');
-                    document.querySelector('[wire\\:model="barcode"]').focus(); // Emit Livewire event to close the modal
-                }, 300); // 3000 milliseconds = 3 seconds
-            });
-        });
-    </script>
+  
 </div>
 
 
@@ -151,10 +139,33 @@ padding: 20px;
     </x-slot>
 
 </x-modal.card>
+
+<x-modal.card align="center" blur wire:model="isExpired">
+    
+    <x-error-content :image="'expired.png'" :message="$errorMessage" />
+
+    
+
+
+    <x-slot name="footer">
+        <div class="flex justify-end gap-x-4">
+
+
+            <div class="flex">
+
+                <x-button positive label="I Understand" x-on:click="close" />
+            </div>
+        </div>
+    </x-slot>
+
+</x-modal.card>
 <script>
     document.addEventListener('livewire:load', function () {
         window.closeSuccessModal = function () {
             @this.set('hasError', false);
+        }
+        window.closeExpiration = function () {
+            @this.set('isExpired', false);
         }
 
         Livewire.on('closeSuccessModalAfterDelay', function () {
@@ -162,6 +173,13 @@ padding: 20px;
                 closeSuccessModal();
             }, 2000); // 3000 milliseconds = 3 seconds
         });
+        
+        Livewire.on('closeExpirationModalAfterDelay', function () {
+            setTimeout(function () {
+                closeExpiration();
+            }, 2000); // 3000 milliseconds = 3 seconds
+        });
+
         Livewire.on('triggerClose', function () {
             setTimeout(function () {
                 @this.call('clearInformation'); 
