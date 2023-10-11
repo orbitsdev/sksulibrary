@@ -19,7 +19,7 @@ class IdDataSeeder extends Seeder
             'valid_from' => now()->year,
             'valid_until' => now()->addYear()->year,
             'valid_until' => now()->addYear()->year,
-            'use'=> true,
+            'use'=> false,
         ]);
     }
 }
