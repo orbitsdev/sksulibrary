@@ -71,6 +71,8 @@
     .card-content {
         flex: 2;
         padding-top: 8px;
+        display: flex;
+        flex-flow: column;
 
     }
 
@@ -253,6 +255,8 @@
 
 
     .bar-code-area {
+        flex-grow: 1;        
+
         display: grid;
         grid-template: 'b a a';
     }
@@ -265,6 +269,7 @@
         font-size: 12px;
         display: flex;
         padding: 8px;
+
         align-items: flex-end;
     }
 
