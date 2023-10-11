@@ -10,6 +10,7 @@ use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Toggle;
+use Filament\Tables\Actions\Position;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
@@ -25,9 +26,13 @@ class IdDataResource extends Resource
 {
     protected static ?string $model = IdData::class;
 
+
+
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $activeNavigationIcon = 'heroicon-s-user-circle';
     protected static ?string $navigationLabel = 'ID Settings';
+
+    
     public static function getPluralLabel(): ?string
     {
        return 'Settings';
