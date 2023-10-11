@@ -9,6 +9,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Fieldset;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,7 @@ class IdDataResource extends Resource
     
     public static function getEloquentQuery(): Builder
 {
-    return parent::getEloquentQuery()->where('use', true)->take(1);
+    return parent::getEloquentQuery()->take(1);
 }
 
 
@@ -86,8 +87,9 @@ class IdDataResource extends Resource
                             ,
 
                             FileUpload::make('bg')->columnSpanFull()->disk('public')->directory('id-data')->label('Upload Id Background')->image()
-                          
-
+                            ,
+                            Toggle::make('use')->label('Use Course Abbreviation ')
+                            ->columnSpan(6)
                             ,
 
                         ])]),
@@ -104,6 +106,7 @@ class IdDataResource extends Resource
                 TextColumn::make('title')->label('Director Title'),
                 TextColumn::make('valid_from')->label('Valid From'),
                 TextColumn::make('valid_until')->label('Valid Until'),
+                TextColumn::make('use')->label('Abrriviation'),
                 ImageColumn::make('logo')->label('ID Logo')->width(90)->height(90)
                 ->defaultImageUrl(url('/images/placeholder.jpg'))
                 ->url(fn ($record): string => $record->logo ?  Storage::disk('public')->url($record->logo) : asset('images/placeholder.jpg'))

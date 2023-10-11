@@ -72,7 +72,7 @@ class CourseResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->label('Course Name'),
-                TextColumn::make('sub_name')->searchable()->label('Prefix'),
+                TextColumn::make('sub_name')->searchable()->label('Abbreviation'),
                 TextColumn::make('id')->searchable()->label('Course ID'),
                 TextColumn::make('campus.name')->searchable()->label('Campus Name'),
             ])

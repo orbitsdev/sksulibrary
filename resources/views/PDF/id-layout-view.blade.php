@@ -565,9 +565,17 @@
                             {{ $student->first_name ?? ''}} {{ $student->middle_name?? '' }}
                             </p>
                             <p class="course">
+
+                                @if($id_data->use)
                                 @if ($student->course)
-                                {{ $student->course->name }}
+                                {{ $student->course->sub_name ?? '' }}
                                 @endif
+                                @else
+                                @if ($student->course)
+                                {{ $student->course->name ?? '' }}
+                                @endif
+                                @endif
+                              
                             </p>
                             <p class="student-id-number">
                                 ID NO: {{$student->id}}
