@@ -352,6 +352,9 @@ class StudentResource extends Resource
                             TextInput::make('guardian')->label('First Name')->columnSpan(3),
                                 
                             TextInput::make('guardian_contact_number')->label('Guardian Phone number')
+                            ->helperText(function(){
+                                return 'Student and guardian numbers must be different';
+                            })
                             ->different('contact_number')
                             ->columnSpan(3)
                            
