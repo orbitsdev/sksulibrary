@@ -21,6 +21,12 @@ class ListStudents extends ListRecords
 {
     protected static string $resource = StudentResource::class;
 
+    protected function getTableActionsPosition(): ?string
+    {
+        return Position::BeforeCells;
+    }
+
+
     protected function getActions(): array
     {
         return [
