@@ -352,6 +352,7 @@ class StudentResource extends Resource
                             TextInput::make('guardian')->label('First Name')->columnSpan(3),
                                 
                             TextInput::make('guardian_contact_number')->label('Guardian Phone number')
+                            ->different('contact_number')
                             ->columnSpan(3)
                            
                             ->prefix('+63')

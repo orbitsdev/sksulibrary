@@ -1,196 +1,193 @@
 <div>
 
 
-<style>
-    .v2card{
-        font-family: 'Inter', sans-serif;
-    }
+    <style>
+        .v2card {
+            font-family: 'Inter', sans-serif;
+        }
 
-#show_bg_2 {
-    background-image: linear-gradient(to bottom, hsla(72, 20%, 95%, 0.973), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
+        #show_bg_2 {
+            background-image: linear-gradient(to bottom, hsla(72, 20%, 95%, 0.973), rgba(37, 162, 80, 0.90)), url('images/library.jpg');
 
-background-size: cover;
-color: white;
-padding: 20px;
-}
+            background-size: cover;
+            color: white;
+            padding: 20px;
+        }
     </style>
-<div class="v2card flex items-center justify-center h-screen  " id="show_bg_2">
+    <div class="v2card flex items-center justify-center h-screen  " id="show_bg_2">
 
-    <div class="max-w-[800px] mx-auto bg-[#FEFEFE] shadow-xl m-2 rounded-lg  relative text-center py-8 px-12">  
-        
-      
+        <div class="max-w-[800px] mx-auto bg-[#FEFEFE] shadow-xl m-2 rounded-lg  relative text-center py-8 px-12">
 
-        <img src="{{ asset('images/sksulogo.png') }}" alt="sksu-logo.png"
-        class="w-24 h-24 mx-auto -mt-12 absolute inset-x-0 top-0">
 
-        <p class="text-[#AAAAAA] uppercase text-xl leading-none mt-8 tracking-widest font-light">SKSU LIBRARY SYSTEM</p>
 
-        <p class="capitalize text-[#36784D] font-medium text-[28px] leading-none mt-4 tracking-tight">University Learning Resource Center</p>
+            <img src="{{ asset('images/sksulogo.png') }}" alt="sksu-logo.png"
+                class="w-24 h-24 mx-auto -mt-12 absolute inset-x-0 top-0">
 
-        <div class="mx-auto w-3/4 rounded-full  bg-[#D9D9D9] h-1 mt-5"></div>
-      
+            <p class="text-[#AAAAAA] uppercase text-xl leading-none mt-8 tracking-widest font-light">SKSU LIBRARY SYSTEM
+            </p>
 
-        <div class="mt-6 max-auto flex items-center  justify-center">
-            <div class="bg-[#f6f6f6] p-2">
-                <img src="{{asset('images/qr-transparent.png')}}" alt="" class="w-24 h-24">
+            <p class="capitalize text-[#36784D] font-medium text-[28px] leading-none mt-4 tracking-tight">University
+                Learning Resource Center</p>
 
-            </div>
-            <div class="ml-4  py-2 px-4">
-                <input wire:model.debounce.700ms="barcode" autofocus type="text" class="rounded-full border-2  focus:border-[#36784D]  focus:ring-[#36784D] border-[#36784D] placeholder-[#A7A7A7] w-full placeholder-sm text-green-900" placeholder="ID Number" >
-                <div class="flex items-center justify-between mt-2.5">
-                    <p class="text-[#A7A7A7] text-sm p-0 mr-3 " >
-                        Auto-Trigger: Active by default, Click to Take Control
-                    </p>
-                    <x-toggle sm wire:model="isManualInputBarCode" class="swithlabel " />
+            <div class="mx-auto w-3/4 rounded-full  bg-[#D9D9D9] h-1 mt-5"></div>
+
+
+            <div class="mt-6 max-auto flex items-center  justify-center">
+                <div class="bg-[#f6f6f6] p-2">
+                    <img src="{{ asset('images/qr-transparent.png') }}" alt="" class="w-24 h-24">
+
                 </div>
+                <div class="ml-4  py-2 px-4">
+                    <input wire:model.debounce.700ms="barcode" autofocus type="text"
+                        class="rounded-full border-2  focus:border-[#36784D]  focus:ring-[#36784D] border-[#36784D] placeholder-[#A7A7A7] w-full placeholder-sm text-green-900"
+                        placeholder="ID Number">
+                    <div class="flex items-center justify-between mt-2.5">
+                        <p class="text-[#A7A7A7] text-sm p-0 mr-3 ">
+                            Auto-Trigger: Active by default, Click to Take Control
+                        </p>
+                        <x-toggle sm wire:model="isManualInputBarCode" class="swithlabel " />
+                    </div>
+                </div>
+
+
+            </div>
+            <div x-data="{ isOpen: @entangle('isManualInputBarCode') }" x-show="isOpen" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="h-0" x-transition:enter-end="h-auto"
+                x-transition:leave="transition ease-in duration-300" x-transition:leave-start="h-auto"
+                x-transition:leave-end="h-0" class="mt-6 flex justify-end overflow-hidden">
+                <x-button wire:click="readBarCodeManually" spinner="readBarCodeManually"
+                    class="sk-button max-h-14 px-[34px] py-[12px] w-full justify-center rounded-full capitalize">
+                    Read Bar Code
+                </x-button>
             </div>
 
-          
         </div>
-        <div x-data="{ isOpen: @entangle('isManualInputBarCode') }"
-     x-show="isOpen"
-     x-transition:enter="transition ease-out duration-300"
-     x-transition:enter-start="h-0"
-     x-transition:enter-end="h-auto"
-     x-transition:leave="transition ease-in duration-300"
-     x-transition:leave-start="h-auto"
-     x-transition:leave-end="h-0"
-     class="mt-6 flex justify-end overflow-hidden">
-    <x-button wire:click="readBarCodeManually" spinner="readBarCodeManually"
-              class="sk-button max-h-14 px-[34px] py-[12px] w-full justify-center rounded-full capitalize">
-        Read Bar Code
-    </x-button>
-</div>
+    </div>
+
+    <div>
 
     </div>
-</div>
-
-<div>
-  
-</div>
 
 
- 
-<x-modal.card align="center" blur z-index="z-40" wire:model="isSuccess" sm show="true"
-        spacing="">
+
+    <x-modal.card align="center" blur z-index="z-40" wire:model="isSuccess" sm show="true" spacing="">
         @if ($student != null && $todayRecord != null)
-        <div class=" p-8 rounded  z-10 relative">
-            {{-- <button wire:click="clearInformation" class="absolute top-2 right-2 text-[#B8B8B8]">
+            <div class=" p-8 rounded  z-10 relative">
+                {{-- <button wire:click="clearInformation" class="absolute top-2 right-2 text-[#B8B8B8]">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button> --}}
-            <p class="text-[#36784D] uppercase text-2xl leading-none text-center">SKSU LIBRARY SYSTEM</p>
-            <p class="mt-8 text-3xl font-bold text-center">
-                {{ ucfirst($student?->last_name) ?? '' }} , {{ $student?->middle_name ?? '' }}
-                    {{ $student?->first_name ?? '' }}    
-            </p>
-            <p class="mt-2 text-[#918f8f] text-lg text-center">
-                {{ $student->year ?? '' }}, {{ $student?->course?->name ?? '' }}
+                <p class="text-[#36784D] uppercase text-2xl leading-none text-center">SKSU LIBRARY SYSTEM</p>
+                <p class="mt-8 text-3xl font-bold text-center">
+                    {{ ucfirst($student?->last_name) ?? '' }} , {{ $student?->middle_name ?? '' }}
+                    {{ $student?->first_name ?? '' }}
+                </p>
+                <p class="mt-2 text-[#918f8f] text-lg text-center">
+                    {{ $student->year ?? '' }}, {{ $student?->course?->name ?? '' }}
 
-            </p>
-            @if ($studentLoginRecord = $this->student->logins()->latest()->first())
-                @if ($studentLoginRecord->logout)
-                    @if ($studentLoginRecord->logout->status == 'Logged out')
-                    <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
-                    @else
-                    <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged in</p>
-                        @endif
-                        @endif
+                </p>
+                @if ($studentLoginRecord = $this->student->logins()->latest()->first())
+                    @if ($studentLoginRecord->logout)
+                        @if ($studentLoginRecord->logout->status == 'Logged out')
+                            <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
                         @else
-                        <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
-            @endif
-           
-        </div>
+                            <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged in</p>
+                        @endif
+                    @endif
+                @else
+                    <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
+                @endif
 
+            </div>
         @else
-        <div class="h-[200px]"></div>
-    @endif
-    
-</x-modal.card>
+            <div class="h-[200px]"></div>
+        @endif
+
+    </x-modal.card>
 
 
 
-<x-modal.card align="center" blur wire:model="hasError">
-    
+    <x-modal.card align="center" blur wire:model="hasError">
 
-    @if ($errorType == 'not-found')
-        <x-error-content :image="'not-found.png'" :message="$errorMessage" />
-    @endif
-    @if ($errorType == 'exception')
-        <x-error-content :image="'error.png'" :message="$errorMessage" />
-    @endif
-    @if ($errorType == 'expired')
+
+        @if ($errorType == 'not-found')
+            <x-error-content :image="'not-found.png'" :message="$errorMessage" />
+        @endif
+        @if ($errorType == 'exception')
+            <x-error-content :image="'error.png'" :message="$errorMessage" />
+        @endif
+        @if ($errorType == 'expired')
+            <x-error-content :image="'expired.png'" :message="$errorMessage" />
+        @endif
+
+
+        <x-slot name="footer">
+            <div class="flex justify-end gap-x-4">
+
+
+                <div class="flex">
+
+                    <x-button positive label="I Understand" x-on:click="close" />
+                </div>
+            </div>
+        </x-slot>
+
+    </x-modal.card>
+
+    <x-modal.card align="center" blur wire:model="isExpired">
+
         <x-error-content :image="'expired.png'" :message="$errorMessage" />
-    @endif
 
 
-    <x-slot name="footer">
-        <div class="flex justify-end gap-x-4">
 
 
-            <div class="flex">
+        <x-slot name="footer">
+            <div class="flex justify-end gap-x-4">
 
-                <x-button positive label="I Understand" x-on:click="close" />
+
+                <div class="flex">
+
+                    <x-button positive label="I Understand" x-on:click="close" />
+                </div>
             </div>
-        </div>
-    </x-slot>
+        </x-slot>
 
-</x-modal.card>
+    </x-modal.card>
+    <script>
+        document.addEventListener('livewire:load', function() {
+            window.closeSuccessModal = function() {
+                @this.set('hasError', false);
+            }
+            window.closeExpiration = function() {
+                @this.set('isExpired', false);
+            }
 
-<x-modal.card align="center" blur wire:model="isExpired">
-    
-    <x-error-content :image="'expired.png'" :message="$errorMessage" />
+            Livewire.on('closeSuccessModalAfterDelay', function() {
+                setTimeout(function() {
+                    closeSuccessModal();
+                }, 2000); // 3000 milliseconds = 3 seconds
+            });
 
-    
+            Livewire.on('closeExpirationModalAfterDelay', function() {
+                setTimeout(function() {
+                    closeExpiration();
+                }, 2000); // 3000 milliseconds = 3 seconds
+            });
 
-
-    <x-slot name="footer">
-        <div class="flex justify-end gap-x-4">
-
-
-            <div class="flex">
-
-                <x-button positive label="I Understand" x-on:click="close" />
-            </div>
-        </div>
-    </x-slot>
-
-</x-modal.card>
-<script>
-    document.addEventListener('livewire:load', function () {
-        window.closeSuccessModal = function () {
-            @this.set('hasError', false);
-        }
-        window.closeExpiration = function () {
-            @this.set('isExpired', false);
-        }
-
-        Livewire.on('closeSuccessModalAfterDelay', function () {
-            setTimeout(function () {
-                closeSuccessModal();
-            }, 2000); // 3000 milliseconds = 3 seconds
+            Livewire.on('triggerClose', function() {
+                setTimeout(function() {
+                    @this.call('clearInformation');
+                }, 3000); // 3000 milliseconds = 3 seconds
+            });
         });
-        
-        Livewire.on('closeExpirationModalAfterDelay', function () {
-            setTimeout(function () {
-                closeExpiration();
-            }, 2000); // 3000 milliseconds = 3 seconds
-        });
-
-        Livewire.on('triggerClose', function () {
-            setTimeout(function () {
-                @this.call('clearInformation'); 
-            }, 3000); // 3000 milliseconds = 3 seconds
-        });
-    });
-</script>
+    </script>
 </div>
 
 
-     
+
 
 {{-- //end start update --}}
 
@@ -321,9 +318,9 @@ padding: 20px;
     </div> --}}
 
 
-   
 
-    {{-- 
+
+{{-- 
     <x-modal.card align="center" z-index="z-50" blur wire:model="isConfirmationShow" show="true">
         @if ($student != null && $todayRecord != null)
         <h1 class="text-xl text-center">Are you sure you want to proceed? @if ($studentLoginRecord = $this->student->logins()->latest()->first())
@@ -359,7 +356,7 @@ padding: 20px;
 
     </x-modal.card> --}}
 
-    {{-- 
+{{-- 
     <x-modal.card align="center" blur z-index="z-40" wire:model="isSuccess" max-width="6xl" show="true"
         spacing="">
         @if ($student != null && $todayRecord != null)
@@ -482,7 +479,4 @@ padding: 20px;
     </x-modal.card>  --}}
 
 {{-- </div> --}}
- {{-- //end before update --}}
-
-
- 
+{{-- //end before update --}}
