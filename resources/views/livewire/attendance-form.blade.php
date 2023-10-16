@@ -94,13 +94,13 @@ padding: 20px;
             @if ($studentLoginRecord = $this->student->logins()->latest()->first())
                 @if ($studentLoginRecord->logout)
                     @if ($studentLoginRecord->logout->status == 'Logged out')
-                        <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
+                        <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged in</p>
                     @else
                         <p class="text-[#BB0000] mt-4 font-bold text-center">Has Been Logged out</p>
                     @endif
                 @endif
             @else
-                <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged out</p>
+                <p class="text-[#36784D] mt-4 font-bold text-center">Has Been Logged in</p>
             @endif
            
         </div>
