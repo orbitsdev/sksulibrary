@@ -32,7 +32,7 @@ Route::post('/create-card', function (Request $request){
     return response()->json(['success'=>true, 'data'=> $newCard, ]);
 });
 
-Route::get('/fetch-cards', function (Request $request){
+Route::get('/fetch-cards', function (){
     $data = Card::all();
     return response()->json(['success'=>true, 'data'=>$data, ]);
 });
