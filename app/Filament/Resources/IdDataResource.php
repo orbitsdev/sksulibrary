@@ -111,7 +111,7 @@ class IdDataResource extends Resource
                 TextColumn::make('title')->label('Director Title'),
                 TextColumn::make('valid_from')->label('Valid From'),
                 TextColumn::make('valid_until')->label('Valid Until'),
-                TextColumn::make('use')->label('Abrriviation'),
+                TextColumn::make('use')->label('Abrriviation')->formatStateUsing(fn($state) => $state ? 'Abbreviation in Use' : 'Abbreviation Not in Use'),
                 ImageColumn::make('logo')->label('ID Logo')->width(90)->height(90)
                 ->defaultImageUrl(url('/images/placeholder.jpg'))
                 ->url(fn ($record): string => $record->logo ?  Storage::disk('public')->url($record->logo) : asset('images/placeholder.jpg'))
