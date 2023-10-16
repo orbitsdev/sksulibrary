@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Card;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/testapi', function(){
     $response = Http::get('https://api.countrystatecity.in/v1/countries');
     return response()->json(['data'=>$response]);
+});
+
+Route::post('/create-card', function (Request $request){
+    $newCard = Card::create([
+        'card_number' => $request->card_number,
+    ]);
+    return response()->json(['success'=>true, 'data'=> $newCard, ]);
+});
+
+Route::get('/fetch-cards', function (Request $request){
+    $data = Card::all();
+    return response()->json(['success'=>true, 'data'=>$data, ]);
 });

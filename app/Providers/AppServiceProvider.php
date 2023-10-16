@@ -12,6 +12,7 @@ use App\Filament\Resources\UserResource;
 use Filament\Navigation\NavigationGroup;
 use App\Filament\Resources\QuoteResource;
 use App\Filament\Resources\CampusResource;
+use App\Filament\Resources\CardResource;
 use App\Filament\Resources\CourseResource;
 use Filament\Navigation\NavigationBuilder;
 use App\Filament\Resources\StudentResource;
@@ -84,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
 
                     NavigationGroup::make('Management')
                         ->items([
+                            ...CardResource::getNavigationItems(),
                             ...UserResource::getNavigationItems(),
                             ...StudentResource::getNavigationItems(),
                             ...CourseResource::getNavigationItems(),

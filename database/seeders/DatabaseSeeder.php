@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             // StudentSeeder::class,
             IdDataSeeder::class,
+            CardSeeder::class,
             PhilippineRegionsTableSeeder::class,
             PhilippineProvincesTableSeeder::class,
             PhilippineCitiesTableSeeder::class,
