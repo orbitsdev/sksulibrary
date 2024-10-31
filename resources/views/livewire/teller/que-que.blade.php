@@ -71,8 +71,8 @@
                             <p class="text-7xl font-semibold text-gray-100">
                                 {{ $currentQueque->number }}
                             </p>
-                           
-                                
+
+
                         @endIf
 
 
@@ -107,13 +107,13 @@
 
                         {{-- <p class="text-gray-100">
                 Current time: {{ now() }}
-  
+
               </p> --}}
                         <h1 class="text-gray-100 text-2xl uppercase font-semibold mb-4"> Next Numbers
                             @if (empty($currentQueque) && count($waitingNumbers) > 0)
                                 <span class="text-sm ml-2 text-gray-300 capitalize"> click number to select</span>
                                 @else
-                                
+
                                 {{-- <span class="text-sm ml-2 text-gray-300 capitalize"> You can double click the number if you want to anounce it</span> --}}
                             @endif
                         </h1>
@@ -121,7 +121,7 @@
                             @forelse($waitingNumbers as $item)
                                 <button type="button" class="flex flex-col items-center justify-center sm:h-10 lg:h-40 p-8 rounded bg-[#103f20] cursor-pointer transition-all hover:scale-105 hover:bg-[#154d28]"
                                wire:click="selectNumber({{ $item->id }})"  >
-                                    <p class="sm:text-2xl xl:text-6xl lg:text-6xl font-semibold text-gray-100">22{{ $item->number }}</p>
+                                    <p class="sm:text-2xl xl:text-6xl lg:text-6xl font-semibold text-gray-100">{{ $item->number }}</p>
                                 </button>
                             @empty
                                 <div class="flex items-center justify-center col-span-3 h-40">
@@ -163,11 +163,11 @@
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Hold Transaction" />
                                     <x-button wire:click="callNumber({{ $currentQueque->number }})"
-                                        
+
                                         spinner="callNumber"
                                         class="tellerbutton text-white text-lg py-3 rounded  transition-all px-4 "
                                         label="Announce Number ( Voice Assistant ) " />
-                                   
+
                                 </div>
 
                                 {{-- <div class="mt-8">

@@ -67,25 +67,7 @@ class QueQue extends Component
     public function callNextPerson()
     {
 
-        // $latestQueque = QuequeModel::latest()->first();
-
-        // if(empty($latestQueque)){
-        //     $newQueQue = QuequeModel::create([
-        //         'number' => 1,
-        //         'status' => 'waiting',
-        //     ]);
-        // }  else{
-        //     $latestNumber = $latestQueque->number;
-
-        //     $newQueQue = QuequeModel::create([
-        //         'number' => $latestNumber+1,
-        //         'status' => 'waiting',
-        //     ]);
-
-        // } 
-
-
-        // new code
+       
         DB::beginTransaction();
 
         try {

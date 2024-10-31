@@ -51,11 +51,11 @@ class AppServiceProvider extends ServiceProvider
                     ->label('Attendance')
                     ->url(route('attendance'))
                     ->icon('heroicon-s-clipboard-list'),
-            
+
             ]);
         });
 
-        
+
         Filament::navigation(function (NavigationBuilder $builder): NavigationBuilder {
             return $builder
                 ->groups([
@@ -80,7 +80,7 @@ class AppServiceProvider extends ServiceProvider
                                 ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.dashboard'))
                                 ->url(route('filament.pages.dashboard')),
 
-                            
+
                         ]),
 
                     NavigationGroup::make('Management')
@@ -96,7 +96,7 @@ class AppServiceProvider extends ServiceProvider
                         //    ->activeIcon('heroicon-s-user-circle')
                         //     ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.manage-i-d'))
                         //      ->url(route('filament.pages.manage-i-d')),
-                          
+
                         ]),
                     NavigationGroup::make('Report')
                         ->items([
@@ -118,29 +118,29 @@ class AppServiceProvider extends ServiceProvider
                                 ->activeIcon('heroicon-s-presentation-chart-bar')
                                  ->isActiveWhen(fn (): bool => request()->routeIs('filament.pages.top-visitor'))
                                   ->url(route('filament.pages.top-visitor')),
-                                  
+
                                   // NavigationItem::make('Individual Reports')
                                   // ->icon('heroicon-o-document-report')
                                   // ->activeIcon('heroicon-s-document-report')
                                   // ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.students.individualReport'))
                                   // ->url(route('filament.resources.students.individualReport')),
                                 ]),
-                              
-                                // NavigationGroup::make('QUEUES')
-                        // ->items([
-                        //     ...TellerResource::getNavigationItems(),
-                        //     ...QuequeResource::getNavigationItems(),
-                           
-                        // ]),
+
+                                NavigationGroup::make('QUEUES')
+                        ->items([
+                      ...TellerResource::getNavigationItems(),
+                           ...QuequeResource::getNavigationItems(),
+
+                        ]),
                     // NavigationGroup::make('Settings')
                     // ->items([
                     //     ...QuoteResource::getNavigationItems(),
                     // ]),
 
-                    
+
                 ]);
 
-                
+
         });
     }
 }
