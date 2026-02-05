@@ -1,6 +1,15 @@
 <div class=" bg-gradient-to-r from-[#072510] to-[#072510]  overflow-y-auto">
 
-
+    @if(!$teller)
+        <div class="mx-auto flex flex-col justify-center items-center h-screen">
+            <div class="bg-[#0d3119] p-8 rounded-lg shadow-lg text-center">
+                <p class="text-gray-100 text-xl mb-4">Session expired or teller not found</p>
+                <a href="{{ route('teller.login') }}" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+                    Login Again
+                </a>
+            </div>
+        </div>
+    @else
     <div class="mx-auto flex flex-col justify-center items-center  h-screen ">
 
 
@@ -210,3 +219,4 @@ document.addEventListener('DOMContentLoaded', function () {
         </script>
 
     </div>
+    @endif

@@ -23,8 +23,14 @@ class QueQue extends Component
     public function mount()
     {
         if (session()->has('teller_id')) {
-
             $this->teller = Teller::find(session('teller_id'));
+
+            // If teller was deleted from database, clear session and redirect
+            if (!$this->teller) {
+                session()->forget('teller_id');
+                return redirect()->route('teller.login');
+            }
+
             $this->getUnfinishTransaction();
         }
     }
@@ -66,52 +72,54 @@ class QueQue extends Component
 
     public function callNextPerson()
     {
+        if (!$this->teller) {
+            $this->dialog()->error(
+                $title = 'Session Expired',
+                $description = 'Please login again'
+            );
+            return redirect()->route('teller.login');
+        }
 
-       
         DB::beginTransaction();
 
         try {
-
-            $latestQueque = QuequeModel::latest()->first();
-
+            // Lock the table to prevent race conditions when getting the latest number
+            $latestQueque = QuequeModel::lockForUpdate()->latest()->first();
 
             if (empty($latestQueque)) {
-                // If the table is empty, create a new record with number 1.
-                $newQueQue = QuequeModel::create([
-                    'number' => 1,
-                    'status' => 'waiting',
-                ]);
+                $newNumber = 1;
             } else {
-                $latestNumber = $latestQueque->number;
-                $isNumberExist =  QuequeModel::where('number', $latestNumber)->exists();
-                if ($isNumberExist) {
-                    $newNumber = $latestNumber + 1;
-                } else {
-                    $newNumber = $latestNumber;
-                }
-
-                $newQueQue = QuequeModel::create([
-                    'number' => $newNumber,
-                    'status' => 'waiting',
-                ]);
+                $newNumber = $latestQueque->number + 1;
             }
+
+            QuequeModel::create([
+                'number' => $newNumber,
+                'status' => 'waiting',
+            ]);
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'Failed to create queue number. Please try again.'
+            );
         }
     }
 
 
     public function render()
     {
+        // Handle null teller (session expired or teller deleted)
+        if (!$this->teller) {
+            return redirect()->route('teller.login');
+        }
 
         $this->pendingQueque = QuequeModel::oldest()->where('status', 'waiting')->take(4)->get();
         $this->holdTransaction = QuequeModel::where('status', 'hold')->whereHas('transactions', function ($query) {
             $query->where('teller_id', $this->teller->id);
         })->latest()->get();
 
-        // $this->pendingQueque =QuequeModel::latest()->take(3)->get();
         return view('livewire.teller.que-que', [
             'waitingNumbers' => $this->pendingQueque,
             'holdnumbers' => $this->holdTransaction,
@@ -121,102 +129,164 @@ class QueQue extends Component
 
     public function selectNumber($ququeId)
     {
+        if (!$this->teller) {
+            $this->dialog()->error(
+                $title = 'Session Expired',
+                $description = 'Please login again'
+            );
+            return redirect()->route('teller.login');
+        }
 
-
-        if (empty($this->currentQueque)) {
-            $selectedNumber = QuequeModel::find($ququeId);
-            if ($selectedNumber) {
-
-                if ($selectedNumber->status != 'waiting'  && $selectedNumber->status != 'hold') {
-                    $this->dialog()->error(
-
-                        $title = 'Error !!!',
-                        $description = 'Number is already taken by another teller'
-                    );
-                } else {
-
-                    $this->currentQueque = $selectedNumber;
-                    $this->currentQueque->status = 'processing';
-                    $this->currentQueque->save();
-
-                    Transaction::create([
-                        'queque_id' => $this->currentQueque->id,
-                        'teller_id' => $this->teller->id,
-                    ]);
-                }
-            } else {
-                $this->dialog()->error(
-
-                    $title = 'Not Found',
-
-                    $description = 'Number is not found in the database it might be already deleted'
-
-                );
-            }
-        } else {
+        if (!empty($this->currentQueque)) {
             $this->dialog()->info(
+                $title = 'You can only select one number at a time',
+                $description = 'Please finish the transaction first'
+            );
+            return;
+        }
 
-                $title = 'You can only select number one at a time',
+        DB::beginTransaction();
 
-                $description = 'Please Finish the transaction first'
+        try {
+            // Lock the row to prevent race condition
+            $selectedNumber = QuequeModel::lockForUpdate()->find($ququeId);
 
+            if (!$selectedNumber) {
+                DB::rollback();
+                $this->dialog()->error(
+                    $title = 'Not Found',
+                    $description = 'Number is not found in the database, it might be already deleted'
+                );
+                return;
+            }
+
+            if ($selectedNumber->status != 'waiting' && $selectedNumber->status != 'hold') {
+                DB::rollback();
+                $this->dialog()->error(
+                    $title = 'Error',
+                    $description = 'Number is already taken by another teller'
+                );
+                return;
+            }
+
+            $selectedNumber->status = 'processing';
+            $selectedNumber->save();
+
+            // Only create transaction if one doesn't exist for this queue (handles hold re-selection)
+            $existingTransaction = Transaction::where('queque_id', $selectedNumber->id)
+                ->where('teller_id', $this->teller->id)
+                ->first();
+
+            if (!$existingTransaction) {
+                Transaction::create([
+                    'queque_id' => $selectedNumber->id,
+                    'teller_id' => $this->teller->id,
+                ]);
+            }
+
+            $this->currentQueque = $selectedNumber;
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'Failed to select number. Please try again.'
             );
         }
     }
 
     public function completeTransaction($ququeId)
     {
-        $selectedNumber = QuequeModel::find($ququeId);
+        if (!$this->currentQueque) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'No transaction is currently selected'
+            );
+            return;
+        }
+
+        // Verify the queque still exists and matches
+        $queque = QuequeModel::find($ququeId);
+        if (!$queque || $queque->id !== $this->currentQueque->id) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'Transaction mismatch. Please refresh the page.'
+            );
+            $this->currentQueque = null;
+            return;
+        }
+
         $this->currentQueque->status = 'completed';
         $this->currentQueque->save();
+        $this->currentQueque = null;
 
         $this->dialog()->success(
-
-            $title = 'Transaction complete',
-
-            $description = 'Your Transaction was completed'
-
+            $title = 'Transaction Complete',
+            $description = 'Your transaction was completed'
         );
-        $this->currentQueque = null;
     }
+
     public function cancelTransaction($ququeId)
     {
+        if (!$this->currentQueque) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'No transaction is currently selected'
+            );
+            return;
+        }
 
-        $selectedNumber = QuequeModel::find($ququeId);
+        // Verify the queque still exists and matches
+        $queque = QuequeModel::find($ququeId);
+        if (!$queque || $queque->id !== $this->currentQueque->id) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'Transaction mismatch. Please refresh the page.'
+            );
+            $this->currentQueque = null;
+            return;
+        }
+
         $this->currentQueque->status = 'waiting';
         $this->currentQueque->save();
         $this->currentQueque->transactions()->delete();
         $this->currentQueque = null;
+
         $this->dialog()->success(
-
-            $title = 'Transaction canceled',
-
-            $description = 'Your Transaction was canceled'
-
+            $title = 'Transaction Canceled',
+            $description = 'Your transaction was canceled'
         );
     }
 
     public function holdTransaction($ququeId)
     {
-        $selectedNumber = QuequeModel::find($ququeId);
+        if (!$this->currentQueque) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'No transaction is currently selected'
+            );
+            return;
+        }
+
+        // Verify the queque still exists and matches
+        $queque = QuequeModel::find($ququeId);
+        if (!$queque || $queque->id !== $this->currentQueque->id) {
+            $this->dialog()->error(
+                $title = 'Error',
+                $description = 'Transaction mismatch. Please refresh the page.'
+            );
+            $this->currentQueque = null;
+            return;
+        }
+
         $this->currentQueque->status = 'hold';
         $this->currentQueque->save();
-
-        // $this->dialog()->success(
-
-        //     $title = 'Transaction canceled',
-
-        //     $description = 'Your Transaction was canceled'
-
-        // );
         $this->currentQueque = null;
 
         $this->dialog()->success(
-
-            $title = 'Transaction hold',
-
-            $description = ' Transaction was hold'
-
+            $title = 'Transaction On Hold',
+            $description = 'Transaction was put on hold'
         );
     }
 

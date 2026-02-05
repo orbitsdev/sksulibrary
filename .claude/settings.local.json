@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "WebFetch(domain:sksulibrary.test)",
+      "Bash(curl:*)",
+      "Bash(php artisan tinker:*)",
+      "Bash(php -l:*)",
+      "Bash(php artisan:*)",
+      "Bash(php test_queue.php:*)",
+      "Bash(php test_race_condition.php:*)"
+    ]
+  }
+}

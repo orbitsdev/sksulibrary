@@ -29,14 +29,22 @@ class QuequeResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('number')->maxLength(255)->columnSpan(2)->required(),
+                TextInput::make('number')
+                    ->numeric()
+                    ->integer()
+                    ->minValue(1)
+                    ->columnSpan(2)
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 Select::make('status')
-    ->options([
-        'waiting' => 'Waiting',
-        'hold' => 'Hold',
-        'completed' => 'Completed',
-        'processing' => 'Processing',
-    ])
+                    ->options([
+                        'waiting' => 'Waiting',
+                        'hold' => 'Hold',
+                        'completed' => 'Completed',
+                        'processing' => 'Processing',
+                    ])
+                    ->default('waiting')
+                    ->required()
             ]);
     }
 
